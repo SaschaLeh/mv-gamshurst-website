@@ -1,0 +1,70 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/bricolage-grotesque';
+// Preload-URL für LCP-Font (Bricolage Latin) — Vite hasht den Asset-Pfad zur Build-Zeit.
+import bricolageLatinHref from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2?url';
+import '../styles/tokens.css';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  noIndex?: boolean;
+}
+
+const SITE_NAME = 'MV Gamshurst';
+const DEFAULT_DESCRIPTION =
+  'Musikverein Gamshurst e.V. — Blasmusik aus Gamshurst seit 1925. Aktuelles, Termine, Vorstand und Bildergalerie.';
+
+const {
+  title,
+  description = DEFAULT_DESCRIPTION,
+  ogImage = '/og-default.png',
+  noIndex = false,
+} = Astro.props;
+
+const site = Astro.site;
+if (!site) {
+  throw new Error('astro.config.mjs muss `site` setzen — benötigt für canonical & OG-URLs.');
+}
+
+const fullTitle = title === SITE_NAME ? SITE_NAME : `${title} | ${SITE_NAME}`;
+const canonical = new URL(Astro.url.pathname, site).href;
+const ogImageUrl = new URL(ogImage, site).href;
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    {noIndex && <meta name="robots" content="noindex,nofollow" />}
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" as="font" type="font/woff2" href={bricolageLatinHref} crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="de_DE" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <meta name="theme-color" content="#16424c" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -13,6 +13,8 @@
     "types:storyblok": "node -e \"console.error('storyblok CLI wird in Phase 3 installiert'); process.exit(1)\""
   },
   "dependencies": {
+    "@fontsource-variable/bricolage-grotesque": "^5.2.10",
+    "@fontsource-variable/inter": "^5.2.8",
     "astro": "^5.14.0"
   },
   "devDependencies": {

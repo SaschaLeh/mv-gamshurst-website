@@ -1,14 +1,246 @@
-<!doctype html>
-<html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MV Gamshurst</title>
-  </head>
-  <body>
-    <main>
-      <h1>MV Gamshurst — Phase 0</h1>
-      <p>Bootstrap erfolgreich. Phase 1 bringt Design-Tokens, Fonts und Base-Layout.</p>
-    </main>
-  </body>
-</html>
+---
+import Base from '../layouts/Base.astro';
+
+const colorGroups = [
+  {
+    label: 'Brand / Petrol',
+    tokens: [
+      ['Primär', 'var(--color-primary)', '#16424c'],
+      ['Petrol tief', 'var(--color-petrol-deep)', '#143b44'],
+      ['Petrol tiefst / Footer', 'var(--color-petrol-deepest)', '#0f2e36'],
+      ['Petrol mittel', 'var(--color-petrol-medium)', '#1f6573'],
+      ['Petrol Verlauf 1', 'var(--color-petrol-gradient-1)', '#27788a'],
+      ['Petrol Verlauf 2', 'var(--color-petrol-gradient-2)', '#34889a'],
+    ],
+  },
+  {
+    label: 'Akzent',
+    tokens: [
+      ['Cyan', 'var(--color-cyan)', '#57c7d6'],
+      ['Wappen-Blau', 'var(--color-wappen-blau)', '#2f62b0'],
+      ['Gold', 'var(--color-gold)', '#f3c12e'],
+      ['Gold tief', 'var(--color-gold-deep)', '#b78a12'],
+      ['Gold tiefst', 'var(--color-gold-deepest)', '#7a5a08'],
+    ],
+  },
+  {
+    label: 'Kategorie',
+    tokens: [
+      ['Fest (grün)', 'var(--color-cat-fest)', '#3f8a4f'],
+      ['Fest (alt)', 'var(--color-cat-fest-alt)', '#2e7d4f'],
+      ['Brassparty (beere)', 'var(--color-cat-brassparty)', '#a23b86'],
+    ],
+  },
+  {
+    label: 'Surfaces / Borders',
+    tokens: [
+      ['Page-Background', 'var(--color-page-bg)', '#eef3f7'],
+      ['Karten-Weiß', 'var(--color-card)', '#ffffff'],
+      ['Karten-Alt', 'var(--color-card-alt)', '#fbfdfe'],
+      ['Karten-Alt-2', 'var(--color-card-alt-2)', '#f3f7fa'],
+      ['Border', 'var(--color-border)', '#e4e9ef'],
+      ['Border kräftig', 'var(--color-border-strong)', '#d7dee5'],
+    ],
+  },
+  {
+    label: 'Semantic',
+    tokens: [
+      ['Fehler', 'var(--color-error)', '#d23b53'],
+      ['Erfolg BG', 'var(--color-success-bg)', '#e1f1e4'],
+      ['Erfolg Text', 'var(--color-success-text)', '#2e7d4f'],
+      ['Hinweis BG', 'var(--color-notice-bg)', '#fff8e6'],
+      ['Hinweis Rand', 'var(--color-notice-border)', '#f3dca0'],
+      ['Hinweis Text', 'var(--color-notice-text)', '#7a5a08'],
+    ],
+  },
+];
+
+const radii = [
+  ['Pill', 'var(--radius-pill)'],
+  ['Input 12px', 'var(--radius-input)'],
+  ['Card sm 16px', 'var(--radius-card-sm)'],
+  ['Card 22px', 'var(--radius-card)'],
+  ['Card lg 26px', 'var(--radius-card-lg)'],
+  ['Section sm 30px', 'var(--radius-section-sm)'],
+  ['Section 36px', 'var(--radius-section)'],
+];
+
+const shadows = [
+  ['Nav', 'var(--shadow-nav)'],
+  ['Card sm', 'var(--shadow-card-sm)'],
+  ['Card', 'var(--shadow-card)'],
+  ['Card lg', 'var(--shadow-card-lg)'],
+  ['Button', 'var(--shadow-button)'],
+];
+---
+<Base title="Design Tokens — Phase 1" description="Token-Demo: Farben, Typografie, Radien, Schatten">
+  <main class="container">
+    <header class="page-head">
+      <p class="eyebrow">Phase 1</p>
+      <h1>Design-Tokens & Base-Layout</h1>
+      <p class="lead">
+        Snapshot der Tokens aus dem Handoff §9. Diese Seite wird in Phase 4 durch die echte Startseite ersetzt.
+      </p>
+    </header>
+
+    <section class="block">
+      <h2>Typografie</h2>
+      <div class="type-demo">
+        <p class="eyebrow">Eyebrow · 13px · UPPERCASE · 0.18em</p>
+        <h1>H1 — Blasmusik aus Gamshurst</h1>
+        <h2>H2 — Neuigkeiten & Bekanntmachungen</h2>
+        <h3>H3 — Kartentitel-Skala</h3>
+        <p>
+          Body-Text in Inter. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+        </p>
+        <p style="font-family: var(--font-display); font-weight: 800">
+          Bricolage Grotesque (800) — Headline-Schrift.
+        </p>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Farben</h2>
+      {colorGroups.map((group) => (
+        <div class="color-group">
+          <p class="eyebrow">{group.label}</p>
+          <div class="swatches">
+            {group.tokens.map(([name, value, hex]) => (
+              <div class="swatch">
+                <div class="swatch-chip" style={`background: ${value}`}></div>
+                <div class="swatch-meta">
+                  <strong>{name}</strong>
+                  <code>{hex}</code>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section class="block">
+      <h2>Radii</h2>
+      <div class="radius-row">
+        {radii.map(([name, value]) => (
+          <div class="radius-card" style={`border-radius: ${value}`}>
+            <strong>{name}</strong>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Schatten</h2>
+      <div class="shadow-row">
+        {shadows.map(([name, value]) => (
+          <div class="shadow-card" style={`box-shadow: ${value}`}>
+            <strong>{name}</strong>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Logo</h2>
+      <div class="logo-stage">
+        <img src="/assets/logo-light.svg" alt="MV Gamshurst Wappen" width="213" height="80" />
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: clamp(48px, 8vw, 96px) clamp(32px, 5vw, 56px);
+  }
+
+  .lead {
+    margin-top: 1rem;
+    max-width: 60ch;
+    color: var(--color-text-muted);
+  }
+
+  .block {
+    padding-block: clamp(32px, 5vw, 56px);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .block > h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .type-demo > * + * {
+    margin-top: 1rem;
+  }
+
+  .color-group + .color-group {
+    margin-top: 2rem;
+  }
+
+  .color-group > .eyebrow {
+    margin-bottom: 0.75rem;
+  }
+
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .swatch {
+    background: var(--color-card);
+    border-radius: var(--radius-card-sm);
+    overflow: hidden;
+    box-shadow: var(--shadow-card-sm);
+  }
+
+  .swatch-chip {
+    aspect-ratio: 4 / 3;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .swatch-meta {
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .swatch-meta code {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .radius-row,
+  .shadow-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .radius-card,
+  .shadow-card {
+    background: var(--color-card);
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid var(--color-border);
+    min-height: 96px;
+    display: grid;
+    place-items: center;
+  }
+
+  .shadow-card {
+    border: 0;
+    border-radius: var(--radius-card);
+  }
+
+  .logo-stage {
+    background: var(--color-petrol-deepest);
+    padding: clamp(24px, 4vw, 48px);
+    border-radius: var(--radius-card-lg);
+    display: grid;
+    place-items: center;
+  }
+</style>

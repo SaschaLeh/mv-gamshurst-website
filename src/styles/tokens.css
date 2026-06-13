@@ -1,0 +1,119 @@
+/* Design Tokens — Quelle: design_handoff_mv_gamshurst/README.md §9 */
+
+:root {
+  /* === COLORS — Brand / Petrol === */
+  --color-primary: #16424c;
+  --color-petrol-deep: #143b44;
+  --color-petrol-deepest: #0f2e36;
+  --color-petrol-medium: #1f6573;
+  --color-petrol-gradient-1: #27788a;
+  --color-petrol-gradient-2: #34889a;
+
+  /* === COLORS — Accents === */
+  --color-cyan: #57c7d6;
+  --color-wappen-blau: #2f62b0;
+  --color-gold: #f3c12e;
+  --color-gold-deep: #b78a12;
+  --color-gold-deepest: #7a5a08;
+
+  /* === COLORS — Category === */
+  --color-cat-fest: #3f8a4f;
+  --color-cat-fest-alt: #2e7d4f;
+  --color-cat-brassparty: #a23b86;
+
+  /* === COLORS — Text === */
+  --color-text-heading: #14303f;
+  --color-text-body: #44535f;
+  --color-text-muted: #5d6b78;
+  --color-text-muted-alt: #6b7884;
+  --color-text-faint: #8a97a3;
+  --color-text-faint-alt: #9aa6b1;
+
+  /* === COLORS — Surfaces === */
+  --color-page-bg: #eef3f7;
+  --color-card: #ffffff;
+  --color-card-alt: #fbfdfe;
+  --color-card-alt-2: #f3f7fa;
+
+  /* === COLORS — Borders === */
+  --color-border: #e4e9ef;
+  --color-border-strong: #d7dee5;
+  --color-border-subtle: #edf1f4;
+
+  /* === COLORS — Semantic === */
+  --color-error: #d23b53;
+  --color-success-bg: #e1f1e4;
+  --color-success-text: #2e7d4f;
+  --color-notice-bg: #fff8e6;
+  --color-notice-border: #f3dca0;
+  --color-notice-text: #7a5a08;
+
+  /* === COLORS — Nav / Footer / On-Dark === */
+  --color-footer-bg: #0f2e36;
+  --color-footer-text: #bcd2d7;
+  --color-nav-link: #bdd8dd;
+  --color-nav-link-hover: #ffffff;
+  /* Body-Text auf Petrol-Sektionen (z. B. Termine #16424c) — Handoff §5.1.3 */
+  --color-text-on-dark: #bcd2d7;
+
+  /* === TYPOGRAPHY === */
+  --font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --fs-h1: clamp(40px, 6.4vw, 68px);
+  --fs-h2: clamp(28px, 4vw, 40px);
+  --fs-h3: clamp(20px, 2.5vw, 26px);
+  --fs-card-title: 1.0625rem; /* 17px — Pairing: --font-display (Bricolage), fw-bold (Handoff §9 Typo) */
+  --fs-body: 1rem; /* 16px */
+  --fs-body-sm: 0.9375rem; /* 15px */
+  --fs-eyebrow: 0.8125rem; /* 13px */
+
+  --lh-tight: 0.98;
+  --lh-heading: 1.15;
+  --lh-body: 1.6;
+  --ls-display: -0.02em;
+  --ls-eyebrow: 0.18em;
+
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+
+  /* === SPACING === */
+  --content-max: 1180px;
+  --content-max-reading: 820px;
+  --content-max-toc: 260px;
+  --section-pad-y: clamp(48px, 6vw, 76px);
+  --section-pad-x: clamp(16px, 4vw, 40px);
+  --scroll-margin-top: 96px;
+
+  /* === RADII === */
+  --radius-pill: 999px;
+  --radius-input: 12px;
+  --radius-card-sm: 16px;
+  --radius-card: 22px;
+  --radius-card-lg: 26px;
+  --radius-section: 36px;
+  --radius-section-sm: 30px;
+
+  /* === SHADOWS === */
+  --shadow-nav: 0 16px 34px -16px rgba(15, 46, 54, 0.6);
+  --shadow-card-sm: 0 14px 32px -26px rgba(20, 40, 60, 0.6);
+  --shadow-card: 0 18px 40px -28px rgba(20, 40, 60, 0.65);
+  --shadow-card-lg: 0 22px 50px -34px rgba(20, 40, 60, 0.7);
+  --shadow-button: 0 14px 26px -14px rgba(15, 46, 54, 0.7);
+
+  /* === FOCUS RING === */
+  --focus-ring: 0 0 0 3px rgba(31, 101, 115, 0.15);
+  --focus-border: var(--color-petrol-medium);
+
+  /* === MOTION === */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.22s ease;
+  --transition-slow: 0.3s ease;
+
+  /* === BREAKPOINT (Doku — Media Queries müssen Pixelwert nutzen) === */
+  --bp-mobile-max: 860px;
+}
