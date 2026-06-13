@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;}
+  .mv-link{transition:color .18s ease;}
+  .mv-link:hover{color:#ffffff !important;}
+  .mv-field{transition:border-color .16s ease, box-shadow .16s ease;}
+  .mv-field:focus{outline:none;border-color:#1f6573 !important;box-shadow:0 0 0 3px rgba(31,101,115,.15) !important;}
+  .mv-submit{transition:transform .15s ease, box-shadow .15s ease;}
+  .mv-submit:hover{transform:translateY(-2px);box-shadow:0 18px 30px -14px rgba(15,46,54,.7) !important;}
+  @media(max-width:860px){
+    .mv-navlinks{display:none !important;}
+    .mv-burger{display:flex !important;}
+    .mv-contact{grid-template-columns:1fr !important;}
+  }
+</style>
+</helmet>
+
+<div id="top" data-screen-label="MV Gamshurst Kontakt" style="background:#eef3f7;font-family:Inter,sans-serif;color:#44535f;min-height:100vh;">
+
+  <!-- NAV -->
+  <div style="position:sticky;top:0;z-index:60;padding:16px clamp(16px,4vw,40px) 0;">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div style="background:#16424c;border-radius:999px;padding:10px 12px 10px 22px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 16px 34px -16px rgba(15,46,54,.6);">
+        <a href="MV%20Gamshurst%20Startseite.dc.html#top" style="display:flex;align-items:center;text-decoration:none;"><img src="assets/logo-light.svg" alt="Musikverein Gamshurst e.V." style="height:36px;display:block;" /></a>
+        <div class="mv-navlinks" style="display:flex;gap:24px;align-items:center;font-size:14.5px;font-weight:600;color:#bdd8dd;">
+          <a class="mv-link" href="MV%20Gamshurst%20Startseite.dc.html#aktuelles" style="color:#bdd8dd;text-decoration:none;">Aktuelles</a>
+          <a class="mv-link" href="MV%20Gamshurst%20Startseite.dc.html#termine" style="color:#bdd8dd;text-decoration:none;">Termine</a>
+          <a class="mv-link" href="MV%20Gamshurst%20Startseite.dc.html#verein" style="color:#bdd8dd;text-decoration:none;">Das sind wir</a>
+          <a class="mv-link" href="MV%20Gamshurst%20Startseite.dc.html#vorstand" style="color:#bdd8dd;text-decoration:none;">Vorstandschaft</a>
+          <a class="mv-link" href="MV%20Gamshurst%20Bildergalerie.dc.html#top" style="color:#bdd8dd;text-decoration:none;">Bildergalerie</a>
+          <a href="#top" style="background:#f3c12e;color:#143b44;padding:10px 20px;border-radius:999px;font-weight:700;text-decoration:none;">Kontakt</a>
+        </div>
+        <button class="mv-burger" onClick="{{ toggleMenu }}" aria-label="Menü" style="display:none;align-items:center;justify-content:center;width:44px;height:44px;border:none;background:rgba(255,255,255,.12);border-radius:50%;cursor:pointer;">
+          <span style="display:block;width:18px;height:2px;background:#fff;box-shadow:0 -6px 0 #fff,0 6px 0 #fff;"></span>
+        </button>
+      </div>
+      <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:10px;background:#16424c;border-radius:22px;padding:12px;display:flex;flex-direction:column;box-shadow:0 16px 34px -16px rgba(15,46,54,.6);">
+          <a href="MV%20Gamshurst%20Startseite.dc.html#aktuelles" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Aktuelles</a>
+          <a href="MV%20Gamshurst%20Startseite.dc.html#termine" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Termine</a>
+          <a href="MV%20Gamshurst%20Startseite.dc.html#verein" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Das sind wir</a>
+          <a href="MV%20Gamshurst%20Startseite.dc.html#vorstand" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Vorstandschaft</a>
+          <a href="MV%20Gamshurst%20Bildergalerie.dc.html#top" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Bildergalerie</a>
+          <a href="#top" onClick="{{ closeMenu }}" style="background:#f3c12e;color:#143b44;text-decoration:none;font-weight:700;padding:14px 16px;border-radius:14px;text-align:center;margin-top:4px;">Kontakt</a>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <section style="padding:30px clamp(16px,4vw,40px) 4px;">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div style="font-size:13px;color:#8a97a3;font-weight:600;margin-bottom:14px;"><a href="MV%20Gamshurst%20Startseite.dc.html#top" style="color:#1f6573;text-decoration:none;">Start</a><span style="margin:0 8px;color:#b6c0c9;">›</span> Kontakt</div>
+      <div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:10px;">Kontakt</div>
+      <h1 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:clamp(36px,5.4vw,58px);color:#14303f;letter-spacing:-.02em;line-height:1;margin:0;">Schreib uns</h1>
+      <p style="font-size:clamp(15px,1.8vw,17px);line-height:1.6;color:#4a5763;margin:16px 0 0;max-width:560px;">Fragen zum Verein, Interesse mitzuspielen oder eine Anfrage für einen Auftritt? Wir freuen uns auf deine Nachricht und melden uns so schnell wie möglich zurück.</p>
+    </div>
+  </section>
+
+  <!-- CONTENT -->
+  <section style="padding:clamp(26px,3.5vw,40px) clamp(16px,4vw,40px) clamp(48px,6vw,72px);">
+    <div class="mv-contact" style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.25fr .9fr;gap:clamp(20px,3vw,36px);align-items:start;">
+
+      <!-- FORM CARD -->
+      <div style="background:#fff;border:1px solid #e4e9ef;border-radius:26px;padding:clamp(24px,3vw,40px);box-shadow:0 22px 50px -32px rgba(20,40,60,.6);">
+        <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:30px 10px;">
+            <div style="width:74px;height:74px;border-radius:50%;background:#e1f1e4;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#2e7d4f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+            </div>
+            <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:26px;color:#14303f;margin:0 0 10px;">Vielen Dank!</h2>
+            <p style="font-size:15.5px;line-height:1.6;color:#5d6b78;margin:0 0 22px;max-width:380px;margin-left:auto;margin-right:auto;">Deine Nachricht ist bei uns eingegangen. Wir melden uns in der Regel innerhalb weniger Tage bei dir.</p>
+            <button class="mv-submit" onClick="{{ reset }}" style="background:#16424c;color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border:none;border-radius:999px;cursor:pointer;box-shadow:0 14px 26px -16px rgba(15,46,54,.7);">Neue Nachricht</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:clamp(20px,2.4vw,26px);color:#14303f;margin:0 0 22px;">Nachricht senden</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+              <div>
+                <label style="display:block;font-size:13.5px;font-weight:600;color:#3a4651;margin-bottom:7px;">Name *</label>
+                <input class="mv-field" type="text" value="{{ name }}" onInput="{{ onName }}" placeholder="Dein Name" style="width:100%;height:48px;border:1px solid #d7dee5;border-radius:12px;padding:0 15px;font-size:15px;font-family:Inter,sans-serif;color:#14303f;background:#fbfcfe;" />
+                <sc-if value="{{ errName }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;color:#d23b53;margin-top:6px;">{{ errName }}</div></sc-if>
+              </div>
+              <div>
+                <label style="display:block;font-size:13.5px;font-weight:600;color:#3a4651;margin-bottom:7px;">E-Mail *</label>
+                <input class="mv-field" type="email" value="{{ email }}" onInput="{{ onEmail }}" placeholder="deine@email.de" style="width:100%;height:48px;border:1px solid #d7dee5;border-radius:12px;padding:0 15px;font-size:15px;font-family:Inter,sans-serif;color:#14303f;background:#fbfcfe;" />
+                <sc-if value="{{ errEmail }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;color:#d23b53;margin-top:6px;">{{ errEmail }}</div></sc-if>
+              </div>
+            </div>
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:13.5px;font-weight:600;color:#3a4651;margin-bottom:7px;">Betreff</label>
+              <input class="mv-field" type="text" value="{{ subject }}" onInput="{{ onSubject }}" placeholder="Worum geht's?" style="width:100%;height:48px;border:1px solid #d7dee5;border-radius:12px;padding:0 15px;font-size:15px;font-family:Inter,sans-serif;color:#14303f;background:#fbfcfe;" />
+            </div>
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:13.5px;font-weight:600;color:#3a4651;margin-bottom:7px;">Nachricht *</label>
+              <textarea class="mv-field" value="{{ message }}" onInput="{{ onMessage }}" placeholder="Deine Nachricht an uns …" rows="5" style="width:100%;border:1px solid #d7dee5;border-radius:12px;padding:13px 15px;font-size:15px;font-family:Inter,sans-serif;color:#14303f;background:#fbfcfe;resize:vertical;line-height:1.55;"></textarea>
+              <sc-if value="{{ errMessage }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;color:#d23b53;margin-top:6px;">{{ errMessage }}</div></sc-if>
+            </div>
+            <label style="display:flex;align-items:flex-start;gap:11px;font-size:13.5px;color:#5d6b78;line-height:1.5;margin-bottom:22px;cursor:pointer;">
+              <input type="checkbox" checked="{{ consent }}" onChange="{{ onConsent }}" style="width:19px;height:19px;margin-top:1px;accent-color:#1f6573;flex:0 0 auto;" />
+              <span>Ich habe die <a href="MV%20Gamshurst%20Datenschutz.dc.html#top" style="color:#1f6573;font-weight:600;text-decoration:none;border-bottom:1px dashed #1f6573;">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Daten zur Beantwortung der Anfrage einverstanden. *</span>
+            </label>
+            <sc-if value="{{ errConsent }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;color:#d23b53;margin:-14px 0 18px;">{{ errConsent }}</div></sc-if>
+            <button class="mv-submit" onClick="{{ submit }}" style="background:#16424c;color:#fff;font-weight:700;font-size:15.5px;padding:15px 30px;border:none;border-radius:999px;cursor:pointer;box-shadow:0 14px 26px -16px rgba(15,46,54,.7);width:100%;">Nachricht senden</button>
+            <p style="font-size:12.5px;color:#9aa6b1;margin:14px 0 0;text-align:center;">* Pflichtfelder</p>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- INFO COLUMN -->
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div style="background:#16424c;border-radius:22px;padding:26px;color:#dbeaed;position:relative;overflow:hidden;">
+          <div style="position:absolute;inset:0;background:radial-gradient(circle at 90% 12%,rgba(243,193,46,.18),transparent 48%);"></div>
+          <div style="position:relative;">
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:18px;color:#fff;margin-bottom:18px;">Musikverein Gamshurst e.V.</div>
+            <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:15px;">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#f3c12e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:1px;"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <div style="font-size:14.5px;line-height:1.5;">77855 Achern-Gamshurst<br><span style="color:#8fb0b6;font-size:13px;">Anschrift bitte ergänzen</span></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:15px;">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#f3c12e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-10 5L2 7"></path></svg>
+              <a href="mailto:info@mv-gamshurst.de" style="font-size:14.5px;color:#f3c12e;text-decoration:none;">info@mv-gamshurst.de</a>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:20px;">
+              <a href="#" aria-label="Instagram" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;text-decoration:none;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"></circle></svg></a>
+              <a href="#" aria-label="Facebook" style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;text-decoration:none;"><svg width="19" height="19" viewBox="0 0 24 24" fill="#fff"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"></path></svg></a>
+            </div>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid #e4e9ef;border-radius:22px;overflow:hidden;box-shadow:0 16px 36px -30px rgba(20,40,60,.7);">
+          <div style="position:relative;height:170px;background:linear-gradient(135deg,#dfe9ec,#bcd2d7);display:flex;align-items:center;justify-content:center;">
+            <div style="position:absolute;inset:0;opacity:.5;background-image:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 26px),repeating-linear-gradient(90deg,#fff 0 1px,transparent 1px 26px);"></div>
+            <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="#1f6573" stroke="none"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"></path></svg>
+              <span style="font-size:12.5px;color:#5d6b78;font-weight:600;letter-spacing:.04em;">Karte / Anfahrt</span>
+            </div>
+          </div>
+          <div style="padding:16px 20px;">
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:15.5px;color:#14303f;margin-bottom:4px;">So findest du uns</div>
+            <p style="font-size:13.5px;line-height:1.55;color:#6b7884;margin:0;">Platzhalter — hier kann eine interaktive Karte zum Probelokal eingebunden werden.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#0f2e36;color:#bcd2d7;padding:clamp(40px,5vw,56px) clamp(16px,4vw,40px) 26px;position:relative;overflow:hidden;">
+    <img src="assets/logo-light.svg" alt="" aria-hidden="true" style="position:absolute;right:-40px;bottom:-30px;width:320px;opacity:.05;pointer-events:none;" />
+    <div style="max-width:1180px;margin:0 auto;position:relative;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.12);">
+        <img src="assets/logo-light.svg" alt="Musikverein Gamshurst e.V." style="height:44px;display:block;" />
+        <div style="display:flex;gap:22px;font-size:14px;flex-wrap:wrap;">
+          <a href="MV%20Gamshurst%20Startseite.dc.html#aktuelles" style="color:#bcd2d7;text-decoration:none;">Aktuelles</a>
+          <a href="MV%20Gamshurst%20Startseite.dc.html#termine" style="color:#bcd2d7;text-decoration:none;">Termine</a>
+          <a href="MV%20Gamshurst%20Bildergalerie.dc.html#top" style="color:#bcd2d7;text-decoration:none;">Bildergalerie</a>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:20px;font-size:13px;color:#7e9aa0;">
+        <span>© 2026 Musikverein Gamshurst e.V.</span>
+        <div style="display:flex;gap:22px;">
+          <a href="MV%20Gamshurst%20Impressum.dc.html#top" style="color:#7e9aa0;text-decoration:none;">Impressum</a>
+          <a href="MV%20Gamshurst%20Datenschutz.dc.html#top" style="color:#7e9aa0;text-decoration:none;">Datenschutz</a>
+          <a href="#top" style="color:#7e9aa0;text-decoration:none;">Kontakt</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { menuOpen: false, name: '', email: '', subject: '', message: '', consent: false, errors: {}, submitted: false };
+
+  validate() {
+    const e = {};
+    if (!this.state.name.trim()) e.name = 'Bitte gib deinen Namen ein.';
+    if (!this.state.email.trim()) e.email = 'Bitte gib deine E-Mail-Adresse ein.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.state.email.trim())) e.email = 'Bitte gib eine gültige E-Mail-Adresse ein.';
+    if (!this.state.message.trim()) e.message = 'Bitte schreib uns eine Nachricht.';
+    else if (this.state.message.trim().length < 10) e.message = 'Deine Nachricht ist etwas kurz.';
+    if (!this.state.consent) e.consent = 'Bitte stimme der Datenschutzerklärung zu.';
+    return e;
+  }
+
+  renderVals() {
+    const errors = this.state.errors;
+    return {
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      name: this.state.name,
+      email: this.state.email,
+      subject: this.state.subject,
+      message: this.state.message,
+      consent: this.state.consent,
+      onName: (ev) => this.setState({ name: ev.target.value }),
+      onEmail: (ev) => this.setState({ email: ev.target.value }),
+      onSubject: (ev) => this.setState({ subject: ev.target.value }),
+      onMessage: (ev) => this.setState({ message: ev.target.value }),
+      onConsent: (ev) => this.setState({ consent: ev.target.checked }),
+      errName: errors.name || '',
+      errEmail: errors.email || '',
+      errMessage: errors.message || '',
+      errConsent: errors.consent || '',
+      submitted: this.state.submitted,
+      showForm: !this.state.submitted,
+      submit: () => {
+        const e = this.validate();
+        if (Object.keys(e).length) { this.setState({ errors: e }); return; }
+        this.setState({ errors: {}, submitted: true });
+      },
+      reset: () => this.setState({ name: '', email: '', subject: '', message: '', consent: false, errors: {}, submitted: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

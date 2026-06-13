@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;}
+  .mv-link{transition:color .18s ease;}
+  .mv-link:hover{color:#ffffff !important;}
+  @media(max-width:860px){
+    .mv-navlinks{display:none !important;}
+    .mv-burger{display:flex !important;}
+  }
+</style>
+</helmet>
+
+<div id="top" data-screen-label="MV Gamshurst Impressum" style="background:#eef3f7;font-family:Inter,sans-serif;color:#44535f;min-height:100vh;">
+
+  <!-- NAV -->
+  <div style="position:sticky;top:0;z-index:60;padding:16px clamp(16px,4vw,40px) 0;">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div style="background:#16424c;border-radius:999px;padding:10px 12px 10px 22px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 16px 34px -16px rgba(15,46,54,.6);">
+        <a href="MV%20Gamshurst%20Startseite.dc.html#top" style="display:flex;align-items:center;text-decoration:none;"><img src="assets/logo-light.svg" alt="Musikverein Gamshurst e.V." style="height:36px;display:block;" /></a>
+        <div class="mv-navlinks" style="display:flex;gap:24px;align-items:center;font-size:14.5px;font-weight:600;color:#bdd8dd;">
+          <a class="mv-link" href="MV%20Gamshurst%20Startseite.dc.html#aktuelles" style="color:#bdd8dd;text-decoration:none;">Aktuelles</a>
+          <a class="mv-link" href="MV%20Gamshurst%20Startseite.dc.html#termine" style="color:#bdd8dd;text-decoration:none;">Termine</a>
+          <a class="mv-link" href="MV%20Gamshurst%20Startseite.dc.html#verein" style="color:#bdd8dd;text-decoration:none;">Das sind wir</a>
+          <a class="mv-link" href="MV%20Gamshurst%20Startseite.dc.html#vorstand" style="color:#bdd8dd;text-decoration:none;">Vorstandschaft</a>
+          <a class="mv-link" href="MV%20Gamshurst%20Bildergalerie.dc.html#top" style="color:#bdd8dd;text-decoration:none;">Bildergalerie</a>
+          <a href="MV%20Gamshurst%20Kontakt.dc.html#top" style="background:#f3c12e;color:#143b44;padding:10px 20px;border-radius:999px;font-weight:700;text-decoration:none;">Kontakt</a>
+        </div>
+        <button class="mv-burger" onClick="{{ toggleMenu }}" aria-label="Menü" style="display:none;align-items:center;justify-content:center;width:44px;height:44px;border:none;background:rgba(255,255,255,.12);border-radius:50%;cursor:pointer;">
+          <span style="display:block;width:18px;height:2px;background:#fff;box-shadow:0 -6px 0 #fff,0 6px 0 #fff;"></span>
+        </button>
+      </div>
+      <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:10px;background:#16424c;border-radius:22px;padding:12px;display:flex;flex-direction:column;box-shadow:0 16px 34px -16px rgba(15,46,54,.6);">
+          <a href="MV%20Gamshurst%20Startseite.dc.html#aktuelles" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Aktuelles</a>
+          <a href="MV%20Gamshurst%20Startseite.dc.html#termine" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Termine</a>
+          <a href="MV%20Gamshurst%20Startseite.dc.html#verein" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Das sind wir</a>
+          <a href="MV%20Gamshurst%20Startseite.dc.html#vorstand" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Vorstandschaft</a>
+          <a href="MV%20Gamshurst%20Bildergalerie.dc.html#top" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Bildergalerie</a>
+          <a href="MV%20Gamshurst%20Kontakt.dc.html#top" onClick="{{ closeMenu }}" style="background:#f3c12e;color:#143b44;text-decoration:none;font-weight:700;padding:14px 16px;border-radius:14px;text-align:center;margin-top:4px;">Kontakt</a>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <section style="padding:30px clamp(16px,4vw,40px) 4px;">
+    <div style="max-width:820px;margin:0 auto;">
+      <div style="font-size:13px;color:#8a97a3;font-weight:600;margin-bottom:14px;"><a href="MV%20Gamshurst%20Startseite.dc.html#top" style="color:#1f6573;text-decoration:none;">Start</a><span style="margin:0 8px;color:#b6c0c9;">›</span> Impressum</div>
+      <div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:10px;">Rechtliches</div>
+      <h1 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:clamp(34px,5vw,52px);color:#14303f;letter-spacing:-.02em;line-height:1;margin:0;">Impressum</h1>
+    </div>
+  </section>
+
+  <!-- CONTENT -->
+  <section style="padding:clamp(22px,3vw,34px) clamp(16px,4vw,40px) clamp(48px,6vw,72px);">
+    <div style="max-width:820px;margin:0 auto;">
+
+      <div style="background:#fff8e6;border:1px solid #f3dca0;border-radius:16px;padding:16px 20px;margin-bottom:26px;display:flex;gap:12px;align-items:flex-start;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b78a12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:1px;"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg>
+        <div style="font-size:13.5px;line-height:1.55;color:#7a5a08;">Design-Vorlage: Die mit <strong>[eckigen Klammern]</strong> markierten Stellen bitte mit euren tatsächlichen Vereinsangaben füllen. Die Haftungs-Textbausteine sind übliche Standardformulierungen und sollten vor Veröffentlichung geprüft werden.</div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e4e9ef;border-radius:24px;padding:clamp(26px,4vw,46px);box-shadow:0 22px 50px -34px rgba(20,40,60,.6);">
+
+        <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:20px;color:#14303f;margin:0 0 14px;">Angaben gemäß § 5 DDG</h2>
+        <p style="font-size:15.5px;line-height:1.7;color:#44535f;margin:0 0 6px;"><strong style="color:#14303f;">Musikverein Gamshurst e.V.</strong></p>
+        <p style="font-size:15.5px;line-height:1.7;color:#44535f;margin:0 0 6px;">[Straße und Hausnummer]<br>77855 Achern-Gamshurst</p>
+
+        <div style="height:1px;background:#edf1f4;margin:28px 0;"></div>
+
+        <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:20px;color:#14303f;margin:0 0 14px;">Vertreten durch</h2>
+        <p style="font-size:15.5px;line-height:1.7;color:#44535f;margin:0;">Vorstandsteam (gem. Satzung vertretungsberechtigt):<br>Regina Zimmer und Miriam Fessler</p>
+
+        <div style="height:1px;background:#edf1f4;margin:28px 0;"></div>
+
+        <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:20px;color:#14303f;margin:0 0 14px;">Kontakt</h2>
+        <p style="font-size:15.5px;line-height:1.7;color:#44535f;margin:0;">Telefon: [Telefonnummer]<br>E-Mail: <a href="mailto:info@mv-gamshurst.de" style="color:#1f6573;text-decoration:none;border-bottom:1px dashed #1f6573;">info@mv-gamshurst.de</a></p>
+
+        <div style="height:1px;background:#edf1f4;margin:28px 0;"></div>
+
+        <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:20px;color:#14303f;margin:0 0 14px;">Registereintrag</h2>
+        <p style="font-size:15.5px;line-height:1.7;color:#44535f;margin:0;">Eintragung im Vereinsregister.<br>Registergericht: Amtsgericht Mannheim<br>Registernummer: VR [Nummer]</p>
+
+        <div style="height:1px;background:#edf1f4;margin:28px 0;"></div>
+
+        <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:20px;color:#14303f;margin:0 0 14px;">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+        <p style="font-size:15.5px;line-height:1.7;color:#44535f;margin:0;">[Name]<br>[Anschrift]</p>
+
+        <div style="height:1px;background:#edf1f4;margin:28px 0;"></div>
+
+        <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:20px;color:#14303f;margin:0 0 14px;">Haftung für Inhalte</h2>
+        <p style="font-size:15.5px;line-height:1.7;color:#5d6b78;margin:0 0 16px;">Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
+
+        <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:20px;color:#14303f;margin:0 0 14px;">Haftung für Links</h2>
+        <p style="font-size:15.5px;line-height:1.7;color:#5d6b78;margin:0 0 16px;">Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+
+        <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:20px;color:#14303f;margin:0 0 14px;">Urheberrecht</h2>
+        <p style="font-size:15.5px;line-height:1.7;color:#5d6b78;margin:0;">Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Beiträge Dritter sind als solche gekennzeichnet. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet.</p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#0f2e36;color:#bcd2d7;padding:clamp(40px,5vw,56px) clamp(16px,4vw,40px) 26px;position:relative;overflow:hidden;">
+    <img src="assets/logo-light.svg" alt="" aria-hidden="true" style="position:absolute;right:-40px;bottom:-30px;width:320px;opacity:.05;pointer-events:none;" />
+    <div style="max-width:1180px;margin:0 auto;position:relative;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.12);">
+        <img src="assets/logo-light.svg" alt="Musikverein Gamshurst e.V." style="height:44px;display:block;" />
+        <div style="display:flex;gap:22px;font-size:14px;flex-wrap:wrap;">
+          <a href="MV%20Gamshurst%20Startseite.dc.html#aktuelles" style="color:#bcd2d7;text-decoration:none;">Aktuelles</a>
+          <a href="MV%20Gamshurst%20Startseite.dc.html#termine" style="color:#bcd2d7;text-decoration:none;">Termine</a>
+          <a href="MV%20Gamshurst%20Bildergalerie.dc.html#top" style="color:#bcd2d7;text-decoration:none;">Bildergalerie</a>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:20px;font-size:13px;color:#7e9aa0;">
+        <span>© 2026 Musikverein Gamshurst e.V.</span>
+        <div style="display:flex;gap:22px;">
+          <a href="#top" style="color:#f3c12e;text-decoration:none;">Impressum</a>
+          <a href="MV%20Gamshurst%20Datenschutz.dc.html#top" style="color:#7e9aa0;text-decoration:none;">Datenschutz</a>
+          <a href="MV%20Gamshurst%20Kontakt.dc.html#top" style="color:#7e9aa0;text-decoration:none;">Kontakt</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { menuOpen: false };
+  renderVals() {
+    return {
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

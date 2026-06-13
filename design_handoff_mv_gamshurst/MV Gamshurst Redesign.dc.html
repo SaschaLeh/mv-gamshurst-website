@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  .navlink{position:relative;}
+</style>
+</helmet>
+
+<div style="background:#e7e9ee;min-height:100vh;font-family:Inter,sans-serif;color:#2a3340;padding:40px 24px 80px;">
+  <div style="max-width:1240px;margin:0 auto;">
+
+    <!-- ===== INTRO / KONZEPT ===== -->
+    <div style="background:#fff;border:1px solid #d7dbe2;border-radius:24px;padding:40px 44px;box-shadow:0 18px 44px -26px rgba(20,40,60,.4);margin-bottom:54px;">
+      <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:8px;">
+        <div style="background:linear-gradient(125deg,#16424c,#27788a);border-radius:14px;padding:12px 16px;display:flex;align-items:center;">
+          <img src="assets/logo-light.svg" alt="MV Gamshurst" style="height:42px;display:block;" />
+        </div>
+        <div>
+          <div style="font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#1f6573;font-weight:700;">Redesign-Konzept · Entwurf</div>
+          <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:30px;color:#14303f;line-height:1.1;">MV Gamshurst — neue Startseite</div>
+        </div>
+      </div>
+      <p style="font-size:16px;line-height:1.65;color:#4a5763;max-width:760px;margin:14px 0 0;">
+        Eine lange, responsive Startseite zum Scrollen mit allen wichtigen Bereichen untereinander: Aktuelles, Termine, „Das sind wir“, Vorstandschaft und Bildergalerie. Unten siehst du <strong>drei Stil-Richtungen</strong> für den Gesamtlook und <strong>drei Varianten</strong> für die Terminübersicht. Such dir aus, was dir gefällt — gern auch gemischt — dann baue ich die komplette Seite aus.
+      </p>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:24px;">
+        <div style="flex:1;min-width:200px;background:#f3f7fa;border:1px solid #e2eaf0;border-radius:16px;padding:16px 18px;">
+          <div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:8px;">Farbwelt</div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span title="Petrol" style="width:26px;height:26px;border-radius:7px;background:#1f6573;"></span>
+            <span title="Tiefes Petrol" style="width:26px;height:26px;border-radius:7px;background:#143b44;"></span>
+            <span title="Wappen-Blau" style="width:26px;height:26px;border-radius:7px;background:#2f62b0;"></span>
+            <span title="Gold" style="width:26px;height:26px;border-radius:7px;background:#f3c12e;"></span>
+            <span title="Cyan" style="width:26px;height:26px;border-radius:7px;background:#57c7d6;"></span>
+          </div>
+          <div style="font-size:13px;color:#5d6b78;margin-top:10px;line-height:1.5;">Petrol &amp; Wappen-Blau wie bisher, mit Gold und Cyan aus dem Vereinswappen als Akzent.</div>
+        </div>
+        <div style="flex:1;min-width:200px;background:#f3f7fa;border:1px solid #e2eaf0;border-radius:16px;padding:16px 18px;">
+          <div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:8px;">Typografie</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:#14303f;line-height:1;">Aa — festlich</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;color:#14303f;margin-top:4px;">Aa — modern</div>
+          <div style="font-size:13px;color:#5d6b78;margin-top:8px;line-height:1.5;">Inter für Fließtext, je Richtung eine eigene Headline-Schrift.</div>
+        </div>
+        <div style="flex:1;min-width:200px;background:#f3f7fa;border:1px solid #e2eaf0;border-radius:16px;padding:16px 18px;">
+          <div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:8px;">Hinweis</div>
+          <div style="font-size:13px;color:#5d6b78;line-height:1.5;">Echte Inhalte &amp; Termine sind schon eingebaut. Foto-Flächen sind Platzhalter — deine Bilder kommen 1:1 hinein.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 1 HEADER ===== -->
+    <div style="display:flex;align-items:baseline;gap:14px;margin:0 4px 26px;flex-wrap:wrap;">
+      <span style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#fff;background:#1f6573;padding:7px 14px;border-radius:999px;">1 · Gesamtlook</span>
+      <span style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:24px;color:#16303f;">Drei Richtungen für die Startseite</span>
+    </div>
+
+    <!-- ================= DIRECTION A : KLASSISCH MODERNISIERT ================= -->
+    <div style="margin-bottom:64px;">
+      <div style="display:flex;align-items:baseline;gap:12px;margin:0 4px 16px;flex-wrap:wrap;">
+        <span style="font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#1f6573;background:#dceaf0;padding:5px 12px;border-radius:999px;white-space:nowrap;">Richtung A</span>
+        <span style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:21px;color:#16303f;">Klassisch modernisiert</span>
+        <span style="font-size:14px;color:#5d6b78;">— vertraut wie heute, nur aufgeräumter, luftiger und mobilfreundlich.</span>
+      </div>
+      <div style="border:1px solid #d4d9e0;border-radius:20px;overflow:hidden;box-shadow:0 24px 54px -28px rgba(20,40,60,.45);background:#fff;">
+        <!-- utility bar -->
+        <div style="background:#123942;color:#bcd6dc;font-size:12.5px;padding:8px 30px;display:flex;justify-content:flex-end;gap:22px;">
+          <span>Impressum</span><span>Datenschutz</span><span>Kontakt</span>
+        </div>
+        <!-- nav -->
+        <div style="background:linear-gradient(120deg,#16424c,#27788a);padding:14px 30px;display:flex;align-items:center;justify-content:space-between;">
+          <img src="assets/logo-light.svg" alt="MV Gamshurst" style="height:46px;display:block;" />
+          <div style="display:flex;gap:30px;font-size:14.5px;font-weight:600;color:#dcebf0;color:#d7eaef;">
+            <span style="color:#fff;border-bottom:3px solid #f3c12e;padding-bottom:5px;">Startseite</span>
+            <span>Termine</span><span>Das sind wir</span><span>Vorstandschaft</span><span>Bildergalerie</span>
+          </div>
+        </div>
+        <!-- hero -->
+        <div style="position:relative;height:430px;background:linear-gradient(135deg,#1f6573,#143b44);overflow:hidden;">
+          <div style="position:absolute;inset:0;background:radial-gradient(circle at 78% 30%, rgba(243,193,46,.18), transparent 45%);"></div>
+          <div style="position:absolute;inset:0;opacity:.10;background-image:repeating-linear-gradient(90deg,#fff 0 1px,transparent 1px 60px);"></div>
+          <div style="position:absolute;top:22px;right:30px;background:#f3c12e;color:#143b44;font-weight:800;font-size:13px;letter-spacing:.05em;padding:9px 16px;border-radius:999px;box-shadow:0 8px 20px -6px rgba(0,0,0,.4);">100 JAHRE · 1925–2025</div>
+          <div style="position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 52px;max-width:680px;">
+            <div style="font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:#9fdbe6;font-weight:700;margin-bottom:16px;">Musikverein Gamshurst e.V.</div>
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:58px;line-height:1.02;color:#fff;letter-spacing:-.01em;">Wir geben<br>den Ton an.</div>
+            <p style="font-size:17px;line-height:1.6;color:#d6e7ec;margin:20px 0 28px;max-width:480px;">Seit 1925 prägen wir das Dorfleben in Gamshurst — mit Blasmusik für Jung und Alt, von der Jugendausbildung bis zum großen Konzert.</p>
+            <div style="display:flex;gap:14px;">
+              <span style="background:#f3c12e;color:#143b44;font-weight:700;font-size:15px;padding:13px 24px;border-radius:12px;">Kommende Termine</span>
+              <span style="border:1.5px solid rgba(255,255,255,.6);color:#fff;font-weight:600;font-size:15px;padding:12px 24px;border-radius:12px;">Über uns</span>
+            </div>
+          </div>
+        </div>
+        <!-- aktuelles -->
+        <div style="padding:42px 52px 50px;background:#fbfcfe;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:24px;">
+            <div>
+              <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#1f6573;font-weight:700;">Aktuelles</div>
+              <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:28px;color:#16303f;">Neuigkeiten &amp; Bekanntmachungen</div>
+            </div>
+            <span style="font-size:14px;font-weight:600;color:#1f6573;border-bottom:1.5px dashed #1f6573;padding-bottom:2px;">Alle Beiträge →</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;">
+            <!-- card 1 -->
+            <div style="background:#fff;border:1px solid #e3e9ef;border-radius:16px;overflow:hidden;box-shadow:0 10px 26px -20px rgba(20,40,60,.5);">
+              <div style="position:relative;height:140px;background:linear-gradient(135deg,#2f62b0,#143b44);display:flex;align-items:center;justify-content:center;">
+                <span style="position:absolute;top:12px;left:12px;background:#f3c12e;color:#143b44;font-size:11px;font-weight:800;letter-spacing:.06em;padding:4px 10px;border-radius:999px;">KONZERT</span>
+                <span style="color:rgba(255,255,255,.55);font-size:12px;letter-spacing:.1em;text-transform:uppercase;">Foto folgt</span>
+              </div>
+              <div style="padding:16px 18px 20px;">
+                <div style="font-size:12.5px;color:#8a97a3;font-weight:600;margin-bottom:6px;">13. November 2025</div>
+                <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:18px;color:#16303f;line-height:1.2;margin-bottom:8px;">Kirchenkonzert 2025</div>
+                <p style="font-size:14px;line-height:1.55;color:#5d6b78;margin:0 0 12px;">Konzert in der St. Nikolaus Kirche mit dem Chor achorat. Eintritt frei — Spenden für die Grundschule Gamshurst.</p>
+                <span style="font-size:13.5px;font-weight:700;color:#1f6573;">Weiterlesen →</span>
+              </div>
+            </div>
+            <!-- card 2 -->
+            <div style="background:#fff;border:1px solid #e3e9ef;border-radius:16px;overflow:hidden;box-shadow:0 10px 26px -20px rgba(20,40,60,.5);">
+              <div style="position:relative;height:140px;background:linear-gradient(135deg,#1f6573,#0f2e36);display:flex;align-items:center;justify-content:center;">
+                <span style="position:absolute;top:12px;left:12px;background:#57c7d6;color:#0f2e36;font-size:11px;font-weight:800;letter-spacing:.06em;padding:4px 10px;border-radius:999px;">VEREIN</span>
+                <span style="color:rgba(255,255,255,.55);font-size:12px;letter-spacing:.1em;text-transform:uppercase;">Foto folgt</span>
+              </div>
+              <div style="padding:16px 18px 20px;">
+                <div style="font-size:12.5px;color:#8a97a3;font-weight:600;margin-bottom:6px;">26. Juni 2025</div>
+                <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:18px;color:#16303f;line-height:1.2;margin-bottom:8px;">Danke an unsere Sponsoren</div>
+                <p style="font-size:14px;line-height:1.55;color:#5d6b78;margin:0 0 12px;">Ohne die Unterstützung unserer Sponsoren wäre unser großes Jubiläumsfest nicht möglich gewesen.</p>
+                <span style="font-size:13.5px;font-weight:700;color:#1f6573;">Weiterlesen →</span>
+              </div>
+            </div>
+            <!-- card 3 -->
+            <div style="background:#fff;border:1px solid #e3e9ef;border-radius:16px;overflow:hidden;box-shadow:0 10px 26px -20px rgba(20,40,60,.5);">
+              <div style="position:relative;height:140px;background:linear-gradient(135deg,#3f8a4f,#143b44);display:flex;align-items:center;justify-content:center;">
+                <span style="position:absolute;top:12px;left:12px;background:#f3c12e;color:#143b44;font-size:11px;font-weight:800;letter-spacing:.06em;padding:4px 10px;border-radius:999px;">FEST</span>
+                <span style="color:rgba(255,255,255,.55);font-size:12px;letter-spacing:.1em;text-transform:uppercase;">Foto folgt</span>
+              </div>
+              <div style="padding:16px 18px 20px;">
+                <div style="font-size:12.5px;color:#8a97a3;font-weight:600;margin-bottom:6px;">5. Juni 2025</div>
+                <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:18px;color:#16303f;line-height:1.2;margin-bottom:8px;">Klangtour am 27.07.2025</div>
+                <p style="font-size:14px;line-height:1.55;color:#5d6b78;margin:0 0 12px;">5 km Wanderung mit Aktionsstationen, Getränkeständen und großer Verlosung — kostenlos für alle.</p>
+                <span style="font-size:13.5px;font-weight:700;color:#1f6573;">Weiterlesen →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= DIRECTION B : FESTLICH & HOCHWERTIG ================= -->
+    <div style="margin-bottom:64px;">
+      <div style="display:flex;align-items:baseline;gap:12px;margin:0 4px 16px;flex-wrap:wrap;">
+        <span style="font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8a6a12;background:#f7eccb;padding:5px 12px;border-radius:999px;white-space:nowrap;">Richtung B</span>
+        <span style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:21px;color:#16303f;">Festlich &amp; hochwertig</span>
+        <span style="font-size:14px;color:#5d6b78;">— Konzert-Feeling: elegante Serifen-Headlines, Gold-Linien, dunkle Bühnenstimmung.</span>
+      </div>
+      <div style="border:1px solid #d4d9e0;border-radius:20px;overflow:hidden;box-shadow:0 24px 54px -28px rgba(20,40,60,.45);background:#0f2e36;">
+        <!-- nav -->
+        <div style="background:#0c252b;padding:18px 34px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(243,193,46,.3);">
+          <img src="assets/logo-light.svg" alt="MV Gamshurst" style="height:44px;display:block;" />
+          <div style="display:flex;gap:30px;font-size:14px;letter-spacing:.02em;color:#cfe0e4;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:18px;">
+            <span style="color:#f3c12e;">Startseite</span>
+            <span>Termine</span><span>Das sind wir</span><span>Vorstandschaft</span><span>Bildergalerie</span>
+          </div>
+        </div>
+        <!-- hero -->
+        <div style="position:relative;display:grid;grid-template-columns:1.15fr .85fr;min-height:440px;">
+          <div style="padding:60px 50px;display:flex;flex-direction:column;justify-content:center;">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+              <span style="width:46px;height:1.5px;background:#f3c12e;"></span>
+              <span style="font-size:12.5px;letter-spacing:.28em;text-transform:uppercase;color:#f3c12e;font-weight:600;">Gegründet 1925</span>
+            </div>
+            <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:64px;line-height:1.04;color:#fff;">Wir geben<br><span style="font-style:italic;color:#f3c12e;">den Ton</span> an.</div>
+            <p style="font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.5;color:#bcd2d7;margin:24px 0 30px;max-width:430px;font-weight:500;">Hundert Jahre Blasmusik aus dem Herzen Gamshursts — Tradition, die in jeder Note weiterklingt.</p>
+            <div style="display:flex;gap:16px;align-items:center;">
+              <span style="background:#f3c12e;color:#0f2e36;font-weight:700;font-size:14.5px;padding:13px 26px;border-radius:6px;letter-spacing:.02em;">Konzerte &amp; Termine</span>
+              <span style="color:#f3c12e;font-weight:600;font-size:14.5px;border-bottom:1px solid rgba(243,193,46,.5);padding-bottom:3px;">Unsere Geschichte</span>
+            </div>
+          </div>
+          <div style="position:relative;background:linear-gradient(160deg,#1f6573,#0c252b);border-left:1px solid rgba(243,193,46,.3);display:flex;align-items:center;justify-content:center;">
+            <div style="position:absolute;inset:0;opacity:.12;background-image:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 26px);"></div>
+            <div style="position:absolute;inset:26px;border:1px solid rgba(243,193,46,.4);"></div>
+            <span style="color:rgba(255,255,255,.55);font-size:12px;letter-spacing:.18em;text-transform:uppercase;">Foto: Konzert</span>
+          </div>
+        </div>
+        <!-- aktuelles editorial -->
+        <div style="padding:46px 50px 52px;background:#102f37;border-top:1px solid rgba(243,193,46,.22);">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:26px;">
+            <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;color:#fff;">Aktuelles</span>
+            <span style="flex:1;height:1px;background:rgba(243,193,46,.35);"></span>
+            <span style="font-size:13px;color:#f3c12e;letter-spacing:.04em;">Alle Beiträge →</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;">
+            <div style="padding:4px 26px 4px 0;border-right:1px solid rgba(255,255,255,.1);">
+              <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#f3c12e;font-weight:600;margin-bottom:10px;">13. Nov 2025 · Konzert</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;color:#fff;line-height:1.15;margin-bottom:8px;">Kirchenkonzert 2025</div>
+              <p style="font-size:14px;line-height:1.6;color:#a9c2c7;margin:0;">In der St. Nikolaus Kirche, gemeinsam mit dem Chor achorat. Eintritt frei.</p>
+            </div>
+            <div style="padding:4px 26px;border-right:1px solid rgba(255,255,255,.1);">
+              <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#f3c12e;font-weight:600;margin-bottom:10px;">26. Juni 2025 · Verein</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;color:#fff;line-height:1.15;margin-bottom:8px;">Danke an unsere Sponsoren</div>
+              <p style="font-size:14px;line-height:1.6;color:#a9c2c7;margin:0;">Ein herzliches Dankeschön an alle, die unser Jubiläumsfest möglich gemacht haben.</p>
+            </div>
+            <div style="padding:4px 0 4px 26px;">
+              <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#f3c12e;font-weight:600;margin-bottom:10px;">5. Juni 2025 · Fest</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;color:#fff;line-height:1.15;margin-bottom:8px;">Klangtour am 27.07.</div>
+              <p style="font-size:14px;line-height:1.6;color:#a9c2c7;margin:0;">Eine 5 km Wanderung mit Aktionsstationen und großer Verlosung — für die ganze Familie.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= DIRECTION C : MODERN & FRISCH ================= -->
+    <div style="margin-bottom:20px;">
+      <div style="display:flex;align-items:baseline;gap:12px;margin:0 4px 16px;flex-wrap:wrap;">
+        <span style="font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#0e6b78;background:#cdeef2;padding:5px 12px;border-radius:999px;white-space:nowrap;">Richtung C</span>
+        <span style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:21px;color:#16303f;">Modern &amp; frisch</span>
+        <span style="font-size:14px;color:#5d6b78;">— mutige Typo, runde Karten, Cyan &amp; Gold, das Wappen als großes Grafik-Element.</span>
+      </div>
+      <div style="border:1px solid #d4d9e0;border-radius:20px;overflow:hidden;box-shadow:0 24px 54px -28px rgba(20,40,60,.45);background:#f4f8fb;">
+        <!-- floating nav -->
+        <div style="padding:20px 30px 0;display:flex;justify-content:center;">
+          <div style="background:#16424c;border-radius:999px;padding:10px 12px 10px 22px;display:flex;align-items:center;gap:26px;box-shadow:0 14px 30px -14px rgba(20,40,60,.5);width:100%;justify-content:space-between;">
+            <img src="assets/logo-light.svg" alt="MV Gamshurst" style="height:34px;display:block;" />
+            <div style="display:flex;gap:22px;font-size:14px;font-weight:600;color:#cfe6ea;align-items:center;">
+              <span style="color:#fff;">Start</span><span>Termine</span><span>Das sind wir</span><span>Vorstand</span><span>Galerie</span>
+              <span style="background:#f3c12e;color:#143b44;padding:9px 18px;border-radius:999px;font-weight:700;">Kontakt</span>
+            </div>
+          </div>
+        </div>
+        <!-- hero split -->
+        <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:30px;padding:36px 40px 44px;align-items:center;">
+          <div>
+            <div style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #d7e6ec;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700;color:#1f6573;margin-bottom:22px;">
+              <span style="width:8px;height:8px;border-radius:50%;background:#3f8a4f;"></span>100 Jahre Blasmusik · 1925–2025
+            </div>
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:62px;line-height:.98;color:#14303f;letter-spacing:-.02em;">Blasmusik aus <span style="position:relative;white-space:nowrap;">Gamshurst<span style="position:absolute;left:0;right:0;bottom:6px;height:14px;background:#f3c12e;z-index:-1;border-radius:3px;"></span></span></div>
+            <p style="font-size:17px;line-height:1.6;color:#4a5763;margin:22px 0 28px;max-width:430px;">55 aktive Musikerinnen und Musiker, eine lebendige Jugendausbildung und jede Menge Termine — willkommen beim MV Gamshurst.</p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <span style="background:#16424c;color:#fff;font-weight:700;font-size:15px;padding:14px 26px;border-radius:999px;">Termine ansehen</span>
+              <span style="background:#fff;border:1.5px solid #16424c;color:#16424c;font-weight:700;font-size:15px;padding:13px 26px;border-radius:999px;">Mitmachen</span>
+            </div>
+          </div>
+          <div style="position:relative;height:340px;">
+            <div style="position:absolute;top:0;left:6%;width:58%;height:64%;background:linear-gradient(135deg,#2f62b0,#143b44);border-radius:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 18px 36px -18px rgba(20,40,60,.5);"><span style="color:rgba(255,255,255,.5);font-size:11px;letter-spacing:.14em;text-transform:uppercase;">Foto</span></div>
+            <div style="position:absolute;bottom:0;right:2%;width:54%;height:60%;background:linear-gradient(135deg,#57c7d6,#1f6573);border-radius:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 18px 36px -18px rgba(20,40,60,.5);"><span style="color:rgba(255,255,255,.6);font-size:11px;letter-spacing:.14em;text-transform:uppercase;">Foto</span></div>
+            <div style="position:absolute;top:42%;left:40%;background:#f3c12e;color:#143b44;font-weight:800;font-size:13px;padding:10px 16px;border-radius:14px;box-shadow:0 12px 24px -8px rgba(0,0,0,.35);transform:rotate(-4deg);">seit&nbsp;1925</div>
+          </div>
+        </div>
+        <!-- aktuelles colorful -->
+        <div style="padding:8px 40px 46px;">
+          <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:26px;color:#16303f;margin-bottom:20px;">Frisch reingekommen</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+            <div style="background:#fff;border-radius:22px;padding:8px;box-shadow:0 14px 30px -22px rgba(20,40,60,.6);">
+              <div style="height:120px;border-radius:16px;background:linear-gradient(135deg,#2f62b0,#143b44);display:flex;align-items:flex-end;padding:12px;"><span style="background:#fff;color:#2f62b0;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;">KONZERT</span></div>
+              <div style="padding:14px 12px 10px;">
+                <div style="font-size:12px;color:#8a97a3;font-weight:600;">13.11.2025</div>
+                <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#16303f;margin:4px 0 6px;">Kirchenkonzert 2025</div>
+                <p style="font-size:13.5px;line-height:1.5;color:#5d6b78;margin:0;">St. Nikolaus Kirche · mit Chor achorat · Eintritt frei.</p>
+              </div>
+            </div>
+            <div style="background:#fff;border-radius:22px;padding:8px;box-shadow:0 14px 30px -22px rgba(20,40,60,.6);">
+              <div style="height:120px;border-radius:16px;background:linear-gradient(135deg,#57c7d6,#1f6573);display:flex;align-items:flex-end;padding:12px;"><span style="background:#fff;color:#1f6573;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;">VEREIN</span></div>
+              <div style="padding:14px 12px 10px;">
+                <div style="font-size:12px;color:#8a97a3;font-weight:600;">26.06.2025</div>
+                <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#16303f;margin:4px 0 6px;">Danke an die Sponsoren</div>
+                <p style="font-size:13.5px;line-height:1.5;color:#5d6b78;margin:0;">Ein großes Dankeschön für die Unterstützung beim Jubiläum.</p>
+              </div>
+            </div>
+            <div style="background:#fff;border-radius:22px;padding:8px;box-shadow:0 14px 30px -22px rgba(20,40,60,.6);">
+              <div style="height:120px;border-radius:16px;background:linear-gradient(135deg,#3f8a4f,#143b44);display:flex;align-items:flex-end;padding:12px;"><span style="background:#fff;color:#3f8a4f;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;">FEST</span></div>
+              <div style="padding:14px 12px 10px;">
+                <div style="font-size:12px;color:#8a97a3;font-weight:600;">05.06.2025</div>
+                <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#16303f;margin:4px 0 6px;">Klangtour am 27.07.</div>
+                <p style="font-size:13.5px;line-height:1.5;color:#5d6b78;margin:0;">5 km Wanderung, Aktionsstationen &amp; große Verlosung.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 2 HEADER ===== -->
+    <div style="display:flex;align-items:baseline;gap:14px;margin:54px 4px 26px;flex-wrap:wrap;">
+      <span style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#fff;background:#1f6573;padding:7px 14px;border-radius:999px;">2 · Termine</span>
+      <span style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:24px;color:#16303f;">Drei Darstellungen für die Terminübersicht</span>
+    </div>
+
+    <!-- ===== T1 : LISTE MIT DATUM-BADGES ===== -->
+    <div style="margin-bottom:56px;">
+      <div style="display:flex;align-items:baseline;gap:12px;margin:0 4px 16px;flex-wrap:wrap;">
+        <span style="font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#1f6573;background:#dceaf0;padding:5px 12px;border-radius:999px;white-space:nowrap;">Variante 1</span>
+        <span style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:21px;color:#16303f;">Terminliste mit Datums-Kacheln</span>
+        <span style="font-size:14px;color:#5d6b78;">— kompakt und schnell scannbar, ideal für die lange Startseite.</span>
+      </div>
+      <div style="border:1px solid #d4d9e0;border-radius:20px;overflow:hidden;box-shadow:0 24px 54px -28px rgba(20,40,60,.45);background:#fff;padding:38px 44px 44px;">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:24px;">
+          <div>
+            <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#1f6573;font-weight:700;">Termine</div>
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:27px;color:#16303f;">Wann &amp; wo wir spielen</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <span style="font-size:13px;font-weight:600;color:#16424c;background:#eaf2f5;padding:8px 16px;border-radius:999px;">2026</span>
+            <span style="font-size:13px;font-weight:600;color:#1f6573;border:1px solid #cddde3;padding:8px 16px;border-radius:999px;">Alle Termine →</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <!-- row template -->
+          <div style="display:flex;align-items:center;gap:20px;padding:14px 18px;border:1px solid #e6ebf0;border-radius:16px;background:#fbfcfe;">
+            <div style="flex:0 0 64px;height:64px;border-radius:13px;background:linear-gradient(135deg,#16424c,#27788a);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;">
+              <span style="font-size:23px;font-weight:800;">16</span><span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9fdbe6;margin-top:3px;">Feb</span>
+            </div>
+            <div style="flex:1;">
+              <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:18px;color:#16303f;">Blooserball</div>
+              <div style="font-size:14px;color:#5d6b78;margin-top:2px;">Vereinsfastnacht · Festhalle Gamshurst</div>
+            </div>
+            <span style="font-size:13px;font-weight:700;color:#16424c;background:#e7f0f3;padding:7px 13px;border-radius:999px;">19:00 Uhr</span>
+            <span style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#8a6a12;background:#fbedc4;padding:7px 12px;border-radius:999px;">FEST</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;padding:14px 18px;border:1px solid #e6ebf0;border-radius:16px;background:#fbfcfe;">
+            <div style="flex:0 0 64px;height:64px;border-radius:13px;background:linear-gradient(135deg,#16424c,#27788a);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;">
+              <span style="font-size:23px;font-weight:800;">14</span><span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9fdbe6;margin-top:3px;">Mär</span>
+            </div>
+            <div style="flex:1;">
+              <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:18px;color:#16303f;">Konzert Sängerbund Gamshurst</div>
+              <div style="font-size:14px;color:#5d6b78;margin-top:2px;">Gemeinsamer Konzertabend</div>
+            </div>
+            <span style="font-size:13px;font-weight:700;color:#16424c;background:#e7f0f3;padding:7px 13px;border-radius:999px;">19:00 Uhr</span>
+            <span style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#8a6a12;background:#fbedc4;padding:7px 12px;border-radius:999px;">KONZERT</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;padding:14px 18px;border:1px solid #e6ebf0;border-radius:16px;background:#fbfcfe;">
+            <div style="flex:0 0 64px;height:64px;border-radius:13px;background:linear-gradient(135deg,#16424c,#27788a);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;">
+              <span style="font-size:23px;font-weight:800;">27</span><span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9fdbe6;margin-top:3px;">Mär</span>
+            </div>
+            <div style="flex:1;">
+              <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:18px;color:#16303f;">Generalversammlung</div>
+              <div style="font-size:14px;color:#5d6b78;margin-top:2px;">Mitglieder · Vereinsheim</div>
+            </div>
+            <span style="font-size:13px;font-weight:700;color:#9aa6b1;background:#f0f2f5;padding:7px 13px;border-radius:999px;">ganztägig</span>
+            <span style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#2f62b0;background:#e2ebfa;padding:7px 12px;border-radius:999px;">VEREIN</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;padding:14px 18px;border:1px solid #e6ebf0;border-radius:16px;background:#fbfcfe;">
+            <div style="flex:0 0 64px;height:64px;border-radius:13px;background:linear-gradient(135deg,#16424c,#27788a);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;">
+              <span style="font-size:23px;font-weight:800;">01</span><span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9fdbe6;margin-top:3px;">Mai</span>
+            </div>
+            <div style="flex:1;">
+              <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:18px;color:#16303f;">Traditionelles Maifest</div>
+              <div style="font-size:14px;color:#5d6b78;margin-top:2px;">MV Gamshurst Event GbR</div>
+            </div>
+            <span style="font-size:13px;font-weight:700;color:#9aa6b1;background:#f0f2f5;padding:7px 13px;border-radius:999px;">ganztägig</span>
+            <span style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#2e7d4f;background:#d9f0df;padding:7px 12px;border-radius:999px;">FEST</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px;padding:14px 18px;border:1px solid #e6ebf0;border-radius:16px;background:#fbfcfe;">
+            <div style="flex:0 0 64px;height:64px;border-radius:13px;background:linear-gradient(135deg,#16424c,#27788a);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;">
+              <span style="font-size:23px;font-weight:800;">19</span><span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9fdbe6;margin-top:3px;">Dez</span>
+            </div>
+            <div style="flex:1;">
+              <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:18px;color:#16303f;">Jahreskonzert MV Gamshurst</div>
+              <div style="font-size:14px;color:#5d6b78;margin-top:2px;">Großes Abendkonzert · Festhalle</div>
+            </div>
+            <span style="font-size:13px;font-weight:700;color:#16424c;background:#e7f0f3;padding:7px 13px;border-radius:999px;">19:00 Uhr</span>
+            <span style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#8a6a12;background:#fbedc4;padding:7px 12px;border-radius:999px;">KONZERT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== T2 : MONATS-KARTEN ===== -->
+    <div style="margin-bottom:56px;">
+      <div style="display:flex;align-items:baseline;gap:12px;margin:0 4px 16px;flex-wrap:wrap;">
+        <span style="font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#1f6573;background:#dceaf0;padding:5px 12px;border-radius:999px;white-space:nowrap;">Variante 2</span>
+        <span style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:21px;color:#16303f;">Monats-Karten</span>
+        <span style="font-size:14px;color:#5d6b78;">— nah an eurer heutigen Terminseite, nur frischer und mit klarer Hierarchie.</span>
+      </div>
+      <div style="border:1px solid #d4d9e0;border-radius:20px;overflow:hidden;box-shadow:0 24px 54px -28px rgba(20,40,60,.45);background:#fff;padding:38px 44px 44px;">
+        <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:27px;color:#16303f;margin-bottom:22px;">Termine 2026</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+          <!-- month card -->
+          <div style="border:1px solid #e3e9ef;border-radius:18px;overflow:hidden;">
+            <div style="background:linear-gradient(120deg,#16424c,#27788a);color:#fff;font-weight:800;letter-spacing:.04em;font-size:15px;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;">FEBRUAR <span style="background:#f3c12e;color:#143b44;font-size:11px;padding:2px 8px;border-radius:999px;">2</span></div>
+            <div style="padding:14px 18px;background:#f6fafc;display:flex;flex-direction:column;gap:14px;">
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">Mo, 16. Februar</div><div style="font-size:13.5px;color:#5d6b78;">Blooserball · 19:00 Uhr</div></div>
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">Di, 17. Februar</div><div style="font-size:13.5px;color:#5d6b78;">Kehraus in der Halle · 16:00 Uhr</div></div>
+            </div>
+          </div>
+          <div style="border:1px solid #e3e9ef;border-radius:18px;overflow:hidden;">
+            <div style="background:linear-gradient(120deg,#16424c,#27788a);color:#fff;font-weight:800;letter-spacing:.04em;font-size:15px;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;">MÄRZ <span style="background:#f3c12e;color:#143b44;font-size:11px;padding:2px 8px;border-radius:999px;">3</span></div>
+            <div style="padding:14px 18px;background:#f6fafc;display:flex;flex-direction:column;gap:14px;">
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">Sa, 14. März</div><div style="font-size:13.5px;color:#5d6b78;">Konzert Sängerbund · 19:00 Uhr</div></div>
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">Sa, 21. März</div><div style="font-size:13.5px;color:#5d6b78;">Kirche f. verstorbene Mitglieder · 18:30</div></div>
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">Fr, 27. März</div><div style="font-size:13.5px;color:#5d6b78;">Generalversammlung</div></div>
+            </div>
+          </div>
+          <div style="border:1px solid #e3e9ef;border-radius:18px;overflow:hidden;">
+            <div style="background:linear-gradient(120deg,#16424c,#27788a);color:#fff;font-weight:800;letter-spacing:.04em;font-size:15px;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;">MAI <span style="background:#f3c12e;color:#143b44;font-size:11px;padding:2px 8px;border-radius:999px;">3</span></div>
+            <div style="padding:14px 18px;background:#f6fafc;display:flex;flex-direction:column;gap:14px;">
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">Fr, 01. Mai</div><div style="font-size:13.5px;color:#5d6b78;">Traditionelles Maifest</div></div>
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">Fr, 15. Mai</div><div style="font-size:13.5px;color:#5d6b78;">Vatertagsfest Renchen-Ulm · 11:30</div></div>
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">So, 17. Mai</div><div style="font-size:13.5px;color:#5d6b78;">Fußballfest Gamshurst · 11:30</div></div>
+            </div>
+          </div>
+          <div style="border:1px solid #e3e9ef;border-radius:18px;overflow:hidden;">
+            <div style="background:linear-gradient(120deg,#16424c,#27788a);color:#fff;font-weight:800;letter-spacing:.04em;font-size:15px;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;">JUNI <span style="background:#f3c12e;color:#143b44;font-size:11px;padding:2px 8px;border-radius:999px;">2</span></div>
+            <div style="padding:14px 18px;background:#f6fafc;display:flex;flex-direction:column;gap:14px;">
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">Do, 25. Juni</div><div style="font-size:13.5px;color:#5d6b78;">Flammkuchenhock Oberbruch · 20:00</div></div>
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">So, 28. Juni</div><div style="font-size:13.5px;color:#5d6b78;">Jubiläumsfest Feuerwehr Gamshurst</div></div>
+            </div>
+          </div>
+          <div style="border:1px solid #e3e9ef;border-radius:18px;overflow:hidden;">
+            <div style="background:linear-gradient(120deg,#16424c,#27788a);color:#fff;font-weight:800;letter-spacing:.04em;font-size:15px;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;">AUGUST <span style="background:#f3c12e;color:#143b44;font-size:11px;padding:2px 8px;border-radius:999px;">2</span></div>
+            <div style="padding:14px 18px;background:#f6fafc;display:flex;flex-direction:column;gap:14px;">
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">So, 02. August</div><div style="font-size:13.5px;color:#5d6b78;">Klosterhoffest Schwarzach · 12:00</div></div>
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">Di, 18. August</div><div style="font-size:13.5px;color:#5d6b78;">Dorfhock Lauf · 19:00 Uhr</div></div>
+            </div>
+          </div>
+          <div style="border:1px solid #e3e9ef;border-radius:18px;overflow:hidden;">
+            <div style="background:linear-gradient(120deg,#16424c,#27788a);color:#fff;font-weight:800;letter-spacing:.04em;font-size:15px;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;">DEZEMBER <span style="background:#f3c12e;color:#143b44;font-size:11px;padding:2px 8px;border-radius:999px;">2</span></div>
+            <div style="padding:14px 18px;background:#f6fafc;display:flex;flex-direction:column;gap:14px;">
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">So, 06. Dezember</div><div style="font-size:13.5px;color:#5d6b78;">Patrozinium St. Nikolaus</div></div>
+              <div><div style="font-weight:700;color:#16303f;font-size:15px;">Sa, 19. Dezember</div><div style="font-size:13.5px;color:#5d6b78;">Jahreskonzert MV Gamshurst</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== T3 : NÄCHSTER TERMIN + EVENT-KARTEN ===== -->
+    <div style="margin-bottom:20px;">
+      <div style="display:flex;align-items:baseline;gap:12px;margin:0 4px 16px;flex-wrap:wrap;">
+        <span style="font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#1f6573;background:#dceaf0;padding:5px 12px;border-radius:999px;white-space:nowrap;">Variante 3</span>
+        <span style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:21px;color:#16303f;">„Nächster Termin“ + Event-Karten</span>
+        <span style="font-size:14px;color:#5d6b78;">— hebt das nächste Highlight groß hervor, darunter die kommenden Termine als Karten.</span>
+      </div>
+      <div style="border:1px solid #d4d9e0;border-radius:20px;overflow:hidden;box-shadow:0 24px 54px -28px rgba(20,40,60,.45);background:#f4f8fb;padding:38px 44px 44px;">
+        <!-- next event hero -->
+        <div style="position:relative;border-radius:20px;overflow:hidden;background:linear-gradient(120deg,#143b44,#1f6573);padding:34px 36px;margin-bottom:26px;display:grid;grid-template-columns:auto 1fr auto;gap:30px;align-items:center;">
+          <div style="position:absolute;inset:0;background:radial-gradient(circle at 88% 20%,rgba(243,193,46,.18),transparent 50%);"></div>
+          <div style="position:relative;text-align:center;background:rgba(255,255,255,.08);border:1px solid rgba(243,193,46,.4);border-radius:16px;padding:18px 26px;">
+            <div style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#f3c12e;font-weight:700;">Feb</div>
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-size:50px;font-weight:800;color:#fff;line-height:1;">16</div>
+            <div style="font-size:13px;color:#bcd2d7;">Montag</div>
+          </div>
+          <div style="position:relative;">
+            <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#9fdbe6;font-weight:700;margin-bottom:8px;">Nächster Termin</div>
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:30px;color:#fff;line-height:1.05;">Blooserball</div>
+            <div style="font-size:15px;color:#cfe0e4;margin-top:8px;">19:00 Uhr · Festhalle Gamshurst · Vereinsfastnacht mit Live-Blasmusik</div>
+          </div>
+          <div style="position:relative;">
+            <span style="background:#f3c12e;color:#143b44;font-weight:700;font-size:14px;padding:13px 22px;border-radius:12px;white-space:nowrap;">Mehr erfahren</span>
+          </div>
+        </div>
+        <!-- upcoming cards -->
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;">
+          <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:20px;color:#16303f;">Weitere Termine</div>
+          <span style="font-size:13px;font-weight:600;color:#1f6573;">Gesamtkalender →</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+          <div style="background:#fff;border-radius:16px;border:1px solid #e3e9ef;padding:18px;box-shadow:0 12px 26px -22px rgba(20,40,60,.6);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;"><span style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#8a6a12;background:#fbedc4;padding:5px 11px;border-radius:999px;">KONZERT</span><span style="font-size:13px;font-weight:700;color:#16424c;">19:00</span></div>
+            <div style="font-size:13px;color:#8a97a3;font-weight:600;">Sa · 14. März 2026</div>
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:16.5px;color:#16303f;margin-top:4px;line-height:1.2;">Konzert Sängerbund Gamshurst</div>
+          </div>
+          <div style="background:#fff;border-radius:16px;border:1px solid #e3e9ef;padding:18px;box-shadow:0 12px 26px -22px rgba(20,40,60,.6);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;"><span style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#2e7d4f;background:#d9f0df;padding:5px 11px;border-radius:999px;">FEST</span><span style="font-size:13px;font-weight:700;color:#16424c;">11:30</span></div>
+            <div style="font-size:13px;color:#8a97a3;font-weight:600;">Fr · 15. Mai 2026</div>
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:16.5px;color:#16303f;margin-top:4px;line-height:1.2;">Vatertagsfest Renchen-Ulm</div>
+          </div>
+          <div style="background:#fff;border-radius:16px;border:1px solid #e3e9ef;padding:18px;box-shadow:0 12px 26px -22px rgba(20,40,60,.6);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;"><span style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#0e6b78;background:#cdeef2;padding:5px 11px;border-radius:999px;">AUFTRITT</span><span style="font-size:13px;font-weight:700;color:#16424c;">18:00</span></div>
+            <div style="font-size:13px;color:#8a97a3;font-weight:600;">So · 12. Juli 2026</div>
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:16.5px;color:#16303f;margin-top:4px;line-height:1.2;">Musikfest Moos</div>
+          </div>
+          <div style="background:#fff;border-radius:16px;border:1px solid #e3e9ef;padding:18px;box-shadow:0 12px 26px -22px rgba(20,40,60,.6);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;"><span style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#8a6a12;background:#fbedc4;padding:5px 11px;border-radius:999px;">KONZERT</span><span style="font-size:13px;font-weight:700;color:#16424c;">19:00</span></div>
+            <div style="font-size:13px;color:#8a97a3;font-weight:600;">Sa · 19. Dez 2026</div>
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:16.5px;color:#16303f;margin-top:4px;line-height:1.2;">Jahreskonzert MV Gamshurst</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== NÄCHSTE SCHRITTE ===== -->
+    <div style="background:linear-gradient(120deg,#16424c,#27788a);border-radius:24px;padding:38px 44px;margin-top:54px;color:#fff;">
+      <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:24px;margin-bottom:10px;">So geht's weiter</div>
+      <p style="font-size:16px;line-height:1.65;color:#d6e7ec;max-width:760px;margin:0 0 18px;">Sag mir, welche <strong>Gesamtlook-Richtung</strong> (A, B oder C) und welche <strong>Termin-Variante</strong> (1, 2 oder 3) dir am besten gefällt — du darfst gern mischen, z.&nbsp;B. „Look B mit Termin-Variante 1“. Dann baue ich die komplette, lange Startseite aus: Hero, Aktuelles, Termine, „Das sind wir“, Vorstandschaft (alle 11 Personen), Bildergalerie und Footer — voll responsiv fürs Handy.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:13.5px;">
+        <span style="background:rgba(255,255,255,.14);padding:9px 16px;border-radius:999px;">📸 Schick mir gern eure Fotos</span>
+        <span style="background:rgba(255,255,255,.14);padding:9px 16px;border-radius:999px;">🎵 Jugendausbildung hervorheben?</span>
+        <span style="background:rgba(255,255,255,.14);padding:9px 16px;border-radius:999px;">✉️ Kontakt-/Mitglied-werden-Bereich gewünscht?</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

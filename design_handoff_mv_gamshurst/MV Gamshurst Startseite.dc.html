@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;}
+  section{scroll-margin-top:96px;}
+  .mv-link{transition:color .18s ease;}
+  .mv-link:hover{color:#ffffff !important;}
+  @media(max-width:860px){
+    .mv-navlinks{display:none !important;}
+    .mv-burger{display:flex !important;}
+    .mv-hero{grid-template-columns:1fr !important;}
+    .mv-hero-art{height:280px !important;margin-top:6px;}
+    .mv-about{grid-template-columns:1fr !important;}
+    .mv-feat{grid-template-columns:1fr !important;}
+  }
+</style>
+</helmet>
+
+<div id="top" data-screen-label="MV Gamshurst Startseite" style="background:#eef3f7;font-family:Inter,sans-serif;color:#44535f;min-height:100vh;">
+
+  <!-- ============ STICKY NAV ============ -->
+  <div style="position:sticky;top:0;z-index:60;padding:16px clamp(16px,4vw,40px) 0;">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div style="background:#16424c;border-radius:999px;padding:10px 12px 10px 22px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 16px 34px -16px rgba(15,46,54,.6);">
+        <a href="#top" style="display:flex;align-items:center;text-decoration:none;"><img src="assets/logo-light.svg" alt="Musikverein Gamshurst e.V." style="height:36px;display:block;" /></a>
+        <div class="mv-navlinks" style="display:flex;gap:24px;align-items:center;font-size:14.5px;font-weight:600;color:#bdd8dd;">
+          <a class="mv-link" href="#aktuelles" style="color:#bdd8dd;text-decoration:none;">Aktuelles</a>
+          <a class="mv-link" href="#termine" style="color:#bdd8dd;text-decoration:none;">Termine</a>
+          <a class="mv-link" href="#verein" style="color:#bdd8dd;text-decoration:none;">Das sind wir</a>
+          <a class="mv-link" href="#vorstand" style="color:#bdd8dd;text-decoration:none;">Vorstandschaft</a>
+          <a class="mv-link" href="MV%20Gamshurst%20Bildergalerie.dc.html#top" style="color:#bdd8dd;text-decoration:none;">Bildergalerie</a>
+          <a href="MV%20Gamshurst%20Kontakt.dc.html#top" style="background:#f3c12e;color:#143b44;padding:10px 20px;border-radius:999px;font-weight:700;text-decoration:none;">Kontakt</a>
+        </div>
+        <button class="mv-burger" onClick="{{ toggleMenu }}" aria-label="Menü" style="display:none;align-items:center;justify-content:center;width:44px;height:44px;border:none;background:rgba(255,255,255,.12);border-radius:50%;cursor:pointer;">
+          <span style="display:block;width:18px;height:2px;background:#fff;box-shadow:0 -6px 0 #fff,0 6px 0 #fff;"></span>
+        </button>
+      </div>
+      <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:10px;background:#16424c;border-radius:22px;padding:12px;display:flex;flex-direction:column;box-shadow:0 16px 34px -16px rgba(15,46,54,.6);">
+          <a href="#aktuelles" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Aktuelles</a>
+          <a href="#termine" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Termine</a>
+          <a href="#verein" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Das sind wir</a>
+          <a href="#vorstand" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Vorstandschaft</a>
+          <a href="MV%20Gamshurst%20Bildergalerie.dc.html#top" onClick="{{ closeMenu }}" style="color:#dbeaed;text-decoration:none;font-weight:600;padding:13px 16px;border-radius:14px;">Bildergalerie</a>
+          <a href="MV%20Gamshurst%20Kontakt.dc.html#top" onClick="{{ closeMenu }}" style="background:#f3c12e;color:#143b44;text-decoration:none;font-weight:700;padding:14px 16px;border-radius:14px;text-align:center;margin-top:4px;">Kontakt</a>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <section style="padding:24px clamp(16px,4vw,40px) 8px;">
+    <div class="mv-hero" style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;padding:30px 0 46px;">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid #d7e6ec;border-radius:999px;padding:7px 16px;font-size:13px;font-weight:700;color:#1f6573;margin-bottom:24px;box-shadow:0 8px 20px -16px rgba(20,40,60,.6);">
+          <span style="width:8px;height:8px;border-radius:50%;background:#3f8a4f;"></span>100 Jahre Blasmusik · 1925–2025
+        </div>
+        <h1 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:clamp(40px,6.4vw,68px);line-height:.98;color:#14303f;letter-spacing:-.02em;margin:0;">
+          Blasmusik aus
+          <span style="position:relative;white-space:nowrap;">Gamshurst<span style="position:absolute;left:-2px;right:-2px;bottom:7px;height:16px;background:#f3c12e;z-index:-1;border-radius:3px;"></span></span>
+        </h1>
+        <p style="font-size:clamp(16px,2vw,18px);line-height:1.62;color:#4a5763;margin:24px 0 30px;max-width:460px;">55 aktive Musikerinnen und Musiker, eine lebendige Jugendausbildung und jede Menge Termine — herzlich willkommen beim Musikverein Gamshurst.</p>
+        <div style="display:flex;gap:13px;flex-wrap:wrap;">
+          <a href="#termine" style="background:#16424c;color:#fff;font-weight:700;font-size:15.5px;padding:15px 28px;border-radius:999px;text-decoration:none;box-shadow:0 14px 26px -14px rgba(15,46,54,.7);">Termine ansehen</a>
+          <a href="#aktuelles" style="background:#fff;border:1.5px solid #16424c;color:#16424c;font-weight:700;font-size:15.5px;padding:14px 28px;border-radius:999px;text-decoration:none;">Aktuelles</a>
+        </div>
+      </div>
+      <div class="mv-hero-art" style="position:relative;height:380px;">
+        <div style="position:absolute;top:0;left:4%;width:60%;height:66%;background:linear-gradient(135deg,#2f62b0,#143b44);border-radius:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 22px 44px -20px rgba(20,40,60,.55);overflow:hidden;">
+          <span style="color:rgba(255,255,255,.5);font-size:12px;letter-spacing:.16em;text-transform:uppercase;">Foto: Kapelle</span>
+        </div>
+        <div style="position:absolute;bottom:0;right:1%;width:56%;height:62%;background:linear-gradient(135deg,#57c7d6,#1f6573);border-radius:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 22px 44px -20px rgba(20,40,60,.55);overflow:hidden;">
+          <span style="color:rgba(255,255,255,.6);font-size:12px;letter-spacing:.16em;text-transform:uppercase;">Foto: Konzert</span>
+        </div>
+        <div style="position:absolute;top:44%;left:42%;background:#f3c12e;color:#143b44;font-weight:800;font-size:13.5px;padding:11px 17px;border-radius:15px;box-shadow:0 14px 26px -8px rgba(0,0,0,.32);transform:rotate(-5deg);">seit&nbsp;1925</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AKTUELLES ============ -->
+  <section id="aktuelles" data-screen-label="Aktuelles" style="background:#fff;padding:clamp(46px,6vw,72px) clamp(16px,4vw,40px);border-radius:36px 36px 0 0;">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:30px;">
+        <div>
+          <div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:8px;">Aktuelles</div>
+          <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:clamp(28px,4vw,40px);color:#14303f;margin:0;line-height:1.05;">Neuigkeiten &amp; Bekanntmachungen</h2>
+        </div>
+        <a href="#" style="font-size:14.5px;font-weight:700;color:#1f6573;text-decoration:none;border-bottom:1.5px dashed #1f6573;padding-bottom:2px;">Alle Beiträge →</a>
+      </div>
+
+      <!-- featured -->
+      <a href="#" class="mv-feat" style="display:grid;grid-template-columns:1.1fr 1fr;gap:0;border-radius:26px;overflow:hidden;border:1px solid #e4e9ef;box-shadow:0 22px 48px -30px rgba(20,40,60,.6);text-decoration:none;margin-bottom:24px;background:#fff;">
+        <div style="position:relative;min-height:300px;background:linear-gradient(135deg,#2f62b0,#143b44);display:flex;align-items:center;justify-content:center;">
+          <span style="position:absolute;top:18px;left:18px;background:#f3c12e;color:#143b44;font-size:11.5px;font-weight:800;letter-spacing:.06em;padding:6px 13px;border-radius:999px;">KONZERT</span>
+          <span style="color:rgba(255,255,255,.5);font-size:12px;letter-spacing:.16em;text-transform:uppercase;">Foto folgt</span>
+        </div>
+        <div style="padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:13px;color:#8a97a3;font-weight:600;margin-bottom:10px;">13. November 2025</div>
+          <h3 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:clamp(22px,2.6vw,30px);color:#14303f;margin:0 0 12px;line-height:1.12;">Kirchenkonzert 2025</h3>
+          <p style="font-size:15.5px;line-height:1.62;color:#5d6b78;margin:0 0 18px;">Wir begrüßen euch in der St. Nikolaus Kirche Gamshurst zu einem Kirchenkonzert — unter der Leitung von Jürgen Bäuerle und mit Unterstützung des Chores achorat. Der Eintritt ist frei, die Spenden gehen an die Grundschule Gamshurst.</p>
+          <span style="font-size:14.5px;font-weight:700;color:#1f6573;">Weiterlesen →</span>
+        </div>
+      </a>
+
+      <!-- grid of 4 -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:22px;">
+        <a href="#" style="background:#fff;border:1px solid #e4e9ef;border-radius:22px;overflow:hidden;box-shadow:0 14px 32px -26px rgba(20,40,60,.7);text-decoration:none;">
+          <div style="position:relative;height:130px;background:linear-gradient(135deg,#1f6573,#0f2e36);display:flex;align-items:flex-end;padding:12px;">
+            <span style="background:#57c7d6;color:#0f2e36;font-size:11px;font-weight:800;letter-spacing:.05em;padding:4px 11px;border-radius:999px;">VEREIN</span>
+          </div>
+          <div style="padding:16px 18px 20px;">
+            <div style="font-size:12.5px;color:#8a97a3;font-weight:600;margin-bottom:6px;">26. Juni 2025</div>
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17.5px;color:#14303f;line-height:1.18;margin-bottom:7px;">Danke an unsere Sponsoren</div>
+            <p style="font-size:13.5px;line-height:1.55;color:#5d6b78;margin:0;">Ohne die Unterstützung unserer Sponsoren wäre unser Jubiläumsfest nicht möglich gewesen.</p>
+          </div>
+        </a>
+        <a href="#" style="background:#fff;border:1px solid #e4e9ef;border-radius:22px;overflow:hidden;box-shadow:0 14px 32px -26px rgba(20,40,60,.7);text-decoration:none;">
+          <div style="position:relative;height:130px;background:linear-gradient(135deg,#3f8a4f,#143b44);display:flex;align-items:flex-end;padding:12px;">
+            <span style="background:#fff;color:#3f8a4f;font-size:11px;font-weight:800;letter-spacing:.05em;padding:4px 11px;border-radius:999px;">FEST</span>
+          </div>
+          <div style="padding:16px 18px 20px;">
+            <div style="font-size:12.5px;color:#8a97a3;font-weight:600;margin-bottom:6px;">5. Juni 2025</div>
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17.5px;color:#14303f;line-height:1.18;margin-bottom:7px;">Klangtour am 27.07.2025</div>
+            <p style="font-size:13.5px;line-height:1.55;color:#5d6b78;margin:0;">5 km Wanderung mit Aktionsstationen, Getränkeständen und großer Verlosung — kostenlos für alle.</p>
+          </div>
+        </a>
+        <a href="#" style="background:#fff;border:1px solid #e4e9ef;border-radius:22px;overflow:hidden;box-shadow:0 14px 32px -26px rgba(20,40,60,.7);text-decoration:none;">
+          <div style="position:relative;height:130px;background:linear-gradient(135deg,#2f62b0,#143b44);display:flex;align-items:flex-end;padding:12px;">
+            <span style="background:#f3c12e;color:#143b44;font-size:11px;font-weight:800;letter-spacing:.05em;padding:4px 11px;border-radius:999px;">FESTWOCHENENDE</span>
+          </div>
+          <div style="padding:16px 18px 20px;">
+            <div style="font-size:12.5px;color:#8a97a3;font-weight:600;margin-bottom:6px;">5. Juni 2025</div>
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17.5px;color:#14303f;line-height:1.18;margin-bottom:7px;">Tag der Blasmusik</div>
+            <p style="font-size:13.5px;line-height:1.55;color:#5d6b78;margin:0;">Ein ganzer Tag voller Blasmusik zum 100-jährigen Bestehen — mit befreundeten Vereinen und der Blechnerei.</p>
+          </div>
+        </a>
+        <a href="#" style="background:#fff;border:1px solid #e4e9ef;border-radius:22px;overflow:hidden;box-shadow:0 14px 32px -26px rgba(20,40,60,.7);text-decoration:none;">
+          <div style="position:relative;height:130px;background:linear-gradient(135deg,#a23b86,#3a1c52);display:flex;align-items:flex-end;padding:12px;">
+            <span style="background:#fff;color:#a23b86;font-size:11px;font-weight:800;letter-spacing:.05em;padding:4px 11px;border-radius:999px;">BRASSPARTY</span>
+          </div>
+          <div style="padding:16px 18px 20px;">
+            <div style="font-size:12.5px;color:#8a97a3;font-weight:600;margin-bottom:6px;">26. Januar 2025</div>
+            <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17.5px;color:#14303f;line-height:1.18;margin-bottom:7px;">Brassparty zum Jubiläum</div>
+            <p style="font-size:13.5px;line-height:1.55;color:#5d6b78;margin:0;">Mit den Brassers und Southbrass starten wir ins Festwochenende — der Ticketverkauf läuft.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TERMINE (Variante 2 – Monats-Karten) ============ -->
+  <section id="termine" data-screen-label="Termine" style="background:#16424c;padding:clamp(48px,6vw,76px) clamp(16px,4vw,40px);position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:radial-gradient(circle at 85% 8%,rgba(243,193,46,.16),transparent 45%);"></div>
+    <div style="max-width:1180px;margin:0 auto;position:relative;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:32px;">
+        <div>
+          <div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#f3c12e;font-weight:700;margin-bottom:8px;">Termine 2026</div>
+          <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:clamp(28px,4vw,40px);color:#fff;margin:0;line-height:1.05;">Wann &amp; wo wir spielen</h2>
+        </div>
+        <a href="#" style="font-size:14.5px;font-weight:700;color:#143b44;background:#f3c12e;padding:12px 22px;border-radius:999px;text-decoration:none;">Gesamtkalender →</a>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px;">
+
+        <div style="background:#fbfdfe;border-radius:20px;overflow:hidden;box-shadow:0 20px 44px -28px rgba(0,0,0,.6);">
+          <div style="background:linear-gradient(110deg,#1f6573,#34889a);color:#fff;font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;letter-spacing:.03em;font-size:16px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">FEBRUAR<span style="background:#f3c12e;color:#143b44;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;">2</span></div>
+          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:15px;">
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">16</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">Mo</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Blooserball</div><div style="font-size:13px;color:#6b7884;">Vereinsfastnacht · 19:00 Uhr</div></div></div>
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">17</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">Di</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Kehraus in der Halle</div><div style="font-size:13px;color:#6b7884;">16:00 Uhr</div></div></div>
+          </div>
+        </div>
+
+        <div style="background:#fbfdfe;border-radius:20px;overflow:hidden;box-shadow:0 20px 44px -28px rgba(0,0,0,.6);">
+          <div style="background:linear-gradient(110deg,#1f6573,#34889a);color:#fff;font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;letter-spacing:.03em;font-size:16px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">MÄRZ<span style="background:#f3c12e;color:#143b44;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;">3</span></div>
+          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:15px;">
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">14</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">Sa</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Konzert Sängerbund Gamshurst</div><div style="font-size:13px;color:#6b7884;">19:00 Uhr</div></div></div>
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">21</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">Sa</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Kirche f. verstorbene Mitglieder</div><div style="font-size:13px;color:#6b7884;">18:30 Uhr</div></div></div>
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">27</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">Fr</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Generalversammlung</div><div style="font-size:13px;color:#6b7884;">Mitglieder</div></div></div>
+          </div>
+        </div>
+
+        <div style="background:#fbfdfe;border-radius:20px;overflow:hidden;box-shadow:0 20px 44px -28px rgba(0,0,0,.6);">
+          <div style="background:linear-gradient(110deg,#1f6573,#34889a);color:#fff;font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;letter-spacing:.03em;font-size:16px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">APRIL<span style="background:#f3c12e;color:#143b44;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;">1</span></div>
+          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:15px;">
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">11</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">Sa</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Erstkommunion in Achern</div><div style="font-size:13px;color:#6b7884;">Kirchlicher Auftritt</div></div></div>
+          </div>
+        </div>
+
+        <div style="background:#fbfdfe;border-radius:20px;overflow:hidden;box-shadow:0 20px 44px -28px rgba(0,0,0,.6);">
+          <div style="background:linear-gradient(110deg,#1f6573,#34889a);color:#fff;font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;letter-spacing:.03em;font-size:16px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">MAI<span style="background:#f3c12e;color:#143b44;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;">3</span></div>
+          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:15px;">
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">01</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">Fr</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Traditionelles Maifest</div><div style="font-size:13px;color:#6b7884;">MV Gamshurst Event GbR</div></div></div>
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">15</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">Fr</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Vatertagsfest Renchen-Ulm</div><div style="font-size:13px;color:#6b7884;">Auftritt · 11:30 Uhr</div></div></div>
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">17</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">So</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Fußballfest Gamshurst</div><div style="font-size:13px;color:#6b7884;">Auftritt · 11:30 Uhr</div></div></div>
+          </div>
+        </div>
+
+        <div style="background:#fbfdfe;border-radius:20px;overflow:hidden;box-shadow:0 20px 44px -28px rgba(0,0,0,.6);">
+          <div style="background:linear-gradient(110deg,#1f6573,#34889a);color:#fff;font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;letter-spacing:.03em;font-size:16px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">JUNI<span style="background:#f3c12e;color:#143b44;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;">2</span></div>
+          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:15px;">
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">25</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">Do</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Flammkuchenhock Oberbruch</div><div style="font-size:13px;color:#6b7884;">Auftritt · 20:00 Uhr</div></div></div>
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">28</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">So</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Jubiläumsfest Feuerwehr</div><div style="font-size:13px;color:#6b7884;">Gamshurst</div></div></div>
+          </div>
+        </div>
+
+        <div style="background:#fbfdfe;border-radius:20px;overflow:hidden;box-shadow:0 20px 44px -28px rgba(0,0,0,.6);">
+          <div style="background:linear-gradient(110deg,#1f6573,#34889a);color:#fff;font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;letter-spacing:.03em;font-size:16px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">JULI<span style="background:#f3c12e;color:#143b44;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;">1</span></div>
+          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:15px;">
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">12</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">So</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Musikfest Moos</div><div style="font-size:13px;color:#6b7884;">Auftritt · 18:00 Uhr</div></div></div>
+          </div>
+        </div>
+
+        <div style="background:#fbfdfe;border-radius:20px;overflow:hidden;box-shadow:0 20px 44px -28px rgba(0,0,0,.6);">
+          <div style="background:linear-gradient(110deg,#1f6573,#34889a);color:#fff;font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;letter-spacing:.03em;font-size:16px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">AUGUST<span style="background:#f3c12e;color:#143b44;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;">2</span></div>
+          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:15px;">
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">02</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">So</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Klosterhoffest Schwarzach</div><div style="font-size:13px;color:#6b7884;">Auftritt · 12:00 Uhr</div></div></div>
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">18</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">Di</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Dorfhock Lauf</div><div style="font-size:13px;color:#6b7884;">19:00 Uhr</div></div></div>
+          </div>
+        </div>
+
+        <div style="background:#fbfdfe;border-radius:20px;overflow:hidden;box-shadow:0 20px 44px -28px rgba(0,0,0,.6);">
+          <div style="background:linear-gradient(110deg,#1f6573,#34889a);color:#fff;font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;letter-spacing:.03em;font-size:16px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">NOVEMBER<span style="background:#f3c12e;color:#143b44;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;">2</span></div>
+          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:15px;">
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:16px;color:#1f6573;line-height:1.05;">13&nbsp;–&nbsp;15</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Probenwochenende</div><div style="font-size:13px;color:#6b7884;">Fr bis So</div></div></div>
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#1f6573;line-height:1;">15</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">So</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Volkstrauertag</div><div style="font-size:13px;color:#6b7884;">Gedenkfeier</div></div></div>
+          </div>
+        </div>
+
+        <div style="background:#fbfdfe;border-radius:20px;overflow:hidden;box-shadow:0 20px 44px -28px rgba(0,0,0,.6);border:1.5px solid #f3c12e;">
+          <div style="background:linear-gradient(110deg,#b78a12,#f3c12e);color:#143b44;font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;letter-spacing:.03em;font-size:16px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">DEZEMBER<span style="background:#143b44;color:#f3c12e;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;">2</span></div>
+          <div style="padding:16px 20px;display:flex;flex-direction:column;gap:15px;">
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#b78a12;line-height:1;">06</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">So</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Patrozinium St. Nikolaus</div><div style="font-size:13px;color:#6b7884;">Pfarrgemeinde Gamshurst</div></div></div>
+            <div style="display:flex;gap:13px;"><div style="flex:0 0 44px;text-align:center;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:19px;color:#b78a12;line-height:1;">19</div><div style="font-size:11px;color:#8a97a3;font-weight:600;">Sa</div></div><div><div style="font-weight:700;color:#14303f;font-size:15px;">Jahreskonzert MV Gamshurst</div><div style="font-size:13px;color:#6b7884;">Großes Abendkonzert · Festhalle</div></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DAS SIND WIR ============ -->
+  <section id="verein" data-screen-label="Das sind wir" style="background:#fff;padding:clamp(48px,6vw,76px) clamp(16px,4vw,40px);">
+    <div class="mv-about" style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px);align-items:center;">
+      <div>
+        <div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:10px;">Das sind wir</div>
+        <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:clamp(28px,4vw,40px);color:#14303f;margin:0 0 18px;line-height:1.05;">Hundert Jahre Blasmusik aus Gamshurst</h2>
+        <p style="font-size:16px;line-height:1.66;color:#4a5763;margin:0 0 14px;">1925 gegründet, hat der Musikverein Gamshurst das Dorfleben seit hundert Jahren mitgeprägt. Aus den 18 Musikern der ersten Stunde ist ein lebendiger Verein mit heute <strong>55 aktiven Musikerinnen und Musikern</strong> geworden.</p>
+        <p style="font-size:16px;line-height:1.66;color:#4a5763;margin:0 0 24px;">Ein besonderes Augenmerk liegt seit jeher auf der Ausbildung von Kindern und Jugendlichen — das Durchschnittsalter der Kapelle liegt bei rund 30 Jahren. Über die Jahre sammelte der Verein zahlreiche Auszeichnungen, darunter einen 2. Platz beim internationalen Blasmusikwettbewerb in Prag und Brünn 1989.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:26px;">
+          <div style="background:#f3f7fa;border:1px solid #e3edf2;border-radius:16px;padding:16px;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:26px;color:#1f6573;line-height:1;">1925</div><div style="font-size:12.5px;color:#6b7884;margin-top:5px;">gegründet</div></div>
+          <div style="background:#f3f7fa;border:1px solid #e3edf2;border-radius:16px;padding:16px;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:26px;color:#1f6573;line-height:1;">55</div><div style="font-size:12.5px;color:#6b7884;margin-top:5px;">aktive Musiker</div></div>
+          <div style="background:#f3f7fa;border:1px solid #e3edf2;border-radius:16px;padding:16px;"><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:800;font-size:26px;color:#1f6573;line-height:1;">~30</div><div style="font-size:12.5px;color:#6b7884;margin-top:5px;">Ø Alter</div></div>
+        </div>
+        <a href="#" style="font-size:14.5px;font-weight:700;color:#1f6573;text-decoration:none;border-bottom:1.5px dashed #1f6573;padding-bottom:2px;">Unsere ganze Geschichte →</a>
+      </div>
+      <div style="position:relative;height:clamp(320px,42vw,440px);">
+        <div style="position:absolute;top:0;right:0;width:74%;height:62%;background:linear-gradient(135deg,#2f62b0,#143b44);border-radius:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 22px 46px -22px rgba(20,40,60,.55);"><span style="color:rgba(255,255,255,.5);font-size:12px;letter-spacing:.14em;text-transform:uppercase;">Foto: Gruppenbild</span></div>
+        <div style="position:absolute;bottom:0;left:0;width:62%;height:54%;background:linear-gradient(135deg,#8a939c,#3c444d);border-radius:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 22px 46px -22px rgba(20,40,60,.55);border:5px solid #fff;"><span style="color:rgba(255,255,255,.7);font-size:12px;letter-spacing:.14em;text-transform:uppercase;">Historisch</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VORSTANDSCHAFT ============ -->
+  <section id="vorstand" data-screen-label="Vorstandschaft" style="background:#eef3f7;padding:clamp(48px,6vw,76px) clamp(16px,4vw,40px);">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div style="margin-bottom:30px;">
+        <div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:8px;">Vorstandschaft</div>
+        <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:clamp(28px,4vw,40px);color:#14303f;margin:0;line-height:1.05;">Wer den Verein führt</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(186px,1fr));gap:18px;">
+        <div style="background:#fff;border:1px solid #e4e9ef;border-radius:20px;padding:24px 18px;text-align:center;box-shadow:0 14px 32px -28px rgba(20,40,60,.7);"><div style="width:74px;height:74px;border-radius:50%;margin:0 auto 14px;background:#e6edf1;border:1px solid #d7e2e8;display:flex;align-items:center;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#9fb3bd"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-8 2.6-8 5.8 0 .7.6 1.2 1.3 1.2h13.4c.7 0 1.3-.5 1.3-1.2 0-3.2-3.6-5.8-8-5.8Z"></path></svg></div><div style="font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:5px;">1. Vorstandsteam</div><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#14303f;">Regina Zimmer</div><div style="font-size:13px;color:#7d8a96;margin-top:3px;">Tenorhorn</div></div>
+        <div style="background:#fff;border:1px solid #e4e9ef;border-radius:20px;padding:24px 18px;text-align:center;box-shadow:0 14px 32px -28px rgba(20,40,60,.7);"><div style="width:74px;height:74px;border-radius:50%;margin:0 auto 14px;background:#e6edf1;border:1px solid #d7e2e8;display:flex;align-items:center;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#9fb3bd"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-8 2.6-8 5.8 0 .7.6 1.2 1.3 1.2h13.4c.7 0 1.3-.5 1.3-1.2 0-3.2-3.6-5.8-8-5.8Z"></path></svg></div><div style="font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:5px;">2. Vorstandsteam</div><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#14303f;">Miriam Fessler</div><div style="font-size:13px;color:#7d8a96;margin-top:3px;">Querflöte</div></div>
+        <div style="background:#fff;border:1px solid #e4e9ef;border-radius:20px;padding:24px 18px;text-align:center;box-shadow:0 14px 32px -28px rgba(20,40,60,.7);"><div style="width:74px;height:74px;border-radius:50%;margin:0 auto 14px;background:#e6edf1;border:1px solid #d7e2e8;display:flex;align-items:center;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#9fb3bd"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-8 2.6-8 5.8 0 .7.6 1.2 1.3 1.2h13.4c.7 0 1.3-.5 1.3-1.2 0-3.2-3.6-5.8-8-5.8Z"></path></svg></div><div style="font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:5px;">Schriftführer</div><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#14303f;">David Lehmann</div><div style="font-size:13px;color:#7d8a96;margin-top:3px;">Altsaxophon</div></div>
+        <div style="background:#fff;border:1px solid #e4e9ef;border-radius:20px;padding:24px 18px;text-align:center;box-shadow:0 14px 32px -28px rgba(20,40,60,.7);"><div style="width:74px;height:74px;border-radius:50%;margin:0 auto 14px;background:#e6edf1;border:1px solid #d7e2e8;display:flex;align-items:center;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#9fb3bd"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-8 2.6-8 5.8 0 .7.6 1.2 1.3 1.2h13.4c.7 0 1.3-.5 1.3-1.2 0-3.2-3.6-5.8-8-5.8Z"></path></svg></div><div style="font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:5px;">Jugendleiter-Team</div><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#14303f;">Fabian Jülg</div><div style="font-size:13px;color:#7d8a96;margin-top:3px;">Schlagzeug</div></div>
+        <div style="background:#fff;border:1px solid #e4e9ef;border-radius:20px;padding:24px 18px;text-align:center;box-shadow:0 14px 32px -28px rgba(20,40,60,.7);"><div style="width:74px;height:74px;border-radius:50%;margin:0 auto 14px;background:#e6edf1;border:1px solid #d7e2e8;display:flex;align-items:center;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#9fb3bd"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-8 2.6-8 5.8 0 .7.6 1.2 1.3 1.2h13.4c.7 0 1.3-.5 1.3-1.2 0-3.2-3.6-5.8-8-5.8Z"></path></svg></div><div style="font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:5px;">Jugendleiter</div><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#14303f;">Daniel Jörger</div><div style="font-size:13px;color:#7d8a96;margin-top:3px;">Trompete / Flügelhorn</div></div>
+        <div style="background:#fff;border:1px solid #e4e9ef;border-radius:20px;padding:24px 18px;text-align:center;box-shadow:0 14px 32px -28px rgba(20,40,60,.7);"><div style="width:74px;height:74px;border-radius:50%;margin:0 auto 14px;background:#e6edf1;border:1px solid #d7e2e8;display:flex;align-items:center;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#9fb3bd"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-8 2.6-8 5.8 0 .7.6 1.2 1.3 1.2h13.4c.7 0 1.3-.5 1.3-1.2 0-3.2-3.6-5.8-8-5.8Z"></path></svg></div><div style="font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:5px;">Kassier</div><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#14303f;">Katharina Steinhöfel</div><div style="font-size:13px;color:#7d8a96;margin-top:3px;">Tenorsaxophon</div></div>
+        <div style="background:#fff;border:1px solid #e4e9ef;border-radius:20px;padding:24px 18px;text-align:center;box-shadow:0 14px 32px -28px rgba(20,40,60,.7);"><div style="width:74px;height:74px;border-radius:50%;margin:0 auto 14px;background:#e6edf1;border:1px solid #d7e2e8;display:flex;align-items:center;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#9fb3bd"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-8 2.6-8 5.8 0 .7.6 1.2 1.3 1.2h13.4c.7 0 1.3-.5 1.3-1.2 0-3.2-3.6-5.8-8-5.8Z"></path></svg></div><div style="font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:5px;">1. Beisitzer</div><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#14303f;">Konrad Schuh</div><div style="font-size:13px;color:#7d8a96;margin-top:3px;">Trompete / Flügelhorn</div></div>
+        <div style="background:#fff;border:1px solid #e4e9ef;border-radius:20px;padding:24px 18px;text-align:center;box-shadow:0 14px 32px -28px rgba(20,40,60,.7);"><div style="width:74px;height:74px;border-radius:50%;margin:0 auto 14px;background:#e6edf1;border:1px solid #d7e2e8;display:flex;align-items:center;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#9fb3bd"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-8 2.6-8 5.8 0 .7.6 1.2 1.3 1.2h13.4c.7 0 1.3-.5 1.3-1.2 0-3.2-3.6-5.8-8-5.8Z"></path></svg></div><div style="font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:5px;">2. Beisitzer</div><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#14303f;">Markus Schanz</div><div style="font-size:13px;color:#7d8a96;margin-top:3px;">Trompete / Flügelhorn</div></div>
+        <div style="background:#fff;border:1px solid #e4e9ef;border-radius:20px;padding:24px 18px;text-align:center;box-shadow:0 14px 32px -28px rgba(20,40,60,.7);"><div style="width:74px;height:74px;border-radius:50%;margin:0 auto 14px;background:#e6edf1;border:1px solid #d7e2e8;display:flex;align-items:center;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#9fb3bd"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-8 2.6-8 5.8 0 .7.6 1.2 1.3 1.2h13.4c.7 0 1.3-.5 1.3-1.2 0-3.2-3.6-5.8-8-5.8Z"></path></svg></div><div style="font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:5px;">3. Beisitzer</div><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#14303f;">Markus Brunner</div><div style="font-size:13px;color:#7d8a96;margin-top:3px;">Trompete / Flügelhorn</div></div>
+        <div style="background:#fff;border:1px solid #e4e9ef;border-radius:20px;padding:24px 18px;text-align:center;box-shadow:0 14px 32px -28px rgba(20,40,60,.7);"><div style="width:74px;height:74px;border-radius:50%;margin:0 auto 14px;background:#e6edf1;border:1px solid #d7e2e8;display:flex;align-items:center;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#9fb3bd"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-8 2.6-8 5.8 0 .7.6 1.2 1.3 1.2h13.4c.7 0 1.3-.5 1.3-1.2 0-3.2-3.6-5.8-8-5.8Z"></path></svg></div><div style="font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:5px;">4. Beisitzer</div><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#14303f;">Julia Helmer</div><div style="font-size:13px;color:#7d8a96;margin-top:3px;">Klarinette</div></div>
+        <div style="background:#fff;border:1px solid #e4e9ef;border-radius:20px;padding:24px 18px;text-align:center;box-shadow:0 14px 32px -28px rgba(20,40,60,.7);"><div style="width:74px;height:74px;border-radius:50%;margin:0 auto 14px;background:#e6edf1;border:1px solid #d7e2e8;display:flex;align-items:center;justify-content:center;"><svg width="34" height="34" viewBox="0 0 24 24" fill="#9fb3bd"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-8 2.6-8 5.8 0 .7.6 1.2 1.3 1.2h13.4c.7 0 1.3-.5 1.3-1.2 0-3.2-3.6-5.8-8-5.8Z"></path></svg></div><div style="font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:5px;">5. Beisitzer</div><div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:17px;color:#14303f;">Clarissa Zerr</div><div style="font-size:13px;color:#7d8a96;margin-top:3px;">Querflöte</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BILDERGALERIE ============ -->
+  <section id="galerie" data-screen-label="Bildergalerie" style="background:#fff;padding:clamp(48px,6vw,76px) clamp(16px,4vw,40px);">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px;">
+        <div>
+          <div style="font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#1f6573;font-weight:700;margin-bottom:8px;">Bildergalerie</div>
+          <h2 style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;font-size:clamp(28px,4vw,40px);color:#14303f;margin:0;line-height:1.05;">100-jähriges Jubiläum</h2>
+        </div>
+        <a href="MV%20Gamshurst%20Bildergalerie.dc.html#top" style="font-size:14.5px;font-weight:700;color:#1f6573;text-decoration:none;border-bottom:1.5px dashed #1f6573;padding-bottom:2px;">Alle Fotos ansehen →</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;">
+        <div style="aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#2f62b0,#143b44);cursor:pointer;transition:transform .2s ease;" style-hover="transform:scale(1.04)"></div>
+        <div style="aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#57c7d6,#1f6573);cursor:pointer;transition:transform .2s ease;" style-hover="transform:scale(1.04)"></div>
+        <div style="aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#3f8a4f,#143b44);cursor:pointer;transition:transform .2s ease;" style-hover="transform:scale(1.04)"></div>
+        <div style="aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#b78a12,#7a5a08);cursor:pointer;transition:transform .2s ease;" style-hover="transform:scale(1.04)"></div>
+        <div style="aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#1f6573,#0f2e36);cursor:pointer;transition:transform .2s ease;" style-hover="transform:scale(1.04)"></div>
+        <div style="aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#a23b86,#3a1c52);cursor:pointer;transition:transform .2s ease;" style-hover="transform:scale(1.04)"></div>
+        <div style="aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#2f62b0,#143b44);cursor:pointer;transition:transform .2s ease;" style-hover="transform:scale(1.04)"></div>
+        <div style="aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#3f8a4f,#143b44);cursor:pointer;transition:transform .2s ease;" style-hover="transform:scale(1.04)"></div>
+        <div style="aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#57c7d6,#1f6573);cursor:pointer;transition:transform .2s ease;" style-hover="transform:scale(1.04)"></div>
+        <div style="aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#b78a12,#7a5a08);cursor:pointer;transition:transform .2s ease;" style-hover="transform:scale(1.04)"></div>
+        <div style="aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#1f6573,#0f2e36);cursor:pointer;transition:transform .2s ease;" style-hover="transform:scale(1.04)"></div>
+        <div style="aspect-ratio:1;border-radius:16px;background:linear-gradient(135deg,#2f62b0,#143b44);cursor:pointer;transition:transform .2s ease;" style-hover="transform:scale(1.04)"></div>
+      </div>
+      <p style="text-align:center;font-size:13.5px;color:#9aa6b1;margin:18px 0 0;">Platzhalter — hier kommen eure Fotos vom Jubiläum, von Konzerten und Auftritten hinein.</p>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer id="kontakt" data-screen-label="Footer / Kontakt" style="background:#0f2e36;color:#bcd2d7;padding:clamp(44px,5vw,64px) clamp(16px,4vw,40px) 28px;position:relative;overflow:hidden;">
+    <img src="assets/logo-light.svg" alt="" aria-hidden="true" style="position:absolute;right:-40px;bottom:-30px;width:340px;opacity:.05;pointer-events:none;" />
+    <div style="max-width:1180px;margin:0 auto;position:relative;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:34px;padding-bottom:34px;border-bottom:1px solid rgba(255,255,255,.12);">
+        <div>
+          <img src="assets/logo-light.svg" alt="Musikverein Gamshurst e.V." style="height:48px;display:block;margin-bottom:16px;" />
+          <p style="font-size:14px;line-height:1.6;color:#9bb6bc;margin:0;max-width:260px;">Wir geben den Ton an — Blasmusik aus Gamshurst seit 1925.</p>
+        </div>
+        <div>
+          <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;color:#fff;font-size:15px;margin-bottom:14px;">Verein</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
+            <a href="#aktuelles" style="color:#bcd2d7;text-decoration:none;">Aktuelles</a>
+            <a href="#termine" style="color:#bcd2d7;text-decoration:none;">Termine</a>
+            <a href="#verein" style="color:#bcd2d7;text-decoration:none;">Das sind wir</a>
+            <a href="#vorstand" style="color:#bcd2d7;text-decoration:none;">Vorstandschaft</a>
+            <a href="MV%20Gamshurst%20Bildergalerie.dc.html#top" style="color:#bcd2d7;text-decoration:none;">Bildergalerie</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'Bricolage Grotesque',Inter,sans-serif;font-weight:700;color:#fff;font-size:15px;margin-bottom:14px;">Kontakt</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;color:#9bb6bc;">
+            <span>Musikverein Gamshurst e.V.</span>
+            <span>77855 Achern-Gamshurst</span>
+            <a href="mailto:info@mv-gamshurst.de" style="color:#f3c12e;text-decoration:none;">info@mv-gamshurst.de</a>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <a href="#" aria-label="Instagram" style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;text-decoration:none;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"></circle></svg>
+            </a>
+            <a href="#" aria-label="Facebook" style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;text-decoration:none;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"></path></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:22px;font-size:13px;color:#7e9aa0;">
+        <span>© 2026 Musikverein Gamshurst e.V.</span>
+        <div style="display:flex;gap:22px;">
+          <a href="MV%20Gamshurst%20Impressum.dc.html#top" style="color:#7e9aa0;text-decoration:none;">Impressum</a>
+          <a href="MV%20Gamshurst%20Datenschutz.dc.html#top" style="color:#7e9aa0;text-decoration:none;">Datenschutz</a>
+          <a href="MV%20Gamshurst%20Kontakt.dc.html#top" style="color:#7e9aa0;text-decoration:none;">Kontakt</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { menuOpen: false };
+  renderVals() {
+    return {
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>
