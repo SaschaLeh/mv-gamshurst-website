@@ -1,0 +1,26 @@
+{
+  "name": "mv-gamshurst",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "deploy": "wrangler deploy",
+    "wrangler:dev": "wrangler dev",
+    "types:storyblok": "node -e \"console.error('storyblok CLI wird in Phase 3 installiert'); process.exit(1)\""
+  },
+  "dependencies": {
+    "astro": "^5.14.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.7.3",
+    "wrangler": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
