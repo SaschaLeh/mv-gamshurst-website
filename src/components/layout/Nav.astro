@@ -1,0 +1,282 @@
+---
+const navLinks = [
+  { href: '/#aktuelles', label: 'Aktuelles' },
+  { href: '/#termine', label: 'Termine' },
+  { href: '/#verein', label: 'Das sind wir' },
+  { href: '/#vorstand', label: 'Vorstandschaft' },
+  { href: '/galerie', label: 'Bildergalerie' },
+];
+
+const currentPath = Astro.url.pathname;
+// Hash-Vergleich ist Build-Time nicht möglich (Astro.url.hash leer in SSG).
+// Anker-Links bekommen daher nie aria-current — IntersectionObserver-basiertes
+// Section-Highlighting wäre semantisch sowieso `data-active`, nicht `aria-current`.
+const isActive = (href: string): boolean => {
+  if (href.startsWith('/#')) return false;
+  return href === currentPath || (href !== '/' && currentPath.startsWith(href));
+};
+---
+<header class="site-header">
+  <div class="nav-pill">
+    <a href="/" class="nav-logo" aria-label="MV Gamshurst Startseite">
+      <img src="/assets/logo-light.svg" alt="" width="96" height="36" />
+    </a>
+
+    {/* CSS-only Toggle (per Plan); JS sync für aria-expanded + close-on-link + Esc */}
+    <input
+      type="checkbox"
+      id="nav-toggle"
+      class="nav-toggle sr-only"
+      aria-hidden="true"
+      tabindex="-1"
+    />
+    <label
+      for="nav-toggle"
+      class="nav-burger"
+      role="button"
+      aria-controls="primary-nav"
+      aria-expanded="false"
+      tabindex="0"
+    >
+      <span class="sr-only">Menü öffnen/schließen</span>
+      <span class="nav-burger-icon" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </label>
+
+    <nav id="primary-nav" class="nav-menu" aria-label="Hauptnavigation">
+      <ul>
+        {navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="nav-link"
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a
+            href="/kontakt"
+            class="nav-cta"
+            aria-current={currentPath === '/kontakt' ? 'page' : undefined}
+          >
+            Kontakt
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle') as HTMLInputElement | null;
+  const burger = document.querySelector<HTMLElement>('.nav-burger');
+  const nav = document.getElementById('primary-nav');
+  if (toggle && burger && nav) {
+    const syncAria = () => burger.setAttribute('aria-expanded', String(toggle.checked));
+    toggle.addEventListener('change', syncAria);
+    burger.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        // click() löst nativ change aus → syncAria via Listener; kein Doppel-Toggle.
+        toggle.click();
+      }
+    });
+    nav.querySelectorAll('a').forEach((a) => {
+      a.addEventListener('click', () => {
+        toggle.checked = false;
+        syncAria();
+      });
+    });
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && toggle.checked) {
+        toggle.checked = false;
+        syncAria();
+        burger.focus();
+      }
+    });
+    syncAria();
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 16px var(--section-pad-x) 0;
+    pointer-events: none;
+  }
+
+  .nav-pill {
+    pointer-events: auto;
+    background: var(--color-primary);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-nav);
+    padding: 0.5rem 0.625rem 0.5rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: var(--content-max);
+    margin-inline: auto;
+    position: relative;
+  }
+
+  .nav-logo {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .nav-logo img {
+    height: 36px;
+    width: auto;
+  }
+
+  .nav-toggle {
+    /* sr-only behält checkbox als Steuer-Element */
+  }
+
+  .nav-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .nav-link {
+    display: inline-block;
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--radius-pill);
+    color: var(--color-nav-link);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-body-sm);
+    transition: color var(--transition-fast);
+  }
+
+  .nav-link:hover {
+    color: var(--color-nav-link-hover);
+  }
+
+  .nav-link[aria-current='page'] {
+    color: var(--color-nav-link-hover);
+    border-bottom: 2px solid var(--color-gold);
+    border-radius: 0;
+  }
+
+  .nav-cta {
+    display: inline-block;
+    background: var(--color-gold);
+    color: var(--color-petrol-deep);
+    padding: 0.65rem 1.15rem;
+    border-radius: var(--radius-pill);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-body-sm);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .nav-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-button);
+  }
+
+  .nav-burger {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    place-items: center;
+    transition: background var(--transition-fast);
+  }
+
+  .nav-burger:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .nav-burger-icon {
+    display: inline-grid;
+    gap: 5px;
+  }
+
+  .nav-burger-icon span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--color-nav-link-hover);
+    border-radius: 2px;
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+  }
+
+  /* Mobile */
+  @media (max-width: 859.98px) {
+    .nav-burger {
+      display: grid;
+    }
+
+    .nav-menu {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 0;
+      right: 0;
+      background: var(--color-primary);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-nav);
+      padding: 0.75rem;
+      display: none;
+    }
+
+    .nav-toggle:checked ~ .nav-menu {
+      display: block;
+    }
+
+    .nav-menu ul {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.25rem;
+    }
+
+    .nav-link,
+    .nav-cta {
+      display: block;
+      text-align: left;
+      padding: 0.85rem 1rem;
+    }
+
+    .nav-link[aria-current='page'] {
+      border-bottom: 0;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-input);
+    }
+
+    .nav-cta {
+      margin-top: 0.4rem;
+      text-align: center;
+    }
+
+    /* Burger-Icon zum X morphen wenn Menü offen */
+    .nav-toggle:checked ~ .nav-burger .nav-burger-icon span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .nav-toggle:checked ~ .nav-burger .nav-burger-icon span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-toggle:checked ~ .nav-burger .nav-burger-icon span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+
+  /* Focus-Visible auf Burger: Gold-Ring statt Petrol (Kontrast auf dunklem Pillen-BG) */
+  .nav-burger:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 4px;
+  }
+</style>

@@ -6,11 +6,15 @@ import bricolageLatinHref from '@fontsource-variable/bricolage-grotesque/files/b
 import '../styles/tokens.css';
 import '../styles/global.css';
 
+import Nav from '../components/layout/Nav.astro';
+import Footer from '../components/layout/Footer.astro';
+
 interface Props {
   title: string;
   description?: string;
   ogImage?: string;
   noIndex?: boolean;
+  bareLayout?: boolean;
 }
 
 const SITE_NAME = 'MV Gamshurst';
@@ -22,6 +26,7 @@ const {
   description = DEFAULT_DESCRIPTION,
   ogImage = '/og-default.png',
   noIndex = false,
+  bareLayout = false,
 } = Astro.props;
 
 const site = Astro.site;
@@ -65,6 +70,30 @@ const ogImageUrl = new URL(ogImage, site).href;
     <meta name="theme-color" content="#16424c" />
   </head>
   <body>
-    <slot />
+    <a href="#main" class="skip-link">Zum Hauptinhalt springen</a>
+    {!bareLayout && <Nav />}
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    {!bareLayout && <Footer />}
+
+    <style>
+      .skip-link {
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        padding: 0.6rem 1rem;
+        background: var(--color-primary);
+        color: #fff;
+        border-radius: var(--radius-input);
+        text-decoration: none;
+        z-index: 100;
+        transform: translateY(-150%);
+        transition: transform var(--transition-fast);
+      }
+      .skip-link:focus-visible {
+        transform: translateY(0);
+      }
+    </style>
   </body>
 </html>

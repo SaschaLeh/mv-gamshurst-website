@@ -1,0 +1,218 @@
+---
+// Phase 2: Inhalte sind Platzhalter. Phase 3 ersetzt sie durch siteSettings aus Storyblok.
+const verein = {
+  name: 'Musikverein Gamshurst e.V.',
+  shortDescription:
+    'Blasmusik aus Gamshurst seit 1925. Wir musizieren, feiern und gestalten Vereinsleben mit Leidenschaft.',
+  address: ['Musikverein Gamshurst e.V.', '[Straße]', '77855 Achern-Gamshurst'],
+  email: 'info@mv-gamshurst.de',
+  instagram: 'https://instagram.com/',
+  facebook: 'https://facebook.com/',
+};
+
+const navLinks = [
+  { href: '/#aktuelles', label: 'Aktuelles' },
+  { href: '/#termine', label: 'Termine' },
+  { href: '/#verein', label: 'Das sind wir' },
+  { href: '/#vorstand', label: 'Vorstandschaft' },
+  { href: '/galerie', label: 'Bildergalerie' },
+];
+
+const year = new Date().getFullYear();
+---
+<footer class="site-footer" aria-labelledby="footer-heading">
+  <h2 id="footer-heading" class="sr-only">Footer</h2>
+  <div class="footer-watermark" aria-hidden="true">
+    <img src="/assets/logo-light.svg" alt="" width="320" height="120" />
+  </div>
+
+  <div class="container footer-grid">
+    <section class="footer-col">
+      <img src="/assets/logo-light.svg" alt={verein.name} width="160" height="60" class="footer-logo" />
+      <p>{verein.shortDescription}</p>
+    </section>
+
+    <nav class="footer-col" aria-label="Footer Navigation">
+      <h3 class="eyebrow footer-heading">Verein</h3>
+      <ul>
+        {navLinks.map((link) => (
+          <li><a class="footer-link" href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <section class="footer-col">
+      <h3 class="eyebrow footer-heading">Kontakt</h3>
+      <address class="footer-address">
+        {verein.address.map((line) => <p>{line}</p>)}
+      </address>
+      <p>
+        <a class="footer-link" href={`mailto:${verein.email}`}>{verein.email}</a>
+      </p>
+      <ul class="footer-social" aria-label="Social Media">
+        <li>
+          <a href={verein.instagram} class="footer-social-link" aria-label="Instagram" rel="noopener noreferrer" target="_blank">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8" />
+              <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8" />
+              <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" />
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href={verein.facebook} class="footer-social-link" aria-label="Facebook" rel="noopener noreferrer" target="_blank">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <path
+                d="M13.5 21v-7.5h2.6l.4-3H13.5V8.6c0-.86.27-1.45 1.52-1.45h1.62V4.43c-.28-.04-1.24-.12-2.36-.12-2.34 0-3.94 1.42-3.94 4.04V10.5H7.7v3h2.64V21h3.16z"
+                fill="currentColor"
+              />
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <div class="container footer-bottom">
+    <p class="footer-copy">&copy; {year} {verein.name}</p>
+    <ul class="footer-legal">
+      <li><a class="footer-link" href="/impressum">Impressum</a></li>
+      <li><a class="footer-link" href="/datenschutz">Datenschutz</a></li>
+      <li><a class="footer-link" href="/kontakt">Kontakt</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    background: var(--color-footer-bg);
+    color: var(--color-footer-text);
+    margin-top: clamp(64px, 8vw, 120px);
+    padding-block: clamp(48px, 5vw, 72px) clamp(24px, 3vw, 40px);
+    overflow: hidden;
+  }
+
+  .footer-watermark {
+    position: absolute;
+    right: -40px;
+    bottom: -20px;
+    opacity: 0.05;
+    pointer-events: none;
+  }
+
+  .footer-watermark img {
+    width: clamp(220px, 28vw, 320px);
+    height: auto;
+  }
+
+  .footer-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: clamp(24px, 4vw, 48px);
+  }
+
+  .footer-col {
+    color: var(--color-footer-text);
+  }
+
+  .footer-col p {
+    color: var(--color-footer-text);
+    font-size: var(--fs-body-sm);
+    line-height: 1.6;
+    margin-top: 0.5rem;
+  }
+
+  .footer-logo {
+    height: 60px;
+    width: auto;
+  }
+
+  .footer-heading {
+    color: var(--color-gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .footer-link {
+    color: var(--color-footer-text);
+    transition: color var(--transition-fast);
+    font-size: var(--fs-body-sm);
+  }
+
+  .footer-link:hover,
+  .footer-link:focus-visible {
+    color: var(--color-nav-link-hover);
+  }
+
+  .footer-address {
+    font-style: normal;
+    margin-bottom: 0.75rem;
+    font-size: var(--fs-body-sm);
+  }
+
+  .footer-address p {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Höhere Spezifität als `.footer-col ul { display: grid }` ohne !important */
+  .site-footer .footer-social {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .footer-social-link {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--color-footer-text);
+    transition: background var(--transition-fast), color var(--transition-fast);
+  }
+
+  .footer-social-link:hover,
+  .footer-social-link:focus-visible {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--color-nav-link-hover);
+  }
+
+  .footer-bottom {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    margin-top: clamp(32px, 4vw, 56px);
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .footer-copy {
+    color: var(--color-footer-text);
+    font-size: var(--fs-body-sm);
+    opacity: 0.85;
+  }
+
+  .footer-legal {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+  }
+</style>
