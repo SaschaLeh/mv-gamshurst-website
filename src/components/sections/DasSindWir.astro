@@ -1,0 +1,191 @@
+---
+import { imgUrl, renderRichText } from '../../lib/storyblok';
+import type { StoryblokAsset } from '../../lib/storyblok';
+
+interface Kennzahl {
+  value?: string;
+  label?: string;
+  component?: string;
+  _uid?: string;
+}
+
+export interface VereinBlock {
+  headline?: string;
+  body?: { type?: string; content?: unknown[] } | null;
+  image?: StoryblokAsset;
+  kennzahlen?: Kennzahl[];
+}
+
+interface Props {
+  block: VereinBlock;
+}
+
+const { block } = Astro.props;
+
+const headline = block.headline?.trim() || 'Das sind wir';
+const fallbackBodyHtml = `
+  <p>Seit 1925 spielt der Musikverein Gamshurst aus dem Acherner Stadtteil heraus. Vom Jugendorchester bis zum Hauptorchester treten wir das ganze Jahr über bei Konzerten, kirchlichen Festen und in der Region auf.</p>
+  <p>Wir proben jeden Dienstag und freuen uns über jeden, der mitmachen, zuhören oder einfach vorbeischauen will.</p>
+`;
+function hasRealRichtext(doc: VereinBlock['body']): doc is NonNullable<VereinBlock['body']> {
+  if (!doc || !Array.isArray(doc.content)) return false;
+  return doc.content.some((node: unknown) => {
+    const n = node as { content?: unknown[] };
+    return Array.isArray(n.content) && n.content.length > 0;
+  });
+}
+// Trust-Boundary: renderRichText sanitisiert NICHT. Wir vertrauen dem Storyblok-Editor
+// (1 geteilter Login, Verein-intern, kein UGC). Würde public-write Editing dazukommen,
+// muss vor `set:html` ein sanitize-html-Schritt rein.
+const bodyHtml = hasRealRichtext(block.body)
+  ? renderRichText(block.body as Parameters<typeof renderRichText>[0])
+  : fallbackBodyHtml;
+
+const fallbackKennzahlen: { value: string; label: string }[] = [
+  { value: '1925', label: 'Gründungsjahr' },
+  { value: '55', label: 'aktive Musikerinnen & Musiker' },
+  { value: '~30', label: 'Auftritte pro Jahr' },
+];
+const kennzahlen =
+  block.kennzahlen && block.kennzahlen.length > 0
+    ? block.kennzahlen
+        .map((k) => ({ value: (k.value ?? '').trim(), label: (k.label ?? '').trim() }))
+        .filter((k) => k.value || k.label)
+    : fallbackKennzahlen;
+
+const hasImage = !!block.image?.filename;
+---
+<section class="verein" id="verein">
+  <div class="container verein-grid">
+    <div class="verein-copy">
+      <p class="eyebrow">Wir über uns</p>
+      <h2>{headline}</h2>
+      <div class="verein-body prose" set:html={bodyHtml} />
+      {kennzahlen.length > 0 && (
+        <ul class="verein-stats">
+          {kennzahlen.map((k) => (
+            <li class="verein-stat">
+              <strong>{k.value}</strong>
+              <span>{k.label}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      <a class="verein-link" href="/verein">Unsere ganze Geschichte →</a>
+    </div>
+
+    <div class={`verein-image ${!hasImage ? 'verein-image--placeholder' : ''}`}>
+      {hasImage && block.image ? (
+        <img
+          src={imgUrl(block.image, { width: 720, height: 900, format: 'webp' })}
+          srcset={`${imgUrl(block.image, { width: 480, height: 600, format: 'webp' })} 480w, ${imgUrl(block.image, { width: 720, height: 900, format: 'webp' })} 720w`}
+          sizes="(min-width: 860px) 38vw, 90vw"
+          alt={block.image.alt || 'Foto vom Musikverein Gamshurst'}
+          loading="lazy"
+          width="720"
+          height="900"
+        />
+      ) : null}
+    </div>
+  </div>
+</section>
+
+<style>
+  .verein {
+    background: var(--color-card);
+    padding-block: var(--section-pad-y);
+  }
+
+  .verein-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+  }
+
+  @media (max-width: 859.98px) {
+    .verein-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .verein-copy h2 {
+    margin-top: 0.5rem;
+    max-width: 16ch;
+  }
+
+  .verein-body {
+    margin-top: 1.25rem;
+    max-width: 52ch;
+    color: var(--color-text-body);
+  }
+
+  .verein-body :global(p) + :global(p) {
+    margin-top: 0.85rem;
+  }
+
+  .verein-stats {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    max-width: 540px;
+  }
+
+  .verein-stat {
+    background: var(--color-card-alt-2);
+    border-radius: var(--radius-card-sm);
+    padding: 1rem 1.1rem;
+    text-align: left;
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .verein-stat strong {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 2.2vw, 32px);
+    font-weight: var(--fw-extrabold);
+    color: var(--color-petrol-deep);
+    line-height: 1;
+  }
+
+  .verein-stat span {
+    color: var(--color-text-muted);
+    font-size: var(--fs-body-sm);
+    line-height: 1.35;
+  }
+
+  .verein-link {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--color-petrol-medium);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-body-sm);
+    transition: color var(--transition-fast);
+  }
+
+  .verein-link:hover,
+  .verein-link:focus-visible {
+    color: var(--color-primary);
+  }
+
+  .verein-image {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-card-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-card-lg);
+  }
+
+  .verein-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .verein-image--placeholder {
+    width: 100%;
+    background: linear-gradient(135deg, var(--color-petrol-gradient-1), var(--color-cyan));
+  }
+</style>

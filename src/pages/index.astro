@@ -4,6 +4,9 @@ import Base from '../layouts/Base.astro';
 import Hero, { type HeroBlock } from '../components/sections/Hero.astro';
 import Aktuelles, { type AktuellesBlock } from '../components/sections/Aktuelles.astro';
 import Termine, { type TermineBlock } from '../components/sections/Termine.astro';
+import DasSindWir, { type VereinBlock } from '../components/sections/DasSindWir.astro';
+import Vorstand, { type VorstandBlock } from '../components/sections/Vorstand.astro';
+import GalerieTeaser, { type GalerieTeaserBlock } from '../components/sections/GalerieTeaser.astro';
 
 const home = await getEntry('home', 'home');
 
@@ -20,14 +23,20 @@ interface SectionBlock {
 
 const sections: SectionBlock[] = (home?.data.sections ?? []) as SectionBlock[];
 
-// Phase 5 baut vereinSection, vorstandSection und galerieTeaser dazu.
-const KNOWN_COMPONENTS = new Set(['heroSection', 'aktuellesTeaser', 'terminePreview']);
+const KNOWN_COMPONENTS = new Set([
+  'heroSection',
+  'aktuellesTeaser',
+  'terminePreview',
+  'vereinSection',
+  'vorstandSection',
+  'galerieTeaser',
+]);
 const unknownComponents = sections
   .map((s) => s.component)
   .filter((c) => !KNOWN_COMPONENTS.has(c));
 if (unknownComponents.length > 0 && import.meta.env.DEV) {
   console.warn(
-    `[home] Sections nicht gerendert (Komponente fehlt — kommt in späterer Phase): ${unknownComponents.join(', ')}`,
+    `[home] Sections nicht gerendert (Komponente unbekannt): ${unknownComponents.join(', ')}`,
   );
 }
 ---
@@ -41,6 +50,12 @@ if (unknownComponents.length > 0 && import.meta.env.DEV) {
         return <Aktuelles block={block as AktuellesBlock} />;
       case 'terminePreview':
         return <Termine block={block as TermineBlock} />;
+      case 'vereinSection':
+        return <DasSindWir block={block as VereinBlock} />;
+      case 'vorstandSection':
+        return <Vorstand block={block as VorstandBlock} />;
+      case 'galerieTeaser':
+        return <GalerieTeaser block={block as GalerieTeaserBlock} />;
       default:
         return null;
     }

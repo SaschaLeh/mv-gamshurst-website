@@ -1,0 +1,150 @@
+---
+import { getCollection } from 'astro:content';
+import { imgUrl } from '../../lib/storyblok';
+
+export interface GalerieTeaserBlock {
+  headline?: string;
+}
+
+interface Props {
+  block: GalerieTeaserBlock;
+}
+
+const { block } = Astro.props;
+// Fallback bewusst zeit-unabhängig (statt "100-jähriges Jubiläum") — gilt auch nach 2025.
+const headline = block.headline?.trim() || 'Bildergalerie';
+
+const albums = await getCollection('album');
+// Spread vor sort → kein In-Place-Mutate der Astro-Collection.
+const featured = [...albums]
+  .filter((a) => a.data.featured === true)
+  .sort((a, b) => (a.data.sortOrder ?? 0) - (b.data.sortOrder ?? 0));
+const fallback = [...albums].sort(
+  (a, b) => (a.data.sortOrder ?? 0) - (b.data.sortOrder ?? 0),
+);
+const teaserAlbums = (featured.length > 0 ? featured : fallback).slice(0, 12);
+---
+{teaserAlbums.length > 0 && (
+  <section class="galerie-teaser" id="galerie">
+    <div class="container">
+      <header class="galerie-head">
+        <div>
+          <p class="eyebrow">Galerie</p>
+          <h2>{headline}</h2>
+        </div>
+        <a class="galerie-link" href="/galerie">Alle Fotos ansehen →</a>
+      </header>
+      <div class="galerie-grid">
+        {teaserAlbums.map((album) => {
+          const href = `/${album.data._meta.full_slug}`;
+          const cover = album.data.coverImage;
+          return (
+            <a class="galerie-tile" href={href} aria-label={album.data.title}>
+              {cover?.filename ? (
+                <img
+                  src={imgUrl(cover, { width: 360, height: 360, format: 'webp', smart: true })}
+                  srcset={`${imgUrl(cover, { width: 240, height: 240, format: 'webp', smart: true })} 240w, ${imgUrl(cover, { width: 480, height: 480, format: 'webp', smart: true })} 480w`}
+                  sizes="(min-width: 860px) 18vw, 45vw"
+                  alt={cover.alt || album.data.title}
+                  loading="lazy"
+                  width="360"
+                  height="360"
+                />
+              ) : (
+                <span class="galerie-tile-placeholder" aria-hidden="true" />
+              )}
+              <span class="galerie-tile-title">{album.data.title}</span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .galerie-teaser {
+    background: var(--color-card);
+    padding-block: var(--section-pad-y);
+  }
+
+  .galerie-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: clamp(24px, 4vw, 40px);
+  }
+
+  .galerie-head h2 {
+    margin-top: 0.5rem;
+    max-width: 18ch;
+  }
+
+  .galerie-link {
+    color: var(--color-petrol-medium);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-body-sm);
+    transition: color var(--transition-fast);
+  }
+
+  .galerie-link:hover,
+  .galerie-link:focus-visible {
+    color: var(--color-primary);
+  }
+
+  .galerie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: clamp(8px, 1.2vw, 14px);
+  }
+
+  .galerie-tile {
+    position: relative;
+    display: block;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-card-sm);
+    overflow: hidden;
+    box-shadow: var(--shadow-card-sm);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .galerie-tile:hover,
+  .galerie-tile:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .galerie-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+  }
+
+  .galerie-tile:hover img {
+    transform: scale(1.04);
+  }
+
+  .galerie-tile-placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-petrol-gradient-1), var(--color-cyan));
+  }
+
+  .galerie-tile-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1.5rem 0.75rem 0.65rem;
+    background: linear-gradient(180deg, transparent, rgba(15, 46, 54, 0.8));
+    color: var(--color-nav-link-hover);
+    font-size: var(--fs-body-sm);
+    font-weight: var(--fw-semibold);
+    text-align: left;
+    line-height: 1.2;
+  }
+</style>
