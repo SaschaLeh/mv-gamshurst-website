@@ -1,0 +1,209 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import NoticeBanner from '../components/NoticeBanner.astro';
+import { renderRichText } from '../lib/storyblok';
+
+const entry = await getEntry('datenschutz', 'datenschutz');
+
+if (!entry && import.meta.env.STORYBLOK_DELIVERY_TOKEN) {
+  throw new Error('datenschutz-Story fehlt. Erwarteter Slug: "datenschutz", Status: Published.');
+}
+
+const title = entry?.data.title || 'Datenschutz';
+const isPlaceholder = entry?.data.isPlaceholder !== false;
+const bodyHtml = entry?.data.body
+  ? renderRichText(entry.data.body as Parameters<typeof renderRichText>[0])
+  : '';
+
+// TOC wird clientseitig generiert (siehe script unten) — server-side rendert die Karte ohne Liste,
+// und ein hydrierender Script-Block befüllt die Liste aus den realen Headings im legal-body.
+---
+<Base title={title} description="Datenschutzerklärung des Musikvereins Gamshurst e.V.">
+  <div class="container datenschutz-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Start</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{title}</span>
+    </nav>
+
+    <div class="datenschutz-grid">
+      <aside class="datenschutz-toc" aria-label="Inhaltsverzeichnis">
+        <p class="eyebrow">Inhalt</p>
+        <nav>
+          <ul id="legal-toc"></ul>
+        </nav>
+      </aside>
+
+      <article class="legal-card">
+        {isPlaceholder && <NoticeBanner />}
+
+        <h1>{title}</h1>
+
+        {bodyHtml ? (
+          <div class="prose legal-body" id="legal-body" set:html={bodyHtml} />
+        ) : (
+          <p class="legal-empty">
+            Die Datenschutzerklärung ist im CMS noch leer. Bitte vom Verein mit echten Angaben
+            ergänzen — insbesondere Hoster (Cloudflare, Inc.), Storyblok (CMS, EU-Region), Resend
+            (Mailversand) müssen aufgeführt werden.
+          </p>
+        )}
+      </article>
+    </div>
+  </div>
+</Base>
+
+<script>
+  // TOC clientseitig aus den H2/H3 im legal-body bauen.
+  // IDs anhand des Heading-Texts setzen (slug-cased, deduped).
+  const body = document.getElementById('legal-body');
+  const toc = document.getElementById('legal-toc');
+  if (body && toc) {
+    const slugify = (s: string): string =>
+      s
+        .toLowerCase()
+        .replace(/ä/g, 'ae')
+        .replace(/ö/g, 'oe')
+        .replace(/ü/g, 'ue')
+        .replace(/ß/g, 'ss')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+
+    const seen = new Set<string>();
+    const headings = body.querySelectorAll<HTMLElement>('h2, h3');
+    const frag = document.createDocumentFragment();
+    headings.forEach((h) => {
+      let id = h.id || slugify(h.textContent ?? '');
+      if (!id) return;
+      let suffix = 2;
+      while (seen.has(id)) id = `${id}-${suffix++}`;
+      seen.add(id);
+      h.id = id;
+
+      const li = document.createElement('li');
+      li.className = h.tagName === 'H3' ? 'toc-level-2' : 'toc-level-1';
+      const a = document.createElement('a');
+      a.href = `#${id}`;
+      a.textContent = h.textContent ?? '';
+      li.appendChild(a);
+      frag.appendChild(li);
+    });
+    if (frag.children.length === 0) {
+      const empty = document.createElement('li');
+      empty.className = 'toc-empty';
+      empty.textContent = '(noch keine Abschnitte)';
+      frag.appendChild(empty);
+    }
+    toc.appendChild(frag);
+  }
+</script>
+
+<style>
+  .datenschutz-page {
+    padding-block: clamp(40px, 5vw, 72px) clamp(64px, 8vw, 96px);
+  }
+
+  .breadcrumb {
+    display: flex;
+    gap: 0.5rem;
+    font-size: var(--fs-body-sm);
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .breadcrumb a { color: var(--color-petrol-medium); }
+  .breadcrumb a:hover { color: var(--color-primary); }
+
+  .datenschutz-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: clamp(24px, 4vw, 48px);
+    align-items: start;
+  }
+  @media (max-width: 859.98px) {
+    .datenschutz-grid { grid-template-columns: 1fr; }
+  }
+
+  .datenschutz-toc {
+    position: sticky;
+    top: calc(var(--scroll-margin-top) + 16px);
+    background: var(--color-card);
+    border-radius: var(--radius-card-sm);
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--shadow-card-sm);
+  }
+
+  .datenschutz-toc .eyebrow {
+    margin-bottom: 0.75rem;
+  }
+
+  .datenschutz-toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .datenschutz-toc :global(.toc-level-2) {
+    padding-left: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .datenschutz-toc a {
+    color: var(--color-text-body);
+    font-size: var(--fs-body-sm);
+    line-height: 1.4;
+  }
+  .datenschutz-toc a:hover { color: var(--color-petrol-medium); }
+
+  .datenschutz-toc :global(.toc-empty) {
+    color: var(--color-text-muted);
+    font-size: var(--fs-body-sm);
+    font-style: italic;
+  }
+
+  .legal-card {
+    background: var(--color-card);
+    border-radius: 24px;
+    padding: clamp(28px, 5vw, 56px);
+    box-shadow: var(--shadow-card-sm);
+  }
+
+  .legal-card h1 {
+    margin-bottom: 1.25rem;
+  }
+
+  .legal-body {
+    color: var(--color-text-body);
+    line-height: 1.7;
+  }
+  .legal-body :global(h2) {
+    margin-top: 1.8rem;
+    margin-bottom: 0.5rem;
+    font-size: clamp(20px, 1.8vw, 26px);
+  }
+  .legal-body :global(h3) {
+    margin-top: 1.4rem;
+    margin-bottom: 0.4rem;
+    font-size: clamp(18px, 1.5vw, 22px);
+  }
+  .legal-body :global(p) + :global(p) {
+    margin-top: 1rem;
+  }
+  .legal-body :global(ul),
+  .legal-body :global(ol) {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+  .legal-body :global(li) {
+    margin-bottom: 0.4rem;
+  }
+
+  .legal-empty {
+    padding: 1.5rem;
+    background: var(--color-card-alt-2);
+    border-radius: var(--radius-card-sm);
+    color: var(--color-text-muted);
+  }
+</style>

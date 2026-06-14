@@ -1,0 +1,48 @@
+---
+interface Props {
+  /** Wird ausgegeben statt der Default-Botschaft. */
+  message?: string;
+}
+
+const { message } = Astro.props;
+const defaultMessage =
+  'Platzhalter-Text. Dieser Rechtstext muss vom Verein mit echten Angaben gefüllt und juristisch geprüft werden — bitte nicht ungeprüft veröffentlichen.';
+---
+<aside class="notice-banner" role="note" aria-label="Hinweis">
+  <span class="notice-icon" aria-hidden="true">!</span>
+  <p>{message ?? defaultMessage}</p>
+</aside>
+
+<style>
+  .notice-banner {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.85rem;
+    background: var(--color-notice-bg);
+    border: 1px solid var(--color-notice-border);
+    color: var(--color-notice-text);
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-card-sm);
+    margin-bottom: clamp(24px, 4vw, 40px);
+  }
+
+  .notice-icon {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--color-notice-border);
+    color: var(--color-notice-text);
+    font-family: var(--font-display);
+    font-weight: var(--fw-extrabold);
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+
+  .notice-banner p {
+    margin: 0;
+    line-height: 1.5;
+    font-size: var(--fs-body-sm);
+  }
+</style>

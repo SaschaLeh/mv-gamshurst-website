@@ -120,6 +120,16 @@ Lege folgende Komponenten an. Felder genau wie in der Tabelle — Reihenfolge is
 | `body` | Richtext (mit Headings) | ✔ |
 | `isPlaceholder` | Boolean | optional |
 
+> ⚠️ **Hoster im Impressum:** Mit dem Wechsel zu Cloudflare Workers ist der Hoster jetzt
+> **Cloudflare, Inc.** (101 Townsend Street, San Francisco, CA 94107, USA — siehe Cloudflare-Impressumshilfe).
+> Der alte do.de-Eintrag MUSS ersetzt werden, sobald der DNS-Switch live ist (Phase 11).
+>
+> **Auftragsverarbeiter in der Datenschutzerklärung** (Pflichtangaben):
+> - Cloudflare, Inc. — Hosting + Mail-Versand (Resend läuft über CF Workers)
+> - Storyblok GmbH — CMS, EU-Region (Frankfurt)
+> - Resend, Inc. — Mailversand-Provider
+> - Cloudflare Turnstile — Captcha (Spam-Schutz)
+
 ### 4.7 `home` — Startseite (Content Type, Singleton)
 
 Hat ein einziges Feld:
