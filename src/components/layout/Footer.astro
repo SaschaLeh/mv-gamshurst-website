@@ -1,14 +1,37 @@
 ---
-// Phase 2: Inhalte sind Platzhalter. Phase 3 ersetzt sie durch siteSettings aus Storyblok.
-const verein = {
-  name: 'Musikverein Gamshurst e.V.',
-  shortDescription:
-    'Blasmusik aus Gamshurst seit 1925. Wir musizieren, feiern und gestalten Vereinsleben mit Leidenschaft.',
-  address: ['Musikverein Gamshurst e.V.', '[Straße]', '77855 Achern-Gamshurst'],
-  email: 'info@mv-gamshurst.de',
-  instagram: 'https://instagram.com/',
-  facebook: 'https://facebook.com/',
-};
+import { getEntry } from 'astro:content';
+
+const SHORT_DESCRIPTION =
+  'Blasmusik aus Gamshurst seit 1925. Wir musizieren, feiern und gestalten Vereinsleben mit Leidenschaft.';
+const FALLBACK_NAME = 'Musikverein Gamshurst e.V.';
+
+const settings = await getEntry('siteSettings', 'site-settings');
+
+// Singleton MUSS existieren wenn Storyblok angebunden ist. Stilles Fallback bei verändertem
+// Slug würde leere Vereinsdaten deployen — wir wollen einen Build-Fehler.
+if (!settings && import.meta.env.STORYBLOK_DELIVERY_TOKEN) {
+  throw new Error(
+    'siteSettings-Story nicht gefunden. Prüfe: Slug heißt "site-settings", Status = Published.',
+  );
+}
+
+/**
+ * Multilink-Auflösung für `linktype: 'url'` (externe Social-Links, was wir hier brauchen):
+ * Storyblok füllt `url` und `cached_url` mit demselben Wert → Fallback-Reihenfolge egal.
+ * Für `linktype: 'story'` (interne Story-Links, Phase 7 Richtext) müsste man auf
+ * `cached_url` zurückgreifen und Slugs an URLs binden — kommt im Richtext-Resolver.
+ */
+const linkHref = (link?: { url?: string; cached_url?: string }): string =>
+  link?.url || link?.cached_url || '';
+
+const vereinName = settings?.data.vereinName ?? FALLBACK_NAME;
+const addressLines = (settings?.data.address ?? '')
+  .split('\n')
+  .map((line) => line.trim())
+  .filter(Boolean);
+const email = settings?.data.email ?? '';
+const instagramHref = linkHref(settings?.data.instagramUrl);
+const facebookHref = linkHref(settings?.data.facebookUrl);
 
 const navLinks = [
   { href: '/#aktuelles', label: 'Aktuelles' },
@@ -28,8 +51,8 @@ const year = new Date().getFullYear();
 
   <div class="container footer-grid">
     <section class="footer-col">
-      <img src="/assets/logo-light.svg" alt={verein.name} width="160" height="60" class="footer-logo" />
-      <p>{verein.shortDescription}</p>
+      <img src="/assets/logo-light.svg" alt={vereinName} width="160" height="60" class="footer-logo" />
+      <p>{SHORT_DESCRIPTION}</p>
     </section>
 
     <nav class="footer-col" aria-label="Footer Navigation">
@@ -43,38 +66,48 @@ const year = new Date().getFullYear();
 
     <section class="footer-col">
       <h3 class="eyebrow footer-heading">Kontakt</h3>
-      <address class="footer-address">
-        {verein.address.map((line) => <p>{line}</p>)}
-      </address>
-      <p>
-        <a class="footer-link" href={`mailto:${verein.email}`}>{verein.email}</a>
-      </p>
-      <ul class="footer-social" aria-label="Social Media">
-        <li>
-          <a href={verein.instagram} class="footer-social-link" aria-label="Instagram" rel="noopener noreferrer" target="_blank">
-            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-              <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8" />
-              <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8" />
-              <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" />
-            </svg>
-          </a>
-        </li>
-        <li>
-          <a href={verein.facebook} class="footer-social-link" aria-label="Facebook" rel="noopener noreferrer" target="_blank">
-            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-              <path
-                d="M13.5 21v-7.5h2.6l.4-3H13.5V8.6c0-.86.27-1.45 1.52-1.45h1.62V4.43c-.28-.04-1.24-.12-2.36-.12-2.34 0-3.94 1.42-3.94 4.04V10.5H7.7v3h2.64V21h3.16z"
-                fill="currentColor"
-              />
-            </svg>
-          </a>
-        </li>
-      </ul>
+      {addressLines.length > 0 && (
+        <address class="footer-address">
+          {addressLines.map((line) => <p>{line}</p>)}
+        </address>
+      )}
+      {email && (
+        <p>
+          <a class="footer-link" href={`mailto:${email}`}>{email}</a>
+        </p>
+      )}
+      {(instagramHref || facebookHref) && (
+        <ul class="footer-social" aria-label="Social Media">
+          {instagramHref && (
+            <li>
+              <a href={instagramHref} class="footer-social-link" aria-label="Instagram" rel="noopener noreferrer" target="_blank">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                  <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8" />
+                  <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8" />
+                  <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" />
+                </svg>
+              </a>
+            </li>
+          )}
+          {facebookHref && (
+            <li>
+              <a href={facebookHref} class="footer-social-link" aria-label="Facebook" rel="noopener noreferrer" target="_blank">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                  <path
+                    d="M13.5 21v-7.5h2.6l.4-3H13.5V8.6c0-.86.27-1.45 1.52-1.45h1.62V4.43c-.28-.04-1.24-.12-2.36-.12-2.34 0-3.94 1.42-3.94 4.04V10.5H7.7v3h2.64V21h3.16z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+            </li>
+          )}
+        </ul>
+      )}
     </section>
   </div>
 
   <div class="container footer-bottom">
-    <p class="footer-copy">&copy; {year} {verein.name}</p>
+    <p class="footer-copy">&copy; {year} {vereinName}</p>
     <ul class="footer-legal">
       <li><a class="footer-link" href="/impressum">Impressum</a></li>
       <li><a class="footer-link" href="/datenschutz">Datenschutz</a></li>

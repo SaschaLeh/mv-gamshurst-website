@@ -32,6 +32,19 @@ interface StoryblokStory {
   tag_list: string[];
 }
 
+/** Meta-Felder einer Story (System-Fields), getrennt vom inhaltlichen content. */
+export interface StoryMeta {
+  uuid: string;
+  id: number;
+  name: string;
+  slug: string;
+  full_slug: string;
+  published_at: string | null;
+  first_published_at: string | null;
+  tag_list: string[];
+  position: number;
+}
+
 interface StoryblokStoriesResponse {
   stories: StoryblokStory[];
   cv: number;
@@ -47,8 +60,15 @@ export function makeStoryblokLoader({ contentType, startsWith }: MakeOptions): L
     name: `storyblok-${contentType}`,
     load: async ({ store, logger, generateDigest }) => {
       if (!token) {
+        // Production-Build (STORYBLOK_VERSION=published) ohne Token = stille Bruchstelle.
+        // Lieber loud failen als leere Footer/Sektionen deployen.
+        if (version === 'published') {
+          throw new Error(
+            `STORYBLOK_DELIVERY_TOKEN fehlt — Production-Build (version=published) abgebrochen für "${contentType}".`,
+          );
+        }
         logger.warn(
-          `STORYBLOK_DELIVERY_TOKEN fehlt — collection "${contentType}" bleibt leer (Skeleton).`,
+          `STORYBLOK_DELIVERY_TOKEN fehlt — collection "${contentType}" bleibt leer (Skeleton-Mode, version=draft).`,
         );
         return;
       }
@@ -76,11 +96,40 @@ export function makeStoryblokLoader({ contentType, startsWith }: MakeOptions): L
         if (stories.length === 0) break;
 
         for (const story of stories) {
-          // uuid ist stabil und einmalig pro Story → ideal als Content-Layer-ID.
+          // full_slug als ID: stabil, semantisch (statt opaker uuid) und matched
+          // direkt die Storyblok-Ordnerstruktur (`aktuelles/foo`, `site-settings`, …).
+          const meta: StoryMeta = {
+            uuid: story.uuid,
+            id: story.id,
+            name: story.name,
+            slug: story.slug,
+            full_slug: story.full_slug,
+            published_at: story.published_at,
+            first_published_at: story.first_published_at,
+            tag_list: story.tag_list,
+            position: story.position,
+          };
+          // Storyblok-Interna (_editable: Inline-Editor-Marker, _uid: Block-ID) raus —
+          // dürfen nie ins Frontend rendern (XSS-Schutz, HTML-Kommentar im _editable).
+          const { _editable: _e, _uid: _u, ...cleanContent } = story.content as Record<
+            string,
+            unknown
+          > & { _editable?: unknown; _uid?: unknown };
+
+          // Storyblok-Feldnamen dürfen `_meta` nicht verwenden — diese Loader reserviert es
+          // für System-Felder. Dev-Mode warnt bei Kollision (Production: stille Overwrite).
+          if (import.meta.env.DEV && '_meta' in story.content) {
+            logger.warn(
+              `Story "${story.full_slug}" hat ein CMS-Feld namens "_meta" — wird vom Loader überschrieben.`,
+            );
+          }
+
+          // Content flach + Meta separat → Schemas validieren die genutzten Felder direkt.
+          const data = { ...cleanContent, _meta: meta };
           store.set({
-            id: story.uuid,
-            data: story as unknown as Record<string, unknown>,
-            digest: generateDigest(story as unknown as Record<string, unknown>),
+            id: story.full_slug,
+            data: data as Record<string, unknown>,
+            digest: generateDigest(data as Record<string, unknown>),
           });
           total++;
         }
