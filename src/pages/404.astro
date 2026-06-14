@@ -1,18 +1,84 @@
 ---
-const title = '404 — Seite nicht gefunden';
+import Base from '../layouts/Base.astro';
 ---
-<!doctype html>
-<html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} | MV Gamshurst</title>
-  </head>
-  <body>
-    <main>
-      <h1>404</h1>
-      <p>Die angeforderte Seite existiert nicht.</p>
-      <p><a href="/">Zurück zur Startseite</a></p>
-    </main>
-  </body>
-</html>
+<Base title="404 — Seite nicht gefunden" description="Die angeforderte Seite existiert nicht." noIndex>
+  <section class="error-page">
+    <div class="container">
+      <div class="error-card">
+        <p class="eyebrow error-eyebrow">Fehler 404</p>
+        <h1>Diese Seite gibt's nicht.</h1>
+        <p class="error-lead">
+          Vielleicht hat sich ein Link überholt, vielleicht ein Tippfehler in die Adresse geschlichen.
+          Zurück zur Startseite oder direkt rüber zu den Terminen.
+        </p>
+        <div class="error-actions">
+          <a class="btn btn--primary" href="/">Zur Startseite</a>
+          <a class="btn btn--outline" href="/#termine">Aktuelle Termine</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .error-page {
+    padding-block: clamp(72px, 12vw, 160px) clamp(64px, 10vw, 144px);
+  }
+
+  .error-card {
+    max-width: 720px;
+    margin-inline: auto;
+    text-align: center;
+    background: var(--color-card);
+    padding: clamp(40px, 6vw, 72px) clamp(28px, 5vw, 64px);
+    border-radius: var(--radius-section-sm);
+    box-shadow: var(--shadow-card);
+  }
+
+  .error-eyebrow {
+    color: var(--color-cat-brassparty);
+  }
+
+  .error-card h1 {
+    margin-top: 0.6rem;
+    font-size: clamp(40px, 6vw, 68px);
+  }
+
+  .error-lead {
+    margin-top: 1.25rem;
+    color: var(--color-text-body);
+    font-size: clamp(16px, 1.2vw, 18px);
+  }
+
+  .error-actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.85rem 1.4rem;
+    border-radius: var(--radius-pill);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-body-sm);
+    transition: transform var(--transition-fast);
+  }
+  .btn:hover { transform: translateY(-2px); }
+
+  .btn--primary {
+    background: var(--color-primary);
+    color: var(--color-nav-link-hover);
+    box-shadow: var(--shadow-button);
+  }
+  .btn--outline {
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+  }
+  .btn--outline:hover {
+    background: var(--color-primary);
+    color: var(--color-nav-link-hover);
+  }
+</style>

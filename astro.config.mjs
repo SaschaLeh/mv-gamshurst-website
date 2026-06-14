@@ -1,6 +1,7 @@
 import { defineConfig, passthroughImageService } from 'astro/config';
 import { storyblok } from '@storyblok/astro';
 import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 import { loadEnv } from 'vite';
 
 const env = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '');
@@ -20,6 +21,10 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  // Viewport-Prefetch: leichte Perf-Verbesserung ohne View-Transitions-Overhead (Plan §Astro-Konfig).
+  prefetch: {
+    defaultStrategy: 'viewport',
+  },
   image: {
     // Bilder werden vom Storyblok Image-CDN transformiert; Astro generiert nur srcset.
     service: passthroughImageService(),
@@ -27,6 +32,9 @@ export default defineConfig({
   },
   integrations: [
     react(),
+    sitemap({
+      filter: (page) => !page.includes('/404'),
+    }),
     ...(storyblokToken
       ? [
           storyblok({
