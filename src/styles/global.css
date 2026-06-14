@@ -152,3 +152,59 @@ select {
   white-space: nowrap;
   border: 0;
 }
+
+/* ============================================================
+   View Transitions (cross-document, native)
+   Shared-Element-Morph zwischen Article-Card und Detailseite.
+   Aktiviert per @view-transition für Browser mit Support
+   (Baseline 10/2025). Ältere Browser: stille graceful degradation
+   ohne Animation, Navigation bleibt funktional.
+   ============================================================ */
+@view-transition {
+  navigation: auto;
+}
+
+/* Cover-Bild: 4:3 (Karte) → max-height:60vh cover (Detail).
+   object-fit auf old & new verhindert Verzerrung im Morph. */
+::view-transition-group(.post-image-vt) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+::view-transition-old(.post-image-vt),
+::view-transition-new(.post-image-vt) {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Titel: gleiches Easing wie Bild für synchrone Bewegung. */
+::view-transition-group(.post-title-vt) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Excerpt: kein Layout-Morph (line-clamp:3 vs voller Text springt).
+   Stattdessen Crossfade an der jeweils eigenen Position. */
+::view-transition-group(.post-excerpt-vt) {
+  animation: none;
+}
+::view-transition-old(.post-excerpt-vt) {
+  animation: vt-fade-out 180ms ease-out both;
+}
+::view-transition-new(.post-excerpt-vt) {
+  animation: vt-fade-in 280ms ease-in 120ms both;
+}
+
+@keyframes vt-fade-out {
+  to { opacity: 0; }
+}
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

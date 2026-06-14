@@ -34,6 +34,7 @@ const date = post.publishedAt ? formatDate(post.publishedAt, 'long') : '';
           loading="lazy"
           width="800"
           height="540"
+          style={`view-transition-name: post-cover-${post._meta.slug}; view-transition-class: post-image-vt;`}
         />
       )}
     </div>
@@ -44,8 +45,16 @@ const date = post.publishedAt ? formatDate(post.publishedAt, 'long') : '';
         )}
         {date && <time datetime={post.publishedAt}>{date}</time>}
       </div>
-      <h3 class="post-card-title">{post.title}</h3>
-      {post.excerpt && <p class="post-card-excerpt">{post.excerpt}</p>}
+      <h3
+        class="post-card-title"
+        style={`view-transition-name: post-title-${post._meta.slug}; view-transition-class: post-title-vt;`}
+      >{post.title}</h3>
+      {post.excerpt && (
+        <p
+          class="post-card-excerpt"
+          style={`view-transition-name: post-excerpt-${post._meta.slug}; view-transition-class: post-excerpt-vt;`}
+        >{post.excerpt}</p>
+      )}
     </div>
   </a>
 </article>
@@ -93,6 +102,12 @@ const date = post.publishedAt ? formatDate(post.publishedAt, 'long') : '';
 
   .post-card:hover .post-card-media img {
     transform: scale(1.03);
+  }
+
+  /* Während aktiver View-Transition Hover-Scale aussetzen,
+     damit das Bild bei Normalgröße gesnapshottet wird. */
+  html:active-view-transition .post-card:hover .post-card-media img {
+    transform: none;
   }
 
   .post-card-body {

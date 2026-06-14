@@ -70,8 +70,13 @@ const externalLink = post.externalLink?.url || post.externalLink?.cached_url || 
           )}
           {dateLong && <time datetime={post.publishedAt}>{dateLong}</time>}
         </div>
-        <h1>{post.title}</h1>
-        {post.excerpt && <p class="post-lead">{post.excerpt}</p>}
+        <h1 style={`view-transition-name: post-title-${post._meta.slug}; view-transition-class: post-title-vt;`}>{post.title}</h1>
+        {post.excerpt && (
+          <p
+            class="post-lead"
+            style={`view-transition-name: post-excerpt-${post._meta.slug}; view-transition-class: post-excerpt-vt;`}
+          >{post.excerpt}</p>
+        )}
       </header>
     </div>
 
@@ -85,6 +90,7 @@ const externalLink = post.externalLink?.url || post.externalLink?.cached_url || 
           loading="eager"
           width="1600"
           height="900"
+          style={`view-transition-name: post-cover-${post._meta.slug}; view-transition-class: post-image-vt;`}
         />
       </div>
     )}
