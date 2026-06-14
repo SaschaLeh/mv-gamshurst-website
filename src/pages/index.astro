@@ -7,8 +7,11 @@ import Termine, { type TermineBlock } from '../components/sections/Termine.astro
 import DasSindWir, { type VereinBlock } from '../components/sections/DasSindWir.astro';
 import Vorstand, { type VorstandBlock } from '../components/sections/Vorstand.astro';
 import GalerieTeaser, { type GalerieTeaserBlock } from '../components/sections/GalerieTeaser.astro';
+import { organizationSchema, serializeJsonLd } from '../lib/seo/schema';
 
 const home = await getEntry('home', 'home');
+const settings = await getEntry('siteSettings', 'site-settings');
+const orgJsonLd = serializeJsonLd(organizationSchema(settings?.data, Astro.site!));
 
 if (!home && import.meta.env.STORYBLOK_DELIVERY_TOKEN) {
   throw new Error(
@@ -41,6 +44,7 @@ if (unknownComponents.length > 0 && import.meta.env.DEV) {
 }
 ---
 <Base title="MV Gamshurst" description="Musikverein Gamshurst e.V. — Aktuelles, Termine, Galerie">
+  <script slot="head" type="application/ld+json" is:inline set:html={orgJsonLd} />
   {sections.map((block) => {
     // Casts: jeder Section-Component prüft die ihm bekannten Felder selbst defensiv.
     switch (block.component) {

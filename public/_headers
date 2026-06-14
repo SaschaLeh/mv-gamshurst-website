@@ -1,0 +1,18 @@
+# Cloudflare Workers Static Assets Headers
+# Docs: https://developers.cloudflare.com/workers/static-assets/headers/
+
+# Workers-Default-Subdomain aus dem Index ausschließen, damit
+# *.workers.dev nicht mit der Produktiv-Domain (mv-gamshurst.de)
+# in der Google-Suche konkurriert.
+https://*.workers.dev/*
+  X-Robots-Tag: noindex
+
+# Build-Artefakte mit Content-Hash dürfen unbegrenzt gecached werden.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Globale Sicherheits-Header (Hygiene; helfen Trust-Bewertung, kein Ranking-Faktor).
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

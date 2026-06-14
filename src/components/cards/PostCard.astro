@@ -30,7 +30,7 @@ const date = post.publishedAt ? formatDate(post.publishedAt, 'long') : '';
           src={imgUrl(post.coverImage, { width: 800, height: 540, format: 'webp' })}
           srcset={`${imgUrl(post.coverImage, { width: 400, height: 270, format: 'webp' })} 400w, ${imgUrl(post.coverImage, { width: 800, height: 540, format: 'webp' })} 800w, ${imgUrl(post.coverImage, { width: 1200, height: 810, format: 'webp' })} 1200w`}
           sizes={variant === 'featured' ? '(min-width: 860px) 50vw, 90vw' : '(min-width: 860px) 25vw, 90vw'}
-          alt={post.coverImage.alt ?? ''}
+          alt={post.coverImage.alt || post.title}
           loading="lazy"
           width="800"
           height="540"

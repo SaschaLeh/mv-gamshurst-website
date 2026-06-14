@@ -2,6 +2,7 @@
 import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import ContactForm from '../components/forms/ContactForm.tsx';
+import { breadcrumbListSchema, serializeJsonLd } from '../lib/seo/schema';
 
 const settings = await getEntry('siteSettings', 'site-settings');
 const addressLines = (settings?.data.address ?? '')
@@ -21,8 +22,19 @@ const youtube = linkHref(settings?.data.youtubeUrl);
 // Dev-Fallback: Cloudflare offizieller Test-Site-Key (immer pass).
 const turnstileSiteKey =
   import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
+
+const breadcrumbJsonLd = serializeJsonLd(
+  breadcrumbListSchema(
+    [
+      { name: 'Start', path: '/' },
+      { name: 'Kontakt' },
+    ],
+    Astro.site!,
+  ),
+);
 ---
 <Base title="Kontakt" description="Schreib uns — Kontaktformular und Anschrift des Musikvereins Gamshurst.">
+  <script slot="head" type="application/ld+json" is:inline set:html={breadcrumbJsonLd} />
   <div class="container kontakt-page">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/">Start</a>

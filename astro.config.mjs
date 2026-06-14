@@ -33,7 +33,39 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      filter: (page) => !page.includes('/404'),
+      // 404 + Legal-Seiten raus: kein SEO-Wert, würden nur Crawl-Budget streuen.
+      filter: (page) =>
+        !page.includes('/404') &&
+        !page.includes('/impressum') &&
+        !page.includes('/datenschutz'),
+      // Pro Eintrag priority/changefreq setzen; lastmod = Build-Zeit (gut für Bing,
+      // Google ignoriert priority/changefreq, lastmod hilft trotzdem bei Re-Crawls).
+      serialize(item) {
+        const lastmod = new Date().toISOString();
+        const path = new URL(item.url).pathname;
+        const isHome = path === '/' || path === '';
+        const isNewsList = path === '/aktuelles' || path === '/aktuelles/';
+        const isNewsPost = path.startsWith('/aktuelles/') && !isNewsList;
+        const isGalleryList = path === '/galerie' || path === '/galerie/';
+        const isGalleryAlbum = path.startsWith('/galerie/') && !isGalleryList;
+
+        if (isHome) {
+          return { ...item, lastmod, priority: 1.0, changefreq: 'weekly' };
+        }
+        if (isNewsList) {
+          return { ...item, lastmod, priority: 0.8, changefreq: 'weekly' };
+        }
+        if (isNewsPost) {
+          return { ...item, lastmod, priority: 0.7, changefreq: 'monthly' };
+        }
+        if (isGalleryList) {
+          return { ...item, lastmod, priority: 0.6, changefreq: 'monthly' };
+        }
+        if (isGalleryAlbum) {
+          return { ...item, lastmod, priority: 0.5, changefreq: 'monthly' };
+        }
+        return { ...item, lastmod, priority: 0.5, changefreq: 'yearly' };
+      },
     }),
     ...(storyblokToken
       ? [

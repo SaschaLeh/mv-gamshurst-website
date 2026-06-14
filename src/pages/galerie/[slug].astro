@@ -5,6 +5,7 @@ import Masonry from '../../components/gallery/Masonry.astro';
 import Lightbox from '../../components/gallery/Lightbox.tsx';
 import { imgUrl } from '../../lib/storyblok';
 import { formatDate } from '../../lib/formatters';
+import { breadcrumbListSchema, serializeJsonLd } from '../../lib/seo/schema';
 
 export async function getStaticPaths() {
   const albums = await getCollection('album');
@@ -31,11 +32,23 @@ const lightboxPhotos = photos.map((p) => ({
 }));
 const masonryPhotos = photos.map((p) => ({ ...p, albumTitle: album.title }));
 const lightboxId = `album-${album._meta.slug}`;
+
+const breadcrumbJsonLd = serializeJsonLd(
+  breadcrumbListSchema(
+    [
+      { name: 'Start', path: '/' },
+      { name: 'Bildergalerie', path: '/galerie' },
+      { name: album.title || 'Album' },
+    ],
+    Astro.site!,
+  ),
+);
 ---
 <Base
   title={album.title || 'Album'}
   description={`${album.title || 'Fotoalbum'} — MV Gamshurst${dateShort ? ` (${dateShort})` : ''}.`}
 >
+  <script slot="head" type="application/ld+json" is:inline set:html={breadcrumbJsonLd} />
   <div class="container album-page">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/">Start</a>

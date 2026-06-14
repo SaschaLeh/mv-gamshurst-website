@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import PostCard from '../../components/cards/PostCard.astro';
+import { breadcrumbListSchema, serializeJsonLd } from '../../lib/seo/schema';
 
 const allPosts = await getCollection('post');
 const sorted = [...allPosts].sort((a, b) => {
@@ -10,8 +11,19 @@ const sorted = [...allPosts].sort((a, b) => {
   return bDate - aDate;
 });
 const [featured, ...rest] = sorted;
+
+const breadcrumbJsonLd = serializeJsonLd(
+  breadcrumbListSchema(
+    [
+      { name: 'Start', path: '/' },
+      { name: 'Aktuelles' },
+    ],
+    Astro.site!,
+  ),
+);
 ---
 <Base title="Aktuelles" description="Alle Beiträge, Ankündigungen und Berichte des Musikvereins Gamshurst.">
+  <script slot="head" type="application/ld+json" is:inline set:html={breadcrumbJsonLd} />
   <div class="container aktuelles-page">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/">Start</a>

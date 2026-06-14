@@ -6,6 +6,7 @@ import Masonry from '../../components/gallery/Masonry.astro';
 import Lightbox from '../../components/gallery/Lightbox.tsx';
 import { imgUrl } from '../../lib/storyblok';
 import { formatDate } from '../../lib/formatters';
+import { breadcrumbListSchema, serializeJsonLd } from '../../lib/seo/schema';
 
 const allAlbums = await getCollection('album');
 // Featured zuerst, dann nach sortOrder.
@@ -32,8 +33,19 @@ const lightboxPhotos = allPhotos.map((p) => ({
   thumb: imgUrl(p, { width: 600, format: 'webp' }),
   alt: p.alt || p.albumTitle || 'Foto',
 }));
+
+const breadcrumbJsonLd = serializeJsonLd(
+  breadcrumbListSchema(
+    [
+      { name: 'Start', path: '/' },
+      { name: 'Bildergalerie' },
+    ],
+    Astro.site!,
+  ),
+);
 ---
 <Base title="Bildergalerie" description="Momente in Bildern — Konzerte, Feste und Probenwochenenden des MV Gamshurst.">
+  <script slot="head" type="application/ld+json" is:inline set:html={breadcrumbJsonLd} />
   <div class="container galerie-page">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/">Start</a>

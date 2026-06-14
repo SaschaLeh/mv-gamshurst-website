@@ -1,8 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import { imgUrl, renderRichText } from '../../lib/storyblok';
 import { formatDate } from '../../lib/formatters';
+import {
+  breadcrumbListSchema,
+  newsArticleSchema,
+  serializeJsonLd,
+} from '../../lib/seo/schema';
 
 const CATEGORY_COLORS: Record<string, string> = {
   Konzert: 'var(--color-wappen-blau)',
@@ -51,8 +56,26 @@ const ogImage = post.coverImage?.filename
   : undefined;
 
 const externalLink = post.externalLink?.url || post.externalLink?.cached_url || '';
+
+const settings = await getEntry('siteSettings', 'site-settings');
+const pageUrl = new URL(Astro.url.pathname, Astro.site!);
+const articleJsonLd = serializeJsonLd(
+  newsArticleSchema(post, settings?.data, pageUrl, ogImage ?? ''),
+);
+const breadcrumbJsonLd = serializeJsonLd(
+  breadcrumbListSchema(
+    [
+      { name: 'Start', path: '/' },
+      { name: 'Aktuelles', path: '/aktuelles' },
+      { name: post.title },
+    ],
+    Astro.site!,
+  ),
+);
 ---
 <Base title={post.title} description={post.excerpt || `${post.title} — Aktuelles vom MV Gamshurst`} ogImage={ogImage}>
+  <script slot="head" type="application/ld+json" is:inline set:html={articleJsonLd} />
+  <script slot="head" type="application/ld+json" is:inline set:html={breadcrumbJsonLd} />
   <article class="post">
     <div class="container post-head-wrap">
       <nav class="breadcrumb" aria-label="Breadcrumb">

@@ -82,6 +82,8 @@ if (import.meta.env.DEV) {
             sizes="(min-width: 860px) 40vw, 90vw"
             alt={primary.alt || 'Foto vom Musikverein Gamshurst'}
             loading="eager"
+            fetchpriority="high"
+            decoding="async"
             width="720"
             height="900"
           />
