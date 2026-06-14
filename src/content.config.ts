@@ -143,6 +143,7 @@ const siteSettings = defineCollection({
       email: z.string().default(''),
       instagramUrl: multilink.optional(),
       facebookUrl: multilink.optional(),
+      youtubeUrl: multilink.optional(),
       proben: richtext.optional(),
     })
     .passthrough(),

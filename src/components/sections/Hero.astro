@@ -11,6 +11,10 @@ export interface HeroBlock {
   intro?: string;
   imagePrimary?: StoryblokAsset;
   imageSecondary?: StoryblokAsset;
+  /** Badge oben rechts an der Foto-Collage. Beide Felder optional; wenn `badgeValue`
+   *  leer bleibt, wird das Badge nicht gerendert. */
+  badgeLabel?: string;
+  badgeValue?: string;
 }
 
 interface Props {
@@ -25,6 +29,8 @@ const headlineRaw = block.headline?.trim() || 'Blasmusik aus Gamshurst';
 const intro =
   block.intro?.trim() ||
   'Wir feiern, musizieren und tragen die Blasmusik aus dem Acherner Stadtteil in die Region. Seit fünf Generationen.';
+const badgeLabel = block.badgeLabel?.trim() || 'seit';
+const badgeValue = block.badgeValue?.trim() || '1925';
 
 // Gold-Marker: bevorzugt CMS-Feld `markerWord`, sonst letztes Wort der Headline.
 const markerWord = block.markerWord?.trim();
@@ -93,10 +99,10 @@ if (import.meta.env.DEV) {
             height="600"
           />
         )}
-      </div>
-      <div class="hero-badge" aria-hidden="true">
-        <span>seit</span>
-        <strong>1925</strong>
+        <div class="hero-badge" aria-hidden="true">
+          <span>{badgeLabel}</span>
+          <strong>{badgeValue}</strong>
+        </div>
       </div>
     </div>
   </div>
@@ -244,32 +250,35 @@ if (import.meta.env.DEV) {
     background: linear-gradient(135deg, var(--color-cyan), var(--color-petrol-medium));
   }
 
+  /* Badge sitzt jetzt innerhalb von .hero-tile--secondary; Prozentwerte beziehen sich
+     also auf das Tile, nicht mehr auf die ganze Collage. */
   .hero-badge {
     position: absolute;
-    right: -8px;
-    bottom: 8%;
+    top: 6%;
+    left: 8%;
     background: var(--color-gold);
     color: var(--color-petrol-deep);
-    padding: 0.6rem 1rem;
+    padding: 0.85rem 1.35rem;
     border-radius: 999px;
-    transform: rotate(-8deg);
+    transform: rotate(-5deg);
     box-shadow: var(--shadow-button);
     display: grid;
     place-items: center;
     line-height: 1;
     text-align: center;
     font-weight: var(--fw-bold);
+    z-index: 1;
   }
 
   .hero-badge span {
-    font-size: 0.6875rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
   }
 
   .hero-badge strong {
     font-family: var(--font-display);
-    font-size: 1.15rem;
-    margin-top: 0.1rem;
+    font-size: 1.5rem;
+    margin-top: 0.15rem;
   }
 </style>

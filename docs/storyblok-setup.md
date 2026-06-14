@@ -110,6 +110,7 @@ Lege folgende Komponenten an. Felder genau wie in der Tabelle — Reihenfolge is
 | `email` | Text | ✔ | „info@mv-gamshurst.de" |
 | `instagramUrl` | Link | optional | |
 | `facebookUrl` | Link | optional | |
+| `youtubeUrl` | Link | optional | |
 | `proben` | Richtext | optional | Probenzeiten (für Kontaktseite) |
 
 ### 4.6 `impressum` und `datenschutz` — Rechtstexte (je 1 Content Type)
@@ -142,7 +143,7 @@ Hat ein einziges Feld:
 
 Lege folgende als **„Nestable"** (NICHT Content type) an. Felder bleiben sehr schlank — der Großteil der Daten kommt aus den Listen-Stories (`post`, `event`, `album`):
 
-- **`heroSection`** — Felder: `eyebrow` (Text), `headline` (Text), `intro` (Textarea), `imagePrimary` (Asset), `imageSecondary` (Asset).
+- **`heroSection`** — Felder: `eyebrow` (Text, opt., default „● 100 Jahre Blasmusik · 1925–2025"), `headline` (Text, opt., default „Blasmusik aus Gamshurst"), `markerWord` (Text, opt. — Wort der Headline, das den Gold-Marker bekommt; Fallback: letztes Wort), `intro` (Textarea, opt.), `imagePrimary` (Asset, opt.), `imageSecondary` (Asset, opt.), `badgeLabel` (Text, opt., default „seit"), `badgeValue` (Text, opt., default „1925"). Leere Felder fallen auf die Defaults aus dem Design-Handoff zurück.
 - **`aktuellesTeaser`** — Feld: `headline` (Text, default „Neuigkeiten & Bekanntmachungen").
 - **`terminePreview`** — Feld: `headline` (Text, default „Wann & wo wir spielen").
 - **`vereinSection`** — Felder: `headline` (Text), `body` (Richtext), `image` (Asset), `kennzahlen` (Blocks Multi → eigener Nestable `kennzahl` mit `value` + `label`).

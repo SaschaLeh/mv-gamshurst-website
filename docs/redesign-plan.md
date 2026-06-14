@@ -69,7 +69,7 @@ Direkt abgeleitet aus `design_handoff_mv_gamshurst/README.md` §10. Schema wird 
 ### Singletons (eigene Stories ohne Liste)
 | Komponente | Felder | Verwendung |
 |---|---|---|
-| `siteSettings` | `vereinName`, `address`, `email`, `instagramUrl`, `facebookUrl`, `proben` (Richtext, opt.) | Footer, Kontaktseite. |
+| `siteSettings` | `vereinName`, `address`, `email`, `instagramUrl`, `facebookUrl`, `youtubeUrl`, `proben` (Richtext, opt.) | Footer, Kontaktseite. |
 | `impressum` | `title`, `body` (Richtext) | Seite `/impressum`. Hoster-Angabe muss "Cloudflare, Inc." enthalten. |
 | `datenschutz` | `title`, `body` (Richtext mit Heading-Anchors für Sticky-TOC) | Seite `/datenschutz`. |
 | `home` | Sektionsblöcke (siehe unten) | Seite `/`. |
