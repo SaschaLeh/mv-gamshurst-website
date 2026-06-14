@@ -13,4 +13,5 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 .storyblok/
+src/types/logs/
 scripts/
