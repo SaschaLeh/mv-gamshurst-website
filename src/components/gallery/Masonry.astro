@@ -1,0 +1,88 @@
+---
+import { imgUrl } from '../../lib/storyblok';
+import type { StoryblokAsset } from '../../lib/storyblok';
+
+export interface MasonryPhoto extends StoryblokAsset {
+  /** Album-Bezug für Caption (optional). */
+  albumTitle?: string;
+}
+
+interface Props {
+  photos: MasonryPhoto[];
+  /** ID-Prefix für die Lightbox-Trigger (data-lightbox-index). */
+  lightboxId?: string;
+  /** Beschriftungen unter den Kacheln einblenden? */
+  showCaptions?: boolean;
+}
+
+const { photos, lightboxId, showCaptions = false } = Astro.props;
+---
+<div class="masonry" data-lightbox-id={lightboxId}>
+  {photos.map((photo, idx) => (
+    <button
+      type="button"
+      class="masonry-tile"
+      data-lightbox-index={idx}
+      aria-label={`Foto ${idx + 1} von ${photos.length}${photo.albumTitle ? ` aus ${photo.albumTitle}` : ''} öffnen`}
+    >
+      <img
+        src={imgUrl(photo, { width: 800, format: 'webp' })}
+        srcset={`${imgUrl(photo, { width: 400, format: 'webp' })} 400w, ${imgUrl(photo, { width: 800, format: 'webp' })} 800w, ${imgUrl(photo, { width: 1200, format: 'webp' })} 1200w`}
+        sizes="(min-width: 860px) 25vw, 45vw"
+        alt={photo.alt || ''}
+        loading="lazy"
+      />
+      {showCaptions && photo.albumTitle && (
+        <span class="masonry-caption">{photo.albumTitle}</span>
+      )}
+    </button>
+  ))}
+</div>
+
+<style>
+  .masonry {
+    column-width: 248px;
+    column-gap: clamp(8px, 1.2vw, 16px);
+  }
+
+  .masonry-tile {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 0 0 clamp(8px, 1.2vw, 16px);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    border-radius: var(--radius-card-sm);
+    overflow: hidden;
+    /* `break-inside: avoid` damit Tiles nicht zwischen Spalten umbrechen */
+    break-inside: avoid;
+    box-shadow: var(--shadow-card-sm);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .masonry-tile:hover,
+  .masonry-tile:focus-visible {
+    transform: scale(1.012);
+    box-shadow: var(--shadow-card);
+  }
+
+  .masonry-tile img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .masonry-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1.25rem 0.75rem 0.55rem;
+    background: linear-gradient(180deg, transparent, rgba(15, 46, 54, 0.78));
+    color: var(--color-nav-link-hover);
+    font-size: var(--fs-body-sm);
+    font-weight: var(--fw-semibold);
+  }
+</style>

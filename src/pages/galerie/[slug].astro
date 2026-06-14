@@ -1,0 +1,102 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Masonry from '../../components/gallery/Masonry.astro';
+import Lightbox from '../../components/gallery/Lightbox.tsx';
+import { imgUrl } from '../../lib/storyblok';
+import { formatDate } from '../../lib/formatters';
+
+export async function getStaticPaths() {
+  const albums = await getCollection('album');
+  return albums.map((album) => ({
+    // full_slug ist `galerie/<slug>` → `slug`-Param hier nur der letzte Teil.
+    params: { slug: album.data._meta.slug },
+    props: { album: album.data },
+  }));
+}
+
+type AlbumData = NonNullable<Awaited<ReturnType<typeof getStaticPaths>>[number]['props']>['album'];
+const { album } = Astro.props as { album: AlbumData };
+const photos = album.photos ?? [];
+const dateLong = formatDate(album.date, 'long');
+const dateShort = formatDate(album.date, 'short');
+const albumYear = album.date && !Number.isNaN(new Date(album.date).getTime())
+  ? new Date(album.date).getFullYear()
+  : null;
+
+const lightboxPhotos = photos.map((p) => ({
+  full: imgUrl(p, { width: 1600, format: 'webp', quality: 88 }),
+  thumb: imgUrl(p, { width: 600, format: 'webp' }),
+  alt: p.alt || album.title,
+}));
+const masonryPhotos = photos.map((p) => ({ ...p, albumTitle: album.title }));
+const lightboxId = `album-${album._meta.slug}`;
+---
+<Base
+  title={album.title || 'Album'}
+  description={`${album.title || 'Fotoalbum'} — MV Gamshurst${dateShort ? ` (${dateShort})` : ''}.`}
+>
+  <div class="container album-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Start</a>
+      <span aria-hidden="true">/</span>
+      <a href="/galerie">Bildergalerie</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{album.title}</span>
+    </nav>
+
+    <header class="album-head">
+      <p class="eyebrow">Album{albumYear ? ` · ${albumYear}` : ''}</p>
+      <h1>{album.title || 'Album'}</h1>
+      <p class="album-meta">{dateLong && <>{dateLong} · </>}{photos.length} Fotos</p>
+    </header>
+
+    {photos.length > 0 ? (
+      <Masonry photos={masonryPhotos} lightboxId={lightboxId} />
+    ) : (
+      <p class="album-empty">Dieses Album enthält noch keine Fotos.</p>
+    )}
+  </div>
+
+  {photos.length > 0 && (
+    <Lightbox photos={lightboxPhotos} triggerId={lightboxId} albumTitle={album.title} client:visible />
+  )}
+</Base>
+
+<style>
+  .album-page {
+    padding-block: clamp(40px, 5vw, 72px) clamp(64px, 8vw, 96px);
+  }
+
+  .breadcrumb {
+    display: flex;
+    gap: 0.5rem;
+    font-size: var(--fs-body-sm);
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .breadcrumb a { color: var(--color-petrol-medium); }
+  .breadcrumb a:hover { color: var(--color-primary); }
+
+  .album-head {
+    margin-bottom: clamp(32px, 4vw, 48px);
+  }
+
+  .album-head h1 { margin-top: 0.5rem; }
+
+  .album-meta {
+    color: var(--color-text-muted);
+    font-size: var(--fs-body-sm);
+    margin-top: 0.75rem;
+  }
+
+  .album-empty {
+    color: var(--color-text-muted);
+    padding: 2rem;
+    text-align: center;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+  }
+</style>

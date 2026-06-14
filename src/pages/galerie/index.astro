@@ -1,0 +1,268 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import AlbumCard from '../../components/gallery/AlbumCard.astro';
+import Masonry from '../../components/gallery/Masonry.astro';
+import Lightbox from '../../components/gallery/Lightbox.tsx';
+import { imgUrl } from '../../lib/storyblok';
+import { formatDate } from '../../lib/formatters';
+
+const allAlbums = await getCollection('album');
+// Featured zuerst, dann nach sortOrder.
+const albums = [...allAlbums].sort((a, b) => {
+  const featuredDiff = (b.data.featured ? 1 : 0) - (a.data.featured ? 1 : 0);
+  if (featuredDiff !== 0) return featuredDiff;
+  return (a.data.sortOrder ?? 0) - (b.data.sortOrder ?? 0);
+});
+
+const featured = albums.find((a) => a.data.featured) ?? null;
+const otherAlbums = albums.filter((a) => a !== featured);
+
+// "Alle Fotos"-Feed mit Album-Bezug für Caption.
+const allPhotos = albums.flatMap((album) =>
+  (album.data.photos ?? []).map((photo) => ({
+    ...photo,
+    albumTitle: album.data.title,
+  })),
+);
+const totalPhotos = allPhotos.length;
+
+const lightboxPhotos = allPhotos.map((p) => ({
+  full: imgUrl(p, { width: 1600, format: 'webp', quality: 88 }),
+  thumb: imgUrl(p, { width: 600, format: 'webp' }),
+  alt: p.alt || p.albumTitle || 'Foto',
+}));
+---
+<Base title="Bildergalerie" description="Momente in Bildern — Konzerte, Feste und Probenwochenenden des MV Gamshurst.">
+  <div class="container galerie-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Start</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Bildergalerie</span>
+    </nav>
+
+    <header class="galerie-head">
+      <div>
+        <p class="eyebrow">Galerie</p>
+        <h1>Momente in Bildern</h1>
+        <p class="lead">
+          Konzerte, Festwochenenden, Probenfahrten — eine Auswahl aus dem Vereinsleben des Musikvereins Gamshurst.
+        </p>
+      </div>
+      <ul class="galerie-stats" aria-label="Galerie-Statistik">
+        <li><strong>{albums.length}</strong><span>{albums.length === 1 ? 'Album' : 'Alben'}</span></li>
+        <li><strong>{totalPhotos}</strong><span>Fotos</span></li>
+      </ul>
+    </header>
+
+    {featured && (
+      <a class="featured-album" href={`/${featured.data._meta.full_slug}`}>
+        <div class={`featured-album-cover ${!featured.data.coverImage?.filename ? 'featured-album-cover--placeholder' : ''}`}>
+          {featured.data.coverImage?.filename && (
+            <img
+              src={imgUrl(featured.data.coverImage, { width: 1600, height: 720, format: 'webp' })}
+              srcset={`${imgUrl(featured.data.coverImage, { width: 800, height: 360, format: 'webp' })} 800w, ${imgUrl(featured.data.coverImage, { width: 1600, height: 720, format: 'webp' })} 1600w`}
+              sizes="100vw"
+              alt={featured.data.coverImage.alt || featured.data.title}
+              loading="eager"
+              width="1600"
+              height="720"
+            />
+          )}
+        </div>
+        <div class="featured-album-meta">
+          <p class="eyebrow featured-album-eyebrow">Featured Album{featured.data.date && !Number.isNaN(new Date(featured.data.date).getTime()) ? ` · ${new Date(featured.data.date).getFullYear()}` : ''}</p>
+          <h2>{featured.data.title || 'Album'}</h2>
+          <p class="featured-album-info">
+            {formatDate(featured.data.date, 'long') && <>{formatDate(featured.data.date, 'long')} · </>}{(featured.data.photos ?? []).length} Fotos
+          </p>
+          <span class="btn-pill">Album öffnen →</span>
+        </div>
+      </a>
+    )}
+
+    {otherAlbums.length > 0 && (
+      <section class="album-list" aria-label="Alle Alben">
+        <h2 class="album-list-head">Weitere Alben</h2>
+        <div class="album-grid">
+          {otherAlbums.map((album) => <AlbumCard album={album.data} />)}
+        </div>
+      </section>
+    )}
+
+    {totalPhotos > 0 && (
+      <section class="all-photos" id="fotos">
+        <header class="all-photos-head">
+          <h2>Alle Fotos</h2>
+          <p>{totalPhotos} Fotos aus {albums.length} {albums.length === 1 ? 'Album' : 'Alben'}</p>
+        </header>
+        <Masonry photos={allPhotos} lightboxId="galerie-all" showCaptions />
+      </section>
+    )}
+  </div>
+
+  <Lightbox photos={lightboxPhotos} triggerId="galerie-all" client:visible />
+</Base>
+
+<style>
+  .galerie-page {
+    padding-block: clamp(40px, 5vw, 72px) clamp(64px, 8vw, 96px);
+  }
+
+  .breadcrumb {
+    display: flex;
+    gap: 0.5rem;
+    font-size: var(--fs-body-sm);
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .breadcrumb a {
+    color: var(--color-petrol-medium);
+  }
+
+  .breadcrumb a:hover { color: var(--color-primary); }
+
+  .galerie-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2.5rem;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: clamp(32px, 5vw, 56px);
+  }
+
+  .galerie-head h1 { margin-top: 0.5rem; }
+  .galerie-head .lead {
+    margin-top: 1rem;
+    color: var(--color-text-muted);
+    max-width: 52ch;
+  }
+
+  .galerie-stats {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+  }
+  .galerie-stats li { display: grid; gap: 0.2rem; }
+  .galerie-stats strong {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3vw, 40px);
+    color: var(--color-text-heading);
+    line-height: 1;
+  }
+  .galerie-stats span {
+    color: var(--color-text-muted);
+    font-size: var(--fs-body-sm);
+  }
+
+  /* Featured-Album-Banner */
+  .featured-album {
+    display: block;
+    position: relative;
+    color: inherit;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card-lg);
+    margin-bottom: clamp(32px, 5vw, 56px);
+    isolation: isolate;
+    aspect-ratio: 21 / 9;
+  }
+
+  @media (max-width: 859.98px) {
+    .featured-album { aspect-ratio: 4 / 5; }
+  }
+
+  .featured-album-cover {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .featured-album-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .featured-album-cover--placeholder {
+    background: linear-gradient(135deg, var(--color-petrol-gradient-1), var(--color-petrol-deepest));
+  }
+
+  .featured-album::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, transparent 30%, rgba(8, 22, 28, 0.85) 100%);
+  }
+
+  .featured-album-meta {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: clamp(24px, 4vw, 40px);
+    color: var(--color-nav-link-hover);
+    z-index: 2;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .featured-album-eyebrow {
+    color: var(--color-gold);
+  }
+
+  .featured-album-meta h2 {
+    color: var(--color-nav-link-hover);
+    font-size: clamp(28px, 3vw, 44px);
+  }
+
+  .featured-album-info {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: var(--fs-body-sm);
+  }
+
+  .btn-pill {
+    display: inline-block;
+    background: var(--color-gold);
+    color: var(--color-petrol-deep);
+    padding: 0.65rem 1.2rem;
+    border-radius: var(--radius-pill);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-body-sm);
+    margin-top: 0.5rem;
+    width: max-content;
+  }
+
+  .album-list-head {
+    margin-bottom: 1rem;
+    font-size: clamp(22px, 2vw, 28px);
+  }
+
+  .album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: clamp(16px, 2vw, 28px);
+  }
+
+  .all-photos {
+    margin-top: clamp(48px, 6vw, 80px);
+  }
+
+  .all-photos-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .all-photos-head p {
+    color: var(--color-text-muted);
+    font-size: var(--fs-body-sm);
+  }
+</style>

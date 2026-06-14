@@ -47,8 +47,11 @@ export function toDate(input: Date | string): Date {
   return typeof input === 'string' ? new Date(input) : input;
 }
 
-export function formatDate(input: Date | string, style: 'long' | 'short' = 'long'): string {
-  return (style === 'long' ? DATE_LONG : DATE_SHORT).format(toDate(input));
+export function formatDate(input: Date | string | null | undefined, style: 'long' | 'short' = 'long'): string {
+  if (!input) return '';
+  const d = toDate(input);
+  if (Number.isNaN(d.getTime())) return '';
+  return (style === 'long' ? DATE_LONG : DATE_SHORT).format(d);
 }
 
 export function formatDay(input: Date | string): string {

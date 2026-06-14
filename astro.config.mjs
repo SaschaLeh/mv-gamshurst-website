@@ -1,5 +1,6 @@
 import { defineConfig, passthroughImageService } from 'astro/config';
 import { storyblok } from '@storyblok/astro';
+import react from '@astrojs/react';
 import { loadEnv } from 'vite';
 
 const env = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '');
@@ -24,16 +25,19 @@ export default defineConfig({
     service: passthroughImageService(),
     domains: ['a.storyblok.com'],
   },
-  integrations: storyblokToken
-    ? [
-        storyblok({
-          accessToken: storyblokToken,
-          apiOptions: { region: 'eu' },
-          // Tabellen-Editier-Modus, kein Visual Editor (Plan §Context).
-          bridge: false,
-          // Component-Mappings für home.sections folgen in Phase 4 (heroSection, …).
-          components: {},
-        }),
-      ]
-    : [],
+  integrations: [
+    react(),
+    ...(storyblokToken
+      ? [
+          storyblok({
+            accessToken: storyblokToken,
+            apiOptions: { region: 'eu' },
+            // Tabellen-Editier-Modus, kein Visual Editor (Plan §Context).
+            bridge: false,
+            // Component-Mappings für home.sections folgen in Phase 4 (heroSection, …).
+            components: {},
+          }),
+        ]
+      : []),
+  ],
 });
