@@ -1,0 +1,15 @@
+# Wrangler `dev` lädt Worker-Vars aus .dev.vars (analog zu .env für Astro).
+# Datei `.dev.vars` ist gitignored — hier ist nur das Schema.
+
+# Cloudflare Turnstile (https://developers.cloudflare.com/turnstile/troubleshooting/testing/)
+# Test-Secret (immer success): 1x0000000000000000000000000000000AA
+# Test-Secret (immer fail):    2x0000000000000000000000000000000AA
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA
+
+# Resend API-Key (https://resend.com/api-keys)
+# In Dev leer lassen → Worker loggt die Mail in die Konsole statt zu senden.
+RESEND_API_KEY=
+
+# Optional: Ziel- und Absender-Adresse für lokale Tests (Defaults siehe wrangler.jsonc)
+# CONTACT_TO=info@mv-gamshurst.de
+# CONTACT_FROM=onboarding@resend.dev

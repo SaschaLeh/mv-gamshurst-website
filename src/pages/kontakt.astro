@@ -1,0 +1,200 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/forms/ContactForm.tsx';
+
+const settings = await getEntry('siteSettings', 'site-settings');
+const addressLines = (settings?.data.address ?? '')
+  .split('\n')
+  .map((l) => l.trim())
+  .filter(Boolean);
+const email = settings?.data.email ?? '';
+const vereinName = settings?.data.vereinName ?? 'Musikverein Gamshurst e.V.';
+
+const linkHref = (link?: { url?: string; cached_url?: string }) =>
+  link?.url || link?.cached_url || '';
+const instagram = linkHref(settings?.data.instagramUrl);
+const facebook = linkHref(settings?.data.facebookUrl);
+
+// Turnstile-Site-Key: PUBLIC_* wird in den Bundle eingebrannt.
+// Dev-Fallback: Cloudflare offizieller Test-Site-Key (immer pass).
+const turnstileSiteKey =
+  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
+---
+<Base title="Kontakt" description="Schreib uns — Kontaktformular und Anschrift des Musikvereins Gamshurst.">
+  <div class="container kontakt-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Start</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Kontakt</span>
+    </nav>
+
+    <header class="kontakt-head">
+      <p class="eyebrow">Kontakt</p>
+      <h1>Schreib uns</h1>
+      <p class="lead">
+        Du hast eine Frage, möchtest beim MV Gamshurst mitspielen oder uns für einen Auftritt anfragen?
+        Schick uns einfach eine Nachricht — wir melden uns zeitnah.
+      </p>
+    </header>
+
+    <div class="kontakt-grid">
+      <section class="kontakt-form-wrap" aria-labelledby="kontakt-form-h">
+        <h2 id="kontakt-form-h" class="sr-only">Kontaktformular</h2>
+        <ContactForm turnstileSiteKey={turnstileSiteKey} client:visible />
+      </section>
+
+      <aside class="kontakt-info">
+        <section class="kontakt-card">
+          <h2 class="eyebrow kontakt-card-eyebrow">Verein</h2>
+          <p class="kontakt-card-name">{vereinName}</p>
+          {addressLines.length > 0 && (
+            <address class="kontakt-card-address">
+              {addressLines.map((line) => <p>{line}</p>)}
+            </address>
+          )}
+          {email && (
+            <p class="kontakt-card-link">
+              <a href={`mailto:${email}`}>{email}</a>
+            </p>
+          )}
+          {(instagram || facebook) && (
+            <ul class="kontakt-card-social" aria-label="Social Media">
+              {instagram && (
+                <li>
+                  <a href={instagram} rel="noopener noreferrer" target="_blank" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                      <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                      <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor"/>
+                    </svg>
+                  </a>
+                </li>
+              )}
+              {facebook && (
+                <li>
+                  <a href={facebook} rel="noopener noreferrer" target="_blank" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                      <path d="M13.5 21v-7.5h2.6l.4-3H13.5V8.6c0-.86.27-1.45 1.52-1.45h1.62V4.43c-.28-.04-1.24-.12-2.36-.12-2.34 0-3.94 1.42-3.94 4.04V10.5H7.7v3h2.64V21h3.16z" fill="currentColor"/>
+                    </svg>
+                  </a>
+                </li>
+              )}
+            </ul>
+          )}
+        </section>
+
+        <div class="kontakt-map" aria-hidden="true">
+          <span>Karte / Anfahrt</span>
+        </div>
+      </aside>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .kontakt-page {
+    padding-block: clamp(40px, 5vw, 72px) clamp(64px, 8vw, 96px);
+  }
+
+  .breadcrumb {
+    display: flex;
+    gap: 0.5rem;
+    font-size: var(--fs-body-sm);
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .breadcrumb a { color: var(--color-petrol-medium); }
+  .breadcrumb a:hover { color: var(--color-primary); }
+
+  .kontakt-head {
+    margin-bottom: clamp(32px, 5vw, 56px);
+    max-width: 60ch;
+  }
+  .kontakt-head h1 { margin-top: 0.5rem; }
+  .kontakt-head .lead {
+    margin-top: 1rem;
+    color: var(--color-text-body);
+    font-size: clamp(16px, 1.2vw, 18px);
+  }
+
+  .kontakt-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 0.9fr;
+    gap: clamp(24px, 4vw, 48px);
+    align-items: start;
+  }
+  @media (max-width: 859.98px) {
+    .kontakt-grid { grid-template-columns: 1fr; }
+  }
+
+  .kontakt-form-wrap {
+    background: var(--color-card);
+    padding: clamp(24px, 4vw, 40px);
+    border-radius: var(--radius-card-lg);
+    box-shadow: var(--shadow-card);
+  }
+
+  .kontakt-info {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .kontakt-card {
+    background: var(--color-petrol-deepest);
+    color: var(--color-text-on-dark);
+    padding: clamp(20px, 3vw, 32px);
+    border-radius: var(--radius-card-lg);
+  }
+  .kontakt-card-eyebrow {
+    color: var(--color-gold);
+    margin-bottom: 0.5rem;
+  }
+  .kontakt-card-name {
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: var(--fw-bold);
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+  .kontakt-card-address {
+    font-style: normal;
+    margin-bottom: 0.75rem;
+  }
+  .kontakt-card-address p { margin: 0; line-height: 1.5; }
+  .kontakt-card-link a {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .kontakt-card-link a:hover { color: var(--color-gold); }
+  .kontakt-card-social {
+    list-style: none;
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem 0 0;
+    padding: 0;
+  }
+  .kontakt-card-social a {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    transition: background var(--transition-fast);
+  }
+  .kontakt-card-social a:hover { background: rgba(255,255,255,0.16); }
+
+  .kontakt-map {
+    aspect-ratio: 16/10;
+    background: linear-gradient(135deg, var(--color-card-alt-2), var(--color-border));
+    border-radius: var(--radius-card-lg);
+    display: grid;
+    place-items: center;
+    color: var(--color-text-muted);
+    font-size: var(--fs-body-sm);
+    font-style: italic;
+  }
+</style>

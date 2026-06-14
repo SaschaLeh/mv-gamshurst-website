@@ -22,10 +22,12 @@
     "astro": "^5.14.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "storyblok-js-client": "^7.0.0"
+    "storyblok-js-client": "^7.0.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@cloudflare/workers-types": "^4.20260613.1",
     "storyblok": "^4.17.11",
     "typescript": "^5.7.3",
     "wrangler": "^4.0.0"

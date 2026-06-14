@@ -4,17 +4,31 @@
   // Pin auf bewährtes Datum (nicht heute), damit neue CF-Compat-Flags nicht ungetestet aktiv werden.
   "compatibility_date": "2025-10-01",
   "compatibility_flags": ["nodejs_compat"],
+  "main": "worker/index.ts",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "not_found_handling": "404-page"
+  },
+  // KV-Namespace für Rate-Limit am /api/contact-Endpoint.
+  // Lokale ID setzen mit:  wrangler kv namespace create RATE_LIMIT
+  // (CLI gibt die ID aus → hier eintragen + auch `preview_id` für `wrangler dev`).
+  "kv_namespaces": [
+    {
+      "binding": "RATE_LIMIT",
+      "id": "REPLACE_WITH_KV_ID_AFTER_CREATE",
+      "preview_id": "REPLACE_WITH_KV_PREVIEW_ID_AFTER_CREATE"
+    }
+  ],
+  // Nicht-secret-Vars (öffentlich). Secrets via `wrangler secret put NAME`:
+  //   - RESEND_API_KEY
+  //   - TURNSTILE_SECRET
+  //   - STORYBLOK_DELIVERY_TOKEN  (für Build-Hook, falls Workers Builds nicht direkt env-vars liest)
+  "vars": {
+    "CONTACT_TO": "info@mv-gamshurst.de",
+    "CONTACT_FROM": "onboarding@resend.dev"
   },
   "observability": {
     "enabled": true
   }
-  // KV-Binding für Rate-Limit folgt in Phase 8:
-  // "kv_namespaces": [
-  //   { "binding": "RATE_LIMIT", "id": "<aus wrangler kv namespace create>" }
-  // ],
-  // Worker-Script für /api/* folgt ebenfalls in Phase 8:
-  // "main": "worker/index.ts",
 }
