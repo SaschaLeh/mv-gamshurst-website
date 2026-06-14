@@ -1,0 +1,174 @@
+---
+import { getCollection } from 'astro:content';
+import { filterUpcoming, groupEventsByMonth } from '../../lib/formatters';
+import EventCard from '../cards/EventCard.astro';
+
+export interface TermineBlock {
+  headline?: string;
+}
+
+interface Props {
+  block: TermineBlock;
+}
+
+const { block } = Astro.props;
+const headline = block.headline?.trim() || 'Wann & wo wir spielen';
+
+const allEvents = await getCollection('event');
+// Vergangene Termine ausblenden (Plan §Phase 4 Verifikation).
+const upcoming = filterUpcoming(allEvents.map((e) => e.data));
+const months = groupEventsByMonth(upcoming);
+
+// Dezember-Highlight (Jahreskonzert, Handoff §5.1.3) ODER event.highlight=true.
+// Monat per getMonth()===11 statt label-startsWith → locale-proof.
+const isHighlightMonth = (bucket: (typeof months)[number]) =>
+  new Date(`${bucket.key}-01T00:00:00Z`).getUTCMonth() === 11 ||
+  bucket.events.some((e) => e.highlight === true);
+---
+<section class="termine" id="termine">
+  <div class="termine-glow" aria-hidden="true"></div>
+  <div class="container">
+    <header class="termine-head">
+      <div>
+        <p class="eyebrow termine-eyebrow">Termine</p>
+        <h2>{headline}</h2>
+      </div>
+      <a class="btn-gold" href="/termine">Gesamtkalender →</a>
+    </header>
+
+    {months.length === 0 ? (
+      <p class="termine-empty">Aktuell sind keine Termine veröffentlicht.</p>
+    ) : (
+      <div class="termine-grid">
+        {months.map((bucket) => (
+          <article class={`termine-month ${isHighlightMonth(bucket) ? 'termine-month--highlight' : ''}`}>
+            <header class="termine-month-head">
+              <h3>{bucket.label}</h3>
+              <span class="termine-count">{bucket.events.length}</span>
+            </header>
+            <div class="termine-month-body">
+              {bucket.events.map((event) => <EventCard event={event} />)}
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .termine {
+    position: relative;
+    background: var(--color-primary);
+    color: var(--color-text-on-dark);
+    padding-block: var(--section-pad-y);
+    overflow: hidden;
+  }
+
+  /* Gold-Radial-Schimmer (Handoff §5.1.3) */
+  .termine-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 18% 12%,
+      rgba(243, 193, 46, 0.22),
+      transparent 55%
+    );
+    pointer-events: none;
+  }
+
+  .termine-head {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: clamp(24px, 4vw, 40px);
+  }
+
+  .termine-eyebrow {
+    color: var(--color-gold);
+  }
+
+  .termine-head h2 {
+    color: var(--color-nav-link-hover);
+    margin-top: 0.5rem;
+    max-width: 18ch;
+  }
+
+  .btn-gold {
+    display: inline-block;
+    background: var(--color-gold);
+    color: var(--color-petrol-deep);
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-pill);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-body-sm);
+    box-shadow: var(--shadow-button);
+    transition: transform var(--transition-fast);
+  }
+
+  .btn-gold:hover {
+    transform: translateY(-2px);
+  }
+
+  .termine-empty {
+    text-align: center;
+    color: var(--color-text-on-dark);
+    padding: 2rem;
+    opacity: 0.85;
+  }
+
+  .termine-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: clamp(16px, 2vw, 24px);
+  }
+
+  .termine-month {
+    background: var(--color-card);
+    color: var(--color-text-body);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+
+  .termine-month--highlight {
+    outline: 2px solid var(--color-gold);
+    outline-offset: -2px;
+  }
+
+  .termine-month-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(
+      135deg,
+      var(--color-petrol-gradient-1),
+      var(--color-petrol-gradient-2)
+    );
+    color: var(--color-nav-link-hover);
+    padding: 1rem 1.25rem;
+  }
+
+  .termine-month-head h3 {
+    color: var(--color-nav-link-hover);
+    font-size: 1.1rem;
+    text-transform: capitalize;
+  }
+
+  .termine-count {
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--color-nav-link-hover);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.85rem;
+    font-weight: var(--fw-bold);
+  }
+
+  .termine-month-body {
+    padding: 0.5rem 0.25rem;
+  }
+</style>

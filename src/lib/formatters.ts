@@ -3,23 +3,47 @@
  * Genutzt ab Phase 4 (Termine-Sektion mit Monats-Karten, Handoff §5.1.3).
  */
 
+// Cloudflare Workers läuft in UTC; Storyblok speichert Datetime in UTC. Ohne explizite
+// timeZone würden Termine, deren UTC-Zeit nach 22 Uhr läuft, auf der Live-Site einen
+// Tag zurückspringen. Berlin pinnen → konsistent für die deutsche Zielgruppe.
+const TZ = 'Europe/Berlin';
+
 const DATE_LONG = new Intl.DateTimeFormat('de-DE', {
   day: '2-digit',
   month: 'long',
   year: 'numeric',
+  timeZone: TZ,
 });
 
 const DATE_SHORT = new Intl.DateTimeFormat('de-DE', {
   day: '2-digit',
   month: '2-digit',
   year: 'numeric',
+  timeZone: TZ,
 });
 
-const MONTH = new Intl.DateTimeFormat('de-DE', { month: 'long', year: 'numeric' });
-const WEEKDAY_SHORT = new Intl.DateTimeFormat('de-DE', { weekday: 'short' });
-const DAY = new Intl.DateTimeFormat('de-DE', { day: '2-digit' });
+const MONTH = new Intl.DateTimeFormat('de-DE', {
+  month: 'long',
+  year: 'numeric',
+  timeZone: TZ,
+});
+const WEEKDAY_SHORT = new Intl.DateTimeFormat('de-DE', { weekday: 'short', timeZone: TZ });
+const DAY = new Intl.DateTimeFormat('de-DE', { day: '2-digit', timeZone: TZ });
 
-function toDate(input: Date | string): Date {
+// Für Berlin-Day-Vergleiche (z. B. „selber Tag?")
+const DAY_KEY = new Intl.DateTimeFormat('de-DE', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  timeZone: TZ,
+});
+
+/** Ist `a` derselbe Kalendertag wie `b` in Europe/Berlin? */
+export function isSameDayBerlin(a: Date | string, b: Date | string): boolean {
+  return DAY_KEY.format(toDate(a)) === DAY_KEY.format(toDate(b));
+}
+
+export function toDate(input: Date | string): Date {
   return typeof input === 'string' ? new Date(input) : input;
 }
 

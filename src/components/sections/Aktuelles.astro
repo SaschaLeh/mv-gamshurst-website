@@ -1,0 +1,95 @@
+---
+import { getCollection } from 'astro:content';
+import PostCard from '../cards/PostCard.astro';
+
+export interface AktuellesBlock {
+  headline?: string;
+}
+
+interface Props {
+  block: AktuellesBlock;
+}
+
+const { block } = Astro.props;
+const headline = block.headline?.trim() || 'Neuigkeiten & Bekanntmachungen';
+
+const allPosts = await getCollection('post');
+// publishedAt absteigend — neueste zuerst (Plan §Phase 4, Handoff §10.1).
+const sorted = [...allPosts].sort((a, b) => {
+  const aDate = a.data.publishedAt ? +new Date(a.data.publishedAt) : 0;
+  const bDate = b.data.publishedAt ? +new Date(b.data.publishedAt) : 0;
+  return bDate - aDate;
+});
+const [featured, ...rest] = sorted;
+const gridPosts = rest.slice(0, 4);
+---
+{sorted.length > 0 && (
+  <section class="aktuelles" id="aktuelles">
+    <div class="container">
+      <header class="aktuelles-head">
+        <div>
+          <p class="eyebrow">Aktuelles</p>
+          <h2>{headline}</h2>
+        </div>
+        <a class="aktuelles-link" href="/aktuelles">Alle Beiträge →</a>
+      </header>
+
+      {featured && (
+        <div class="aktuelles-featured">
+          <PostCard post={featured.data} variant="featured" />
+        </div>
+      )}
+
+      {gridPosts.length > 0 && (
+        <div class="aktuelles-grid">
+          {gridPosts.map((post) => <PostCard post={post.data} />)}
+        </div>
+      )}
+    </div>
+  </section>
+)}
+
+<style>
+  .aktuelles {
+    background: var(--color-card);
+    border-radius: var(--radius-section) var(--radius-section) 0 0;
+    padding-block: var(--section-pad-y);
+    margin-top: clamp(32px, 5vw, 64px);
+  }
+
+  .aktuelles-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: clamp(24px, 4vw, 40px);
+  }
+
+  .aktuelles-head h2 {
+    margin-top: 0.5rem;
+    max-width: 18ch;
+  }
+
+  .aktuelles-link {
+    color: var(--color-petrol-medium);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-body-sm);
+    transition: color var(--transition-fast);
+  }
+
+  .aktuelles-link:hover,
+  .aktuelles-link:focus-visible {
+    color: var(--color-primary);
+  }
+
+  .aktuelles-featured {
+    margin-bottom: clamp(24px, 4vw, 40px);
+  }
+
+  .aktuelles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+    gap: clamp(16px, 2vw, 28px);
+  }
+</style>

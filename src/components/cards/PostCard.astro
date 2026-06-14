@@ -1,0 +1,168 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { imgUrl } from '../../lib/storyblok';
+import { formatDate } from '../../lib/formatters';
+
+interface Props {
+  post: CollectionEntry<'post'>['data'];
+  variant?: 'standard' | 'featured';
+}
+
+const CATEGORY_COLORS: Record<string, string> = {
+  Konzert: 'var(--color-wappen-blau)',
+  Fest: 'var(--color-cat-fest)',
+  Festwochenende: 'var(--color-cat-fest-alt)',
+  Brassparty: 'var(--color-cat-brassparty)',
+  Verein: 'var(--color-petrol-medium)',
+  Sonstiges: 'var(--color-text-muted)',
+};
+
+const { post, variant = 'standard' } = Astro.props;
+const href = `/${post._meta.full_slug}`;
+const badgeColor = CATEGORY_COLORS[post.category ?? 'Sonstiges'] ?? CATEGORY_COLORS.Sonstiges;
+const date = post.publishedAt ? formatDate(post.publishedAt, 'long') : '';
+---
+<article class={`post-card post-card--${variant}`}>
+  <a href={href} class="post-card-link" aria-label={post.title}>
+    <div class={`post-card-media ${!post.coverImage?.filename ? 'post-card-media--placeholder' : ''}`}>
+      {post.coverImage?.filename && (
+        <img
+          src={imgUrl(post.coverImage, { width: 800, height: 540, format: 'webp' })}
+          srcset={`${imgUrl(post.coverImage, { width: 400, height: 270, format: 'webp' })} 400w, ${imgUrl(post.coverImage, { width: 800, height: 540, format: 'webp' })} 800w, ${imgUrl(post.coverImage, { width: 1200, height: 810, format: 'webp' })} 1200w`}
+          sizes={variant === 'featured' ? '(min-width: 860px) 50vw, 90vw' : '(min-width: 860px) 25vw, 90vw'}
+          alt={post.coverImage.alt ?? ''}
+          loading="lazy"
+          width="800"
+          height="540"
+        />
+      )}
+    </div>
+    <div class="post-card-body">
+      <div class="post-card-meta">
+        {post.category && (
+          <span class="post-card-badge" style={`background:${badgeColor}`}>{post.category}</span>
+        )}
+        {date && <time datetime={post.publishedAt}>{date}</time>}
+      </div>
+      <h3 class="post-card-title">{post.title}</h3>
+      {post.excerpt && <p class="post-card-excerpt">{post.excerpt}</p>}
+    </div>
+  </a>
+</article>
+
+<style>
+  .post-card {
+    background: var(--color-card);
+    border-radius: var(--radius-card-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-card-sm);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .post-card-link {
+    display: block;
+    color: inherit;
+    height: 100%;
+  }
+
+  .post-card-media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--color-card-alt-2);
+  }
+
+  .post-card-media--placeholder {
+    background: linear-gradient(
+      135deg,
+      var(--color-petrol-gradient-1),
+      var(--color-petrol-gradient-2)
+    );
+  }
+
+  .post-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+  }
+
+  .post-card:hover .post-card-media img {
+    transform: scale(1.03);
+  }
+
+  .post-card-body {
+    padding: 1.25rem 1.4rem 1.5rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .post-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: var(--fs-eyebrow);
+    color: var(--color-text-muted);
+  }
+
+  .post-card-badge {
+    display: inline-block;
+    color: var(--color-nav-link-hover);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-pill);
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.6875rem;
+  }
+
+  .post-card-title {
+    font-size: var(--fs-card-title);
+    color: var(--color-text-heading);
+    line-height: 1.3;
+    font-weight: var(--fw-bold);
+  }
+
+  .post-card-excerpt {
+    color: var(--color-text-body);
+    font-size: var(--fs-body-sm);
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-clamp: 3;
+    overflow: hidden;
+  }
+
+  /* Featured: zweispaltig auf Desktop */
+  .post-card--featured {
+    border-radius: var(--radius-card-lg);
+  }
+
+  @media (min-width: 860px) {
+    .post-card--featured .post-card-link {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+    }
+
+    .post-card--featured .post-card-media {
+      aspect-ratio: auto;
+      height: 100%;
+      min-height: 320px;
+    }
+
+    .post-card--featured .post-card-body {
+      padding: 2rem 2.25rem;
+      align-content: center;
+    }
+
+    .post-card--featured .post-card-title {
+      font-size: clamp(20px, 1.6vw, 26px);
+    }
+  }
+</style>

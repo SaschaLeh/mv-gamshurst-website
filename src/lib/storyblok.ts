@@ -7,10 +7,11 @@ export { renderRichText } from '@storyblok/astro';
 
 export interface StoryblokAsset {
   filename: string;
-  alt?: string;
-  title?: string;
-  focus?: string;
-  id?: number;
+  alt?: string | null;
+  title?: string | null;
+  focus?: string | null;
+  id?: number | null;
+  name?: string;
 }
 
 interface ImgOptions {

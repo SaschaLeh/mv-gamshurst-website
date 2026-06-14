@@ -1,0 +1,275 @@
+---
+import { imgUrl } from '../../lib/storyblok';
+import type { StoryblokAsset } from '../../lib/storyblok';
+
+export interface HeroBlock {
+  eyebrow?: string;
+  headline?: string;
+  /** Optionales CMS-Feld: welches Wort der headline bekommt den Gold-Marker.
+   *  Wenn leer, fällt's auf das letzte Wort der Headline zurück. */
+  markerWord?: string;
+  intro?: string;
+  imagePrimary?: StoryblokAsset;
+  imageSecondary?: StoryblokAsset;
+}
+
+interface Props {
+  block: HeroBlock;
+}
+
+const { block } = Astro.props;
+
+// Defaults aus Handoff §5.1.1 — greifen, solange Redakteur die CMS-Felder leer lässt.
+const eyebrow = block.eyebrow?.trim() || '● 100 Jahre Blasmusik · 1925–2025';
+const headlineRaw = block.headline?.trim() || 'Blasmusik aus Gamshurst';
+const intro =
+  block.intro?.trim() ||
+  'Wir feiern, musizieren und tragen die Blasmusik aus dem Acherner Stadtteil in die Region. Seit fünf Generationen.';
+
+// Gold-Marker: bevorzugt CMS-Feld `markerWord`, sonst letztes Wort der Headline.
+const markerWord = block.markerWord?.trim();
+let headlineLead: string;
+let headlineMark: string;
+if (markerWord && headlineRaw.includes(markerWord)) {
+  const idx = headlineRaw.lastIndexOf(markerWord);
+  headlineLead = headlineRaw.slice(0, idx).trimEnd();
+  headlineMark = headlineRaw.slice(idx);
+} else {
+  const lastSpace = headlineRaw.lastIndexOf(' ');
+  headlineLead = lastSpace > -1 ? headlineRaw.slice(0, lastSpace) : '';
+  headlineMark = lastSpace > -1 ? headlineRaw.slice(lastSpace + 1) : headlineRaw;
+}
+
+const primary = block.imagePrimary?.filename ? block.imagePrimary : null;
+const secondary = block.imageSecondary?.filename ? block.imageSecondary : null;
+
+if (import.meta.env.DEV) {
+  if (primary && !primary.alt) {
+    console.warn('[Hero] imagePrimary hat kein alt-Attribut — bitte in Storyblok ergänzen.');
+  }
+  if (secondary && !secondary.alt) {
+    console.warn('[Hero] imageSecondary hat kein alt-Attribut — bitte in Storyblok ergänzen.');
+  }
+}
+---
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">{eyebrow}</p>
+      <h1 class="hero-headline">
+        {headlineLead && <>{headlineLead} </>}
+        <span class="hero-mark">{headlineMark}</span>
+      </h1>
+      <p class="hero-intro">{intro}</p>
+      <div class="hero-actions">
+        <a class="btn btn--primary" href="/#termine">Termine ansehen</a>
+        <a class="btn btn--outline" href="/#aktuelles">Aktuelles</a>
+      </div>
+    </div>
+
+    <div class="hero-collage" aria-hidden={primary || secondary ? undefined : 'true'}>
+      <div class={`hero-tile hero-tile--primary ${!primary ? 'hero-tile--placeholder' : ''}`}>
+        {primary && (
+          <img
+            src={imgUrl(primary, { width: 720, height: 900, format: 'webp' })}
+            srcset={`${imgUrl(primary, { width: 480, height: 600, format: 'webp' })} 480w, ${imgUrl(primary, { width: 720, height: 900, format: 'webp' })} 720w, ${imgUrl(primary, { width: 1080, height: 1350, format: 'webp' })} 1080w`}
+            sizes="(min-width: 860px) 40vw, 90vw"
+            alt={primary.alt || 'Foto vom Musikverein Gamshurst'}
+            loading="eager"
+            width="720"
+            height="900"
+          />
+        )}
+      </div>
+      <div class={`hero-tile hero-tile--secondary ${!secondary ? 'hero-tile--placeholder' : ''}`}>
+        {secondary && (
+          <img
+            src={imgUrl(secondary, { width: 480, height: 600, format: 'webp' })}
+            srcset={`${imgUrl(secondary, { width: 320, height: 400, format: 'webp' })} 320w, ${imgUrl(secondary, { width: 480, height: 600, format: 'webp' })} 480w`}
+            sizes="(min-width: 860px) 26vw, 60vw"
+            alt={secondary.alt || 'Foto vom Musikverein Gamshurst'}
+            loading="lazy"
+            width="480"
+            height="600"
+          />
+        )}
+      </div>
+      <div class="hero-badge" aria-hidden="true">
+        <span>seit</span>
+        <strong>1925</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(40px, 6vw, 88px) clamp(48px, 7vw, 96px);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+  }
+
+  @media (max-width: 859.98px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-card);
+    color: var(--color-text-heading);
+    padding: 0.45rem 0.95rem;
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-eyebrow);
+    font-weight: var(--fw-semibold);
+    box-shadow: var(--shadow-card-sm);
+  }
+
+  .hero-headline {
+    margin-top: 1rem;
+    color: var(--color-text-heading);
+  }
+
+  .hero-mark {
+    position: relative;
+    white-space: nowrap;
+    isolation: isolate;
+  }
+
+  .hero-mark::before {
+    content: '';
+    position: absolute;
+    left: -0.05em;
+    right: -0.05em;
+    bottom: 0.12em;
+    height: 0.32em;
+    background: var(--color-gold);
+    z-index: -1;
+    border-radius: 4px;
+  }
+
+  .hero-intro {
+    margin-top: 1.25rem;
+    max-width: 52ch;
+    color: var(--color-text-body);
+    font-size: clamp(16px, 1.1vw, 18px);
+  }
+
+  .hero-actions {
+    margin-top: 1.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.85rem 1.4rem;
+    border-radius: var(--radius-pill);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-body-sm);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+      background var(--transition-fast), color var(--transition-fast);
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn--primary {
+    background: var(--color-primary);
+    color: var(--color-nav-link-hover);
+    box-shadow: var(--shadow-button);
+  }
+
+  .btn--primary:hover {
+    background: var(--color-petrol-deep);
+  }
+
+  .btn--outline {
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .btn--outline:hover {
+    background: var(--color-primary);
+    color: var(--color-nav-link-hover);
+  }
+
+  /* Foto-Collage rechts */
+  .hero-collage {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    max-height: 640px;
+  }
+
+  .hero-tile {
+    position: absolute;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card-lg);
+  }
+
+  .hero-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-tile--primary {
+    inset: 0 16% 22% 0;
+  }
+
+  .hero-tile--secondary {
+    inset: 28% 0 0 22%;
+  }
+
+  .hero-tile--placeholder {
+    background: linear-gradient(
+      135deg,
+      var(--color-petrol-gradient-1),
+      var(--color-petrol-gradient-2)
+    );
+  }
+
+  .hero-tile--secondary.hero-tile--placeholder {
+    background: linear-gradient(135deg, var(--color-cyan), var(--color-petrol-medium));
+  }
+
+  .hero-badge {
+    position: absolute;
+    right: -8px;
+    bottom: 8%;
+    background: var(--color-gold);
+    color: var(--color-petrol-deep);
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    transform: rotate(-8deg);
+    box-shadow: var(--shadow-button);
+    display: grid;
+    place-items: center;
+    line-height: 1;
+    text-align: center;
+    font-weight: var(--fw-bold);
+  }
+
+  .hero-badge span {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .hero-badge strong {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    margin-top: 0.1rem;
+  }
+</style>
