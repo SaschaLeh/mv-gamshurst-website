@@ -115,6 +115,17 @@ const album = defineCollection({
       date: z.string(),
       coverImage: asset,
       photos: z.array(asset).default([]),
+      videoAssets: z.array(asset).default([]),
+      videoLinks: z
+        .array(
+          z
+            .object({
+              url: z.string().default(''),
+              title: z.string().default(''),
+            })
+            .passthrough(),
+        )
+        .default([]),
       featured: z.boolean().default(false),
       sortOrder: z.number().default(0),
     })

@@ -1,0 +1,196 @@
+---
+import { imgUrl } from '../../lib/storyblok';
+import type { StoryblokAsset } from '../../lib/storyblok';
+import { extractYouTubeId, youtubeThumbnail, youtubeWatchUrl } from '../../lib/youtube';
+
+interface VideoLink {
+  url: string;
+  title?: string;
+}
+
+interface Props {
+  videoAssets?: StoryblokAsset[];
+  videoLinks?: VideoLink[];
+  albumCover?: StoryblokAsset;
+  albumTitle?: string;
+}
+
+const { videoAssets = [], videoLinks = [], albumCover, albumTitle } = Astro.props;
+
+const youtubeCards = videoLinks
+  .map((link) => {
+    const id = extractYouTubeId(link.url);
+    if (!id) {
+      if (import.meta.env.DEV) {
+        console.warn(`[VideoSection] Konnte YouTube-ID aus URL nicht extrahieren: ${link.url}`);
+      }
+      return null;
+    }
+    return { id, title: link.title?.trim() ?? '' };
+  })
+  .filter((v): v is { id: string; title: string } => v !== null);
+
+const hasContent = videoAssets.length > 0 || youtubeCards.length > 0;
+const posterUrl = albumCover ? imgUrl(albumCover, { width: 800, format: 'webp' }) : undefined;
+---
+{hasContent && (
+  <section class="album-videos">
+    <h2 class="eyebrow">Videos</h2>
+    <div class="video-grid">
+      {videoAssets.map((asset) => (
+        <figure class="video-card video-card--inline">
+          <video
+            controls
+            preload="metadata"
+            playsinline
+            poster={posterUrl}
+          >
+            <source src={asset.filename} type="video/mp4" />
+            Dein Browser unterstützt das Video-Tag nicht.
+          </video>
+          {(asset.title || asset.name) && (
+            <figcaption>{asset.title || asset.name}</figcaption>
+          )}
+        </figure>
+      ))}
+      {youtubeCards.map(({ id, title }) => (
+        <figure class="video-card video-card--external">
+          <a
+            href={youtubeWatchUrl(id)}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${title || 'Video'}${albumTitle ? ` aus ${albumTitle}` : ''} auf YouTube ansehen`}
+          >
+            <span class="video-thumb">
+              <img
+                src={youtubeThumbnail(id)}
+                alt={title || 'YouTube-Video'}
+                loading="lazy"
+                width="480"
+                height="360"
+              />
+              <span class="video-play" aria-hidden="true">
+                <svg viewBox="0 0 68 48" focusable="false" aria-hidden="true">
+                  <path
+                    d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z"
+                    fill="#FF0000"
+                  />
+                  <path d="M27 34V14l18 10-18 10z" fill="#fff" />
+                </svg>
+              </span>
+              <span class="video-badge">YouTube</span>
+            </span>
+            {title && <figcaption>{title}</figcaption>}
+          </a>
+        </figure>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .album-videos {
+    margin-top: clamp(40px, 5vw, 64px);
+  }
+
+  .album-videos > .eyebrow {
+    margin-bottom: 1.25rem;
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+    gap: clamp(16px, 2vw, 24px);
+  }
+
+  .video-card {
+    margin: 0;
+    background: var(--color-card);
+    border-radius: var(--radius-card-sm);
+    overflow: hidden;
+    box-shadow: var(--shadow-card-sm);
+  }
+
+  .video-card video {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: #000;
+    display: block;
+  }
+
+  .video-card figcaption {
+    padding: 0.85rem 1rem 1rem;
+    color: var(--color-text-heading);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-body-sm);
+    line-height: 1.4;
+  }
+
+  .video-card--external a {
+    display: block;
+    color: inherit;
+    transition: transform var(--transition-base);
+  }
+
+  .video-card--external a:hover,
+  .video-card--external a:focus-visible {
+    transform: translateY(-2px);
+  }
+
+  .video-thumb {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .video-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+  }
+
+  .video-card--external a:hover .video-thumb img,
+  .video-card--external a:focus-visible .video-thumb img {
+    transform: scale(1.03);
+  }
+
+  .video-play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+
+  .video-play svg {
+    width: clamp(56px, 9vw, 88px);
+    height: auto;
+    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.45));
+    transition: transform var(--transition-base);
+  }
+
+  .video-card--external a:hover .video-play svg,
+  .video-card--external a:focus-visible .video-play svg {
+    transform: scale(1.08);
+  }
+
+  .video-badge {
+    position: absolute;
+    left: 0.6rem;
+    top: 0.6rem;
+    background: rgba(8, 18, 22, 0.78);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(4px);
+  }
+</style>
