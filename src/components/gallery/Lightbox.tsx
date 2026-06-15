@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 export interface LightboxPhoto {
   full: string;
@@ -16,31 +17,73 @@ interface Props {
   albumTitle?: string;
 }
 
+/** Same-Page-View-Transition für Tile↔Lightbox. Browser-Capability + reduced-motion respektieren. */
+function canStartViewTransition(): boolean {
+  if (typeof document === 'undefined') return false;
+  if (typeof document.startViewTransition !== 'function') return false;
+  return !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 export default function Lightbox({ photos, triggerId, albumTitle }: Props) {
   const [index, setIndex] = useState<number | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
   const titleId = useId();
 
-  // Trigger-Buttons (vom Masonry-Astro-Component gerendert) verdrahten.
+  // Click-Handling per Event Delegation auf dem Trigger-Container.
+  // Vorteil: ein Listener; nach-paginierte Tiles funktionieren automatisch.
   useEffect(() => {
-    const triggers = document.querySelectorAll<HTMLButtonElement>(
-      `[data-lightbox-id="${triggerId}"] [data-lightbox-index]`,
+    const container = document.querySelector<HTMLElement>(
+      `[data-lightbox-id="${triggerId}"]`,
     );
+    if (!container) return;
     const handler = (e: Event) => {
-      const target = e.currentTarget as HTMLButtonElement;
-      const i = Number.parseInt(target.dataset.lightboxIndex ?? '0', 10);
-      previouslyFocused.current = target;
-      setIndex(i);
+      const target = e.target as HTMLElement | null;
+      const trigger = target?.closest<HTMLButtonElement>('[data-lightbox-index]');
+      if (!trigger) return;
+      const i = Number.parseInt(trigger.dataset.lightboxIndex ?? '0', 10);
+      if (Number.isNaN(i) || i < 0 || i >= photos.length) return;
+      previouslyFocused.current = trigger;
+      openWithTransition(trigger, i);
     };
-    triggers.forEach((t) => t.addEventListener('click', handler));
-    return () => triggers.forEach((t) => t.removeEventListener('click', handler));
-  }, [triggerId]);
+    container.addEventListener('click', handler);
+    return () => container.removeEventListener('click', handler);
+  }, [triggerId, photos.length]);
+
+  const openWithTransition = (trigger: HTMLButtonElement, i: number) => {
+    const triggerImg = trigger.querySelector<HTMLImageElement>('img');
+    if (!canStartViewTransition() || !triggerImg) {
+      setIndex(i);
+      return;
+    }
+    triggerImg.style.viewTransitionName = 'lb-active';
+    const transition = document.startViewTransition!(() => {
+      flushSync(() => setIndex(i));
+    });
+    transition.finished.finally(() => {
+      triggerImg.style.viewTransitionName = '';
+    });
+  };
 
   const close = useCallback(() => {
-    setIndex(null);
-    previouslyFocused.current?.focus();
-  }, []);
+    if (index === null) return;
+    const currentTile = document.querySelector<HTMLImageElement>(
+      `[data-lightbox-id="${triggerId}"] [data-lightbox-index="${index}"] img`,
+    );
+    if (!canStartViewTransition() || !currentTile) {
+      setIndex(null);
+      previouslyFocused.current?.focus();
+      return;
+    }
+    currentTile.style.viewTransitionName = 'lb-active';
+    const transition = document.startViewTransition!(() => {
+      flushSync(() => setIndex(null));
+    });
+    transition.finished.finally(() => {
+      currentTile.style.viewTransitionName = '';
+      previouslyFocused.current?.focus();
+    });
+  }, [index, triggerId]);
 
   const next = useCallback(() => {
     setIndex((cur) => (cur === null ? cur : (cur + 1) % photos.length));
@@ -64,7 +107,6 @@ export default function Lightbox({ photos, triggerId, albumTitle }: Props) {
         e.preventDefault();
         prev();
       } else if (e.key === 'Tab') {
-        // Fokus-Trap: alle fokussierbaren Elemente im Dialog
         const dialog = dialogRef.current;
         if (!dialog) return;
         const focusables = dialog.querySelectorAll<HTMLElement>(
@@ -85,11 +127,8 @@ export default function Lightbox({ photos, triggerId, albumTitle }: Props) {
       }
     };
     document.addEventListener('keydown', onKey);
-    // Body-Scroll deaktivieren
     const original = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    // Initialer Fokus auf das Figure-Element → Screen Reader liest das alt vor.
-    // React 18+ committet DOM vor Effects → kein setTimeout nötig.
     dialogRef.current?.querySelector<HTMLElement>('.lb-figure')?.focus();
     return () => {
       document.removeEventListener('keydown', onKey);
@@ -97,8 +136,49 @@ export default function Lightbox({ photos, triggerId, albumTitle }: Props) {
     };
   }, [index, close, next, prev]);
 
-  // bfcache-Safety-Net: Falls Browser-Back die Page aus dem bfcache wiederherstellt
-  // während Lightbox offen war, ist body.overflow noch 'hidden'. Reset auf pageshow.
+  // Touch-Swipe: horizontal → prev/next, vertikal nach unten → close.
+  useEffect(() => {
+    if (index === null) return;
+    const figure = dialogRef.current?.querySelector<HTMLElement>('.lb-figure');
+    if (!figure) return;
+    let startX = 0;
+    let startY = 0;
+    let active = false;
+    const onStart = (e: TouchEvent) => {
+      if (e.touches.length !== 1) {
+        active = false;
+        return;
+      }
+      const t = e.touches[0]!;
+      startX = t.clientX;
+      startY = t.clientY;
+      active = true;
+    };
+    const onEnd = (e: TouchEvent) => {
+      if (!active) return;
+      active = false;
+      const t = e.changedTouches[0];
+      if (!t) return;
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      const ax = Math.abs(dx);
+      const ay = Math.abs(dy);
+      if (ax > 50 && ax > ay) {
+        if (dx < 0) next();
+        else prev();
+      } else if (dy > 100 && ay > ax) {
+        close();
+      }
+    };
+    figure.addEventListener('touchstart', onStart, { passive: true });
+    figure.addEventListener('touchend', onEnd, { passive: true });
+    return () => {
+      figure.removeEventListener('touchstart', onStart);
+      figure.removeEventListener('touchend', onEnd);
+    };
+  }, [index, next, prev, close]);
+
+  // bfcache-Safety: body.overflow zurücksetzen, falls Page aus bfcache restored wird.
   useEffect(() => {
     const onPageShow = () => {
       document.body.style.overflow = '';
@@ -119,7 +199,6 @@ export default function Lightbox({ photos, triggerId, albumTitle }: Props) {
       aria-modal="true"
       aria-labelledby={titleId}
       onClick={(e) => {
-        // Klick auf Backdrop schließt; Klicks im Bild oder Buttons nicht.
         if (e.target === e.currentTarget) close();
       }}
     >
@@ -196,12 +275,29 @@ export default function Lightbox({ photos, triggerId, albumTitle }: Props) {
           place-items: center;
           padding: 1rem 4rem;
           overflow: hidden;
+          touch-action: pan-y;
+          /* Grid-Items haben min-height:auto per Default → eine 1fr-Row dehnt sich
+             ans Bild an statt es zu begrenzen. Beides explizit auf 0, damit
+             hochformatige Bilder per max-height in den Viewport passen. */
+          min-height: 0;
+          min-width: 0;
         }
         .lb-image {
+          /* max-block-size in dvh ist nötig, weil max-height:100% in Kombination
+             mit view-transition-name auf einem Grid-Item nicht zuverlässig auf
+             die 1fr-Row aufgelöst wird. max-width:100% relativiert sauber auf
+             den Figure-Content-Bereich (Padding wird berücksichtigt). */
           max-width: 100%;
           max-height: 100%;
+          max-block-size: calc(100dvh - 7rem);
+          width: auto;
+          height: auto;
           object-fit: contain;
           border-radius: 8px;
+          /* Same-Page-View-Transition: persistent identifier nur am Lightbox-Bild.
+             Auf Tile-Seite wird der Name kurz per JS gesetzt, sodass Browser den
+             Morph rechnet. Direkt nach Transition wird der Name auf dem Tile gelöscht. */
+          view-transition-name: lb-active;
         }
         @media (max-width: 640px) {
           .lb-figure { padding: 0.5rem; }
