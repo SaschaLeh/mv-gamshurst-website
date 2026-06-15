@@ -106,9 +106,21 @@ const breadcrumbJsonLd = serializeJsonLd(
           )}
         </section>
 
-        <div class="kontakt-map" aria-hidden="true">
-          <span>Karte / Anfahrt</span>
-        </div>
+        <div
+          id="kontakt-map"
+          class="kontakt-map"
+          role="region"
+          aria-label="Karte: Lange Straße 118, 77855 Achern-Gamshurst"
+          data-lat="48.6626017"
+          data-lon="8.0191027"
+        ></div>
+        <p class="kontakt-map-route">
+          <a
+            href="https://www.openstreetmap.org/?mlat=48.6626017&mlon=8.0191027#map=18/48.6626017/8.0191027"
+            rel="noopener noreferrer"
+            target="_blank"
+          >Route auf OpenStreetMap öffnen →</a>
+        </p>
       </aside>
     </div>
   </div>
@@ -211,12 +223,75 @@ const breadcrumbJsonLd = serializeJsonLd(
 
   .kontakt-map {
     aspect-ratio: 16/10;
-    background: linear-gradient(135deg, var(--color-card-alt-2), var(--color-border));
+    background: var(--color-card-alt-2);
     border-radius: var(--radius-card-lg);
-    display: grid;
-    place-items: center;
-    color: var(--color-text-muted);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  /* Leaflet erbt die Höhe vom Container — sonst rendert es 0x0. */
+  .kontakt-map :global(.leaflet-container) {
+    width: 100%;
+    height: 100%;
+    background: var(--color-card-alt-2);
+    font-family: inherit;
+  }
+  .kontakt-map :global(.leaflet-control-attribution) {
+    font-size: 10px;
+  }
+  /* Custom SVG-Pin in Vereinsfarbe. */
+  .kontakt-pin {
+    color: var(--color-petrol-deepest);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+  .kontakt-map-route {
+    margin-top: 0.75rem;
     font-size: var(--fs-body-sm);
-    font-style: italic;
+    text-align: right;
+  }
+  .kontakt-map-route a {
+    color: var(--color-petrol-medium);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .kontakt-map-route a:hover {
+    color: var(--color-primary);
   }
 </style>
+
+<script>
+  import L from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
+
+  const el = document.getElementById('kontakt-map') as HTMLElement | null;
+  if (el && !el.dataset.initialized) {
+    el.dataset.initialized = 'true';
+    const lat = parseFloat(el.dataset.lat || '0');
+    const lon = parseFloat(el.dataset.lon || '0');
+
+    const map = L.map(el, {
+      center: [lat, lon],
+      zoom: 17,
+      scrollWheelZoom: false,
+    });
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright" rel="noopener" target="_blank">OpenStreetMap</a>',
+      maxZoom: 19,
+    }).addTo(map);
+
+    const pin = L.divIcon({
+      html: `<svg class="kontakt-pin" xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 24 30" aria-hidden="true"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12c0 8.8 12 18 12 18s12-9.2 12-18C24 5.4 18.6 0 12 0zm0 16.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/></svg>`,
+      className: '',
+      iconSize: [32, 40],
+      iconAnchor: [16, 40],
+      popupAnchor: [0, -36],
+    });
+
+    L.marker([lat, lon], { icon: pin })
+      .addTo(map)
+      .bindPopup(
+        '<strong>Musikverein Gamshurst e.V.</strong><br>Lange Straße 118<br>77855 Achern-Gamshurst',
+      );
+  }
+</script>
