@@ -11,7 +11,7 @@ interface Props {
 }
 
 const { block } = Astro.props;
-const headline = block.headline?.trim() || 'Vorstandschaft';
+const headline = block.headline?.trim() || 'Wer den Verein führt';
 
 const members = await getCollection('boardMember');
 // sortOrder aufsteigend; bei Gleichstand Reihenfolge stabil (Index als Tiebreaker).
@@ -21,7 +21,7 @@ const sorted = [...members].sort((a, b) => (a.data.sortOrder ?? 0) - (b.data.sor
   <section class="vorstand" id="vorstand">
     <div class="container">
       <header class="vorstand-head">
-        <p class="eyebrow">Vorstand & Beisitzer</p>
+        <p class="eyebrow">Vorstandschaft</p>
         <h2>{headline}</h2>
       </header>
       <div class="vorstand-grid">
@@ -38,7 +38,6 @@ const sorted = [...members].sort((a, b) => (a.data.sortOrder ?? 0) - (b.data.sor
   }
 
   .vorstand-head {
-    text-align: center;
     margin-bottom: clamp(24px, 4vw, 40px);
   }
 
@@ -48,7 +47,7 @@ const sorted = [...members].sort((a, b) => (a.data.sortOrder ?? 0) - (b.data.sor
 
   .vorstand-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(186px, 1fr));
-    gap: clamp(16px, 2vw, 28px);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: clamp(16px, 2vw, 24px);
   }
 </style>

@@ -42,15 +42,21 @@ const initials = wordInitials.length >= 2 ? wordInitials : member.name.slice(0, 
 
 <style>
   .board-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    padding: 1rem 0.5rem;
+    background: var(--color-card);
+    border-radius: var(--radius-card-sm);
+    box-shadow: var(--shadow-card-sm);
+    padding: 1.5rem 1rem 1.25rem;
   }
 
   .board-avatar {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    margin: 0 auto 0.75rem;
+    margin-bottom: 1rem;
     background: linear-gradient(135deg, var(--color-petrol-gradient-1), var(--color-petrol-gradient-2));
     overflow: hidden;
     display: grid;
@@ -60,6 +66,7 @@ const initials = wordInitials.length >= 2 ? wordInitials : member.name.slice(0, 
     font-weight: var(--fw-extrabold);
     font-size: 1.5rem;
     letter-spacing: 0.03em;
+    flex-shrink: 0;
   }
 
   .board-avatar img {
@@ -68,20 +75,37 @@ const initials = wordInitials.length >= 2 ? wordInitials : member.name.slice(0, 
     object-fit: cover;
   }
 
+  /* Role: tighteres letter-spacing als globaler Eyebrow, damit lange Labels
+     wie "1. Vorstandsteam Mitglied" nicht in 3 Zeilen brechen. Reservierte
+     2-Zeilen-Höhe richtet die Namen über alle Karten hinweg auf gleicher
+     Y-Achse aus. */
   .board-role {
     color: var(--color-petrol-medium);
-    margin-bottom: 0.25rem;
+    letter-spacing: 0.12em;
+    line-height: 1.25;
+    text-wrap: balance;
+    min-height: calc(2 * 1.25em);
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
   }
 
+  /* Reservierte 2-Zeilen-Höhe; Instrumente landen so auf gleicher Baseline. */
   .board-name {
     font-size: var(--fs-card-title);
     color: var(--color-text-heading);
     line-height: 1.3;
+    text-wrap: balance;
+    min-height: calc(2 * 1.3em);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
   }
 
   .board-instrument {
     color: var(--color-text-muted);
     font-size: var(--fs-body-sm);
-    margin-top: 0.2rem;
+    margin-top: 0.25rem;
   }
 </style>
