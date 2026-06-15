@@ -59,7 +59,7 @@ const hasImage = !!block.image?.filename;
   <div class="container verein-grid">
     <div class="verein-copy">
       <p class="eyebrow">Wir über uns</p>
-      <h2>{headline}</h2>
+      <h2 style="view-transition-name: verein-heading; view-transition-class: verein-heading-vt;">{headline}</h2>
       <div class="verein-body prose" set:html={bodyHtml} />
       {kennzahlen.length > 0 && (
         <ul class="verein-stats">
@@ -82,6 +82,7 @@ const hasImage = !!block.image?.filename;
           sizes="(min-width: 860px) 38vw, 90vw"
           alt={block.image.alt || 'Foto vom Musikverein Gamshurst'}
           loading="lazy"
+          style="view-transition-name: verein-cover; view-transition-class: verein-image-vt;"
         />
       ) : null}
     </div>

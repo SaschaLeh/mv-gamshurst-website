@@ -194,6 +194,23 @@ select {
   animation: vt-fade-in 280ms ease-in 120ms both;
 }
 
+/* Verein: natürliche Höhe (Section) → 4:5 cover (Detail).
+   object-fit auf old & new verhindert Verzerrung im Morph. */
+::view-transition-group(.verein-image-vt) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+::view-transition-old(.verein-image-vt),
+::view-transition-new(.verein-image-vt) {
+  object-fit: cover;
+  object-position: center;
+}
+
+::view-transition-group(.verein-heading-vt) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @keyframes vt-fade-out {
   to { opacity: 0; }
 }
