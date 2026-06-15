@@ -1,4 +1,6 @@
 ---
+import { getEntry } from 'astro:content';
+
 const navLinks = [
   { href: '/#aktuelles', label: 'Aktuelles' },
   { href: '/#termine', label: 'Termine' },
@@ -15,6 +17,13 @@ const isActive = (href: string): boolean => {
   if (href.startsWith('/#')) return false;
   return href === currentPath || (href !== '/' && currentPath.startsWith(href));
 };
+
+const settings = await getEntry('siteSettings', 'site-settings');
+const linkHref = (link?: { url?: string; cached_url?: string }): string =>
+  link?.url || link?.cached_url || '';
+const instagramHref = linkHref(settings?.data.instagramUrl);
+const youtubeHref = linkHref(settings?.data.youtubeUrl);
+const hasSocials = Boolean(instagramHref || youtubeHref);
 ---
 <header class="site-header">
   <div class="nav-pill">
@@ -68,6 +77,42 @@ const isActive = (href: string): boolean => {
             Kontakt
           </a>
         </li>
+        {hasSocials && (
+          <li class="nav-socials" aria-label="Social Media">
+            <span class="nav-socials-divider" aria-hidden="true"></span>
+            {instagramHref && (
+              <a
+                href={instagramHref}
+                class="nav-social-link"
+                aria-label="Instagram"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                  <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8" />
+                  <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8" />
+                  <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" />
+                </svg>
+              </a>
+            )}
+            {youtubeHref && (
+              <a
+                href={youtubeHref}
+                class="nav-social-link"
+                aria-label="YouTube"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                  <path
+                    d="M21.6 7.2a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.84.43A2.5 2.5 0 0 0 2.4 7.2C2 8.79 2 12 2 12s0 3.21.4 4.8a2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.84-.43a2.5 2.5 0 0 0 1.76-1.77C22 15.21 22 12 22 12s0-3.21-.4-4.8zM10 15V9l5.2 3L10 15z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+            )}
+          </li>
+        )}
       </ul>
     </nav>
   </div>
@@ -187,6 +232,36 @@ const isActive = (href: string): boolean => {
     box-shadow: var(--shadow-button);
   }
 
+  .nav-socials {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: 0.5rem;
+  }
+
+  .nav-socials-divider {
+    width: 1px;
+    height: 22px;
+    background: rgba(255, 255, 255, 0.18);
+    margin-right: 0.35rem;
+  }
+
+  .nav-social-link {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: var(--color-nav-link);
+    transition: color var(--transition-fast), background var(--transition-fast);
+  }
+
+  .nav-social-link:hover,
+  .nav-social-link:focus-visible {
+    color: var(--color-nav-link-hover);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
   .nav-burger {
     display: none;
     width: 44px;
@@ -260,6 +335,19 @@ const isActive = (href: string): boolean => {
     .nav-cta {
       margin-top: 0.4rem;
       text-align: center;
+    }
+
+    .nav-socials {
+      justify-content: center;
+      margin-left: 0;
+      margin-top: 0.6rem;
+      padding-top: 0.6rem;
+      gap: 0.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .nav-socials-divider {
+      display: none;
     }
 
     /* Burger-Icon zum X morphen wenn Menü offen */
