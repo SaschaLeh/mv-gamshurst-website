@@ -212,6 +212,23 @@ select {
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Album-Card: Cover (3:2 in der Card) → natürliches Hero-Bild (16:9 in Detail).
+   object-fit:cover hält das Verhältnis ohne Verzerrung. */
+::view-transition-group(.album-image-vt) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+::view-transition-old(.album-image-vt),
+::view-transition-new(.album-image-vt) {
+  object-fit: cover;
+  object-position: center;
+}
+
+::view-transition-group(.album-title-vt) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @keyframes vt-fade-out {
   to { opacity: 0; }
 }

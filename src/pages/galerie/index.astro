@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import AlbumCard from '../../components/gallery/AlbumCard.astro';
-import Masonry from '../../components/gallery/Masonry.astro';
+import MasonryPaginated from '../../components/gallery/MasonryPaginated.astro';
 import Lightbox from '../../components/gallery/Lightbox.tsx';
 import { imgUrl } from '../../lib/storyblok';
 import { formatDate } from '../../lib/formatters';
@@ -79,12 +79,15 @@ const breadcrumbJsonLd = serializeJsonLd(
               loading="eager"
               width="1600"
               height="720"
+              style={`view-transition-name: album-cover-${featured.data._meta.slug}; view-transition-class: album-image-vt;`}
             />
           )}
         </div>
         <div class="featured-album-meta">
           <p class="eyebrow featured-album-eyebrow">Featured Album{featured.data.date && !Number.isNaN(new Date(featured.data.date).getTime()) ? ` · ${new Date(featured.data.date).getFullYear()}` : ''}</p>
-          <h2>{featured.data.title || 'Album'}</h2>
+          <h2
+            style={`view-transition-name: album-title-${featured.data._meta.slug}; view-transition-class: album-title-vt;`}
+          >{featured.data.title || 'Album'}</h2>
           <p class="featured-album-info">
             {formatDate(featured.data.date, 'long') && <>{formatDate(featured.data.date, 'long')} · </>}{(featured.data.photos ?? []).length} Fotos
           </p>
@@ -108,12 +111,12 @@ const breadcrumbJsonLd = serializeJsonLd(
           <h2>Alle Fotos</h2>
           <p>{totalPhotos} Fotos aus {albums.length} {albums.length === 1 ? 'Album' : 'Alben'}</p>
         </header>
-        <Masonry photos={allPhotos} lightboxId="galerie-all" showCaptions />
+        <MasonryPaginated photos={allPhotos} lightboxId="galerie-all" showCaptions />
       </section>
     )}
   </div>
 
-  <Lightbox photos={lightboxPhotos} triggerId="galerie-all" client:visible />
+  <Lightbox photos={lightboxPhotos} triggerId="galerie-all" client:idle />
 </Base>
 
 <style>

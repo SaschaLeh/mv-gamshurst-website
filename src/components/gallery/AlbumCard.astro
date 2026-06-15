@@ -25,6 +25,7 @@ const date = album.date ? formatDate(album.date, 'long') : '';
         loading="lazy"
         width="720"
         height="480"
+        style={`view-transition-name: album-cover-${album._meta.slug}; view-transition-class: album-image-vt;`}
       />
     )}
     {photoCount > 0 && (
@@ -34,7 +35,10 @@ const date = album.date ? formatDate(album.date, 'long') : '';
     )}
   </div>
   <div class="album-card-meta">
-    <h3 class="album-card-title">{album.title}</h3>
+    <h3
+      class="album-card-title"
+      style={`view-transition-name: album-title-${album._meta.slug}; view-transition-class: album-title-vt;`}
+    >{album.title}</h3>
     {date && <p class="album-card-date">{date}</p>}
   </div>
 </a>
@@ -76,6 +80,12 @@ const date = album.date ? formatDate(album.date, 'long') : '';
 
   .album-card:hover .album-card-cover img {
     transform: scale(1.03);
+  }
+
+  /* Während aktiver View-Transition Hover-Scale aussetzen,
+     damit das Bild bei Normalgröße gesnapshottet wird. */
+  html:active-view-transition .album-card:hover .album-card-cover img {
+    transform: none;
   }
 
   .album-card-badge {
