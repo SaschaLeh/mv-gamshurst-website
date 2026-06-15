@@ -1,0 +1,199 @@
+---
+import Masonry from './Masonry.astro';
+import { imgUrl } from '../../lib/storyblok';
+import type { StoryblokAsset } from '../../lib/storyblok';
+
+interface MasonryPhoto extends StoryblokAsset {
+  albumTitle?: string;
+}
+
+interface Props {
+  photos: MasonryPhoto[];
+  lightboxId: string;
+  showCaptions?: boolean;
+  /** Render initial diese Anzahl Tiles direkt ins HTML. */
+  initialCount?: number;
+  /** Beim Sentinel-Treffer pro Schritt diese Anzahl nachladen. */
+  batchSize?: number;
+  /** Erst ab dieser Album-Größe greift Sentinel-Pagination — sonst Status-Quo-Render. */
+  threshold?: number;
+}
+
+const {
+  photos,
+  lightboxId,
+  showCaptions = false,
+  initialCount = 60,
+  batchSize = 40,
+  threshold = 80,
+} = Astro.props;
+
+const usePagination = photos.length > threshold;
+const initialPhotos = usePagination ? photos.slice(0, initialCount) : photos;
+const restPhotos = usePagination
+  ? photos.slice(initialCount).map((p) => ({
+      filename: p.filename,
+      alt: p.alt ?? '',
+      title: p.albumTitle ?? '',
+    }))
+  : [];
+const restJson = JSON.stringify(restPhotos);
+---
+{usePagination ? (
+  <div class="masonry-paginated" data-lightbox-id={lightboxId} data-initial-count={initialCount}>
+    {initialPhotos.map((photo, idx) => (
+      <button
+        type="button"
+        class="masonry-tile"
+        data-lightbox-index={idx}
+        aria-label={`Foto ${idx + 1} von ${photos.length}${photo.albumTitle ? ` aus ${photo.albumTitle}` : ''} öffnen`}
+      >
+        <img
+          src={imgUrl(photo, { width: 800, format: 'webp' })}
+          srcset={`${imgUrl(photo, { width: 400, format: 'webp' })} 400w, ${imgUrl(photo, { width: 800, format: 'webp' })} 800w, ${imgUrl(photo, { width: 1200, format: 'webp' })} 1200w`}
+          sizes="(min-width: 860px) 25vw, 45vw"
+          alt={photo.alt || ''}
+          loading="lazy"
+        />
+        {showCaptions && photo.albumTitle && (
+          <span class="masonry-caption">{photo.albumTitle}</span>
+        )}
+      </button>
+    ))}
+    <div class="masonry-sentinel" data-lightbox-sentinel></div>
+    <script
+      type="application/json"
+      data-lightbox-rest
+      is:inline
+      set:html={restJson}
+    />
+    <script is:inline define:vars={{ lightboxId, batchSize, showCaptions }}>
+      (() => {
+        const container = document.querySelector(`.masonry-paginated[data-lightbox-id="${lightboxId}"]`);
+        if (!container) return;
+        const restScript = container.querySelector('script[data-lightbox-rest]');
+        const sentinel = container.querySelector('[data-lightbox-sentinel]');
+        if (!restScript || !sentinel) return;
+        let rest;
+        try {
+          rest = JSON.parse(restScript.textContent || '[]');
+        } catch {
+          rest = [];
+        }
+        const initialCount = Number.parseInt(container.dataset.initialCount || '0', 10) || 0;
+        let cursor = 0;
+
+        const buildSrcset = (filename) => {
+          const base = `${filename}/m`;
+          return `${base}/400x0/filters:format(webp) 400w, ${base}/800x0/filters:format(webp) 800w, ${base}/1200x0/filters:format(webp) 1200w`;
+        };
+
+        const appendBatch = () => {
+          const slice = rest.slice(cursor, cursor + batchSize);
+          if (slice.length === 0) return false;
+          const frag = document.createDocumentFragment();
+          slice.forEach((photo, i) => {
+            const absoluteIdx = initialCount + cursor + i;
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'masonry-tile';
+            btn.dataset.lightboxIndex = String(absoluteIdx);
+            btn.setAttribute(
+              'aria-label',
+              `Foto ${absoluteIdx + 1} öffnen`,
+            );
+            const img = document.createElement('img');
+            img.src = `${photo.filename}/m/800x0/filters:format(webp)`;
+            img.srcset = buildSrcset(photo.filename);
+            img.sizes = '(min-width: 860px) 25vw, 45vw';
+            img.alt = photo.alt || '';
+            img.loading = 'lazy';
+            btn.appendChild(img);
+            if (showCaptions && photo.title) {
+              const cap = document.createElement('span');
+              cap.className = 'masonry-caption';
+              cap.textContent = photo.title;
+              btn.appendChild(cap);
+            }
+            frag.appendChild(btn);
+          });
+          container.insertBefore(frag, sentinel);
+          cursor += slice.length;
+          return cursor < rest.length;
+        };
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              const more = appendBatch();
+              if (!more) {
+                observer.disconnect();
+                sentinel.remove();
+              }
+            }
+          },
+          { rootMargin: '600px 0px' },
+        );
+        observer.observe(sentinel);
+      })();
+    </script>
+  </div>
+) : (
+  <Masonry photos={photos} lightboxId={lightboxId} showCaptions={showCaptions} />
+)}
+
+<style>
+  .masonry-paginated {
+    column-width: 248px;
+    column-gap: clamp(8px, 1.2vw, 16px);
+  }
+
+  .masonry-paginated .masonry-tile {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 0 0 clamp(8px, 1.2vw, 16px);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    border-radius: var(--radius-card-sm);
+    overflow: hidden;
+    break-inside: avoid;
+    box-shadow: var(--shadow-card-sm);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .masonry-paginated .masonry-tile:hover,
+  .masonry-paginated .masonry-tile:focus-visible {
+    transform: scale(1.012);
+    box-shadow: var(--shadow-card);
+  }
+
+  .masonry-paginated .masonry-tile img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .masonry-paginated .masonry-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1.25rem 0.75rem 0.55rem;
+    background: linear-gradient(180deg, transparent, rgba(15, 46, 54, 0.78));
+    color: var(--color-nav-link-hover);
+    font-size: var(--fs-body-sm);
+    font-weight: var(--fw-semibold);
+  }
+
+  .masonry-sentinel {
+    /* Sentinel braucht eine Mindesthöhe, sonst kann break-inside in der Masonry-Spalte
+       komische Effekte haben. Inhaltlich leer; column-span:all sorgt für korrekte
+       IO-Intersection unabhängig von den Spalten. */
+    column-span: all;
+    height: 1px;
+  }
+</style>
