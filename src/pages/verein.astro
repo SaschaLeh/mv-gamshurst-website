@@ -1,0 +1,193 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { imgUrl } from '../lib/storyblok';
+import type { StoryblokAsset } from '../lib/storyblok';
+import type { HeroBlock } from '../components/sections/Hero.astro';
+
+interface SectionBlock {
+  component: string;
+  [key: string]: unknown;
+}
+
+// Bilder kommen aus dem gleichen heroSection-Block der Homepage —
+// einzige Edit-Stelle im CMS, keine Duplikate.
+const home = await getEntry('home', 'home');
+const sections: SectionBlock[] = (home?.data.sections ?? []) as SectionBlock[];
+const hero = sections.find((s) => s.component === 'heroSection') as
+  | HeroBlock
+  | undefined;
+
+const primary: StoryblokAsset | null = hero?.imagePrimary?.filename
+  ? hero.imagePrimary
+  : null;
+const secondary: StoryblokAsset | null = hero?.imageSecondary?.filename
+  ? hero.imageSecondary
+  : null;
+---
+<Base
+  title="Unsere Geschichte"
+  description="Die Geschichte des Musikvereins Gamshurst seit der Gründung 1925."
+>
+  <article class="verein-page">
+    <div class="container verein-head">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Start</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Unsere Geschichte</span>
+      </nav>
+      <p class="eyebrow">Seit 1925</p>
+      <h1>Unsere Geschichte</h1>
+      <p class="verein-lead">
+        100 Jahre Blasmusik aus dem Acherner Stadtteil — von der Gründungsversammlung im
+        Gasthaus „Rössel" bis zur Kapelle von heute.
+      </p>
+    </div>
+
+    {(primary || secondary) && (
+      <div class="container verein-images">
+        {primary && (
+          <figure class="verein-img verein-img--primary">
+            <img
+              src={imgUrl(primary, { width: 960, height: 1200, format: 'webp' })}
+              srcset={`${imgUrl(primary, { width: 480, height: 600, format: 'webp' })} 480w, ${imgUrl(primary, { width: 960, height: 1200, format: 'webp' })} 960w, ${imgUrl(primary, { width: 1440, height: 1800, format: 'webp' })} 1440w`}
+              sizes="(min-width: 860px) 48vw, 90vw"
+              alt={primary.alt || 'Foto vom Musikverein Gamshurst'}
+              loading="lazy"
+              width="960"
+              height="1200"
+            />
+          </figure>
+        )}
+        {secondary && (
+          <figure class="verein-img verein-img--secondary">
+            <img
+              src={imgUrl(secondary, { width: 720, height: 900, format: 'webp' })}
+              srcset={`${imgUrl(secondary, { width: 360, height: 450, format: 'webp' })} 360w, ${imgUrl(secondary, { width: 720, height: 900, format: 'webp' })} 720w, ${imgUrl(secondary, { width: 1080, height: 1350, format: 'webp' })} 1080w`}
+              sizes="(min-width: 860px) 36vw, 80vw"
+              alt={secondary.alt || 'Foto vom Musikverein Gamshurst'}
+              loading="lazy"
+              width="720"
+              height="900"
+            />
+          </figure>
+        )}
+      </div>
+    )}
+
+    <div class="container container--reading verein-body">
+      <p>
+        Zu Beginn des 20. Jahrhunderts gab es in Gamshurst noch keinen Musikverein. Zu jedem
+        Patrozinium und auch zu Fasching mussten auswärtige Kapellen nach Gamshurst eingeladen
+        werden. Aus diesem Anlass fand am 26. Februar 1925 eine Vorbesprechung zur Bildung eines
+        Musikvereines in Gamshurst statt.
+      </p>
+      <p>
+        Die Gründungsversammlung wurde dann am 01. März 1925 im ehemaligen Gasthaus „Rössel"
+        abgehalten. Als Dirigent konnte Adolf Settler aus Achern gewonnen werden, der seine
+        Dirigentenleistungen ganz ohne finanzielle Forderungen ausübte. Die erste Kapelle bestand
+        aus insgesamt 18 Musikern, welche in einem Nebenzimmer des Gasthauses „Hirsch" proben
+        konnten. Auch waren ca. 20 Personen bereit, den neu gegründeten Verein als passive
+        Mitglieder zu unterstützen. Dies war zur damaligen Zeit eine ganz stattliche Anzahl.
+      </p>
+      <p>
+        Der erste öffentliche Auftritt der Kapelle fand noch im gleichen Jahr zum Nikolausfest am
+        06. Dezember 1925 statt. Trotz der damaligen sehr schlechten Wirtschaftslage entwickelte
+        sich der Verein ständig weiter und konnte die jeweiligen Jahresfeste in Gamshurst immer
+        musikalisch umrahmen. Bis zum Kriegsbeginn 1939 hatte die Kapelle vielseitige Auftritte
+        kirchlicher und weltlicher Art. Mit Kriegsbeginn musste der Verein seine Proben einstellen.
+        Es begann ein schwieriger Weg, nicht nur beim Musikverein.
+      </p>
+      <p>
+        Am 30. März 1947 versammelte man sich – abermals im Gasthaus „Hirsch" – um den Musikverein
+        wieder ins Leben zu rufen. 17 Musiker begannen erneut unter der musikalischen Leitung von
+        Adolf Settler mit den Proben.
+      </p>
+      <p>
+        Im Jahr 1955 wurde dann die erste Uniform für die Kapelle angeschafft. Der erste Auftritt
+        im neuen Outfit fand bei der Fronleichnamsprozession 1955 statt. Im Laufe der Jahre hat
+        sich der Verein an mehreren Wettbewerben beteiligt und dabei gute und hervorragende
+        Auszeichnungen erhalten, u. a. z. B. beim neunten internationalen Blasmusikwettbewerb in
+        Prag und Brünn im Januar 1989, bei welchem der Musikverein den zweiten Platz errang und
+        mit dem silbernen Preis der Jury ausgezeichnet wurde.
+      </p>
+      <p>
+        Bis heute entwickelt sich der Verein ständig weiter. Ein wichtiges Augenmerk legen die
+        Verantwortlichen des Musikvereins dabei auf die Förderung bzw. Ausbildung der Kinder und
+        Jugendlichen. Das Durchschnittsalter der Kapelle mit zurzeit 55 aktiven Musikern beträgt
+        30,19 Jahre.
+      </p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .verein-page {
+    padding-block: clamp(40px, 5vw, 72px) clamp(64px, 8vw, 96px);
+  }
+
+  .breadcrumb {
+    display: flex;
+    gap: 0.5rem;
+    font-size: var(--fs-body-sm);
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+  .breadcrumb a { color: var(--color-petrol-medium); }
+  .breadcrumb a:hover { color: var(--color-primary); }
+
+  .verein-head {
+    max-width: var(--content-max);
+  }
+  .verein-head .eyebrow {
+    margin-bottom: 0.5rem;
+  }
+  .verein-head h1 {
+    max-width: 16ch;
+  }
+  .verein-lead {
+    margin-top: 1rem;
+    max-width: 52ch;
+    color: var(--color-text-body);
+    font-size: clamp(17px, 1.4vw, 20px);
+    line-height: 1.55;
+  }
+
+  .verein-images {
+    margin-top: clamp(32px, 4vw, 56px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(16px, 2vw, 28px);
+    align-items: stretch;
+  }
+  @media (max-width: 859.98px) {
+    .verein-images {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .verein-img {
+    margin: 0;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-card-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-card-lg);
+    background: var(--color-card-alt-2);
+  }
+  .verein-img img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .verein-body {
+    margin-top: clamp(40px, 5vw, 64px);
+    color: var(--color-text-body);
+    font-size: clamp(16px, 1.1vw, 18px);
+    line-height: 1.75;
+  }
+  .verein-body p + p {
+    margin-top: 1.1rem;
+  }
+</style>
