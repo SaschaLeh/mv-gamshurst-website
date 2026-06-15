@@ -13,7 +13,7 @@ const ORG_DEFAULTS = {
   alternateName: 'MV Gamshurst',
   foundingDate: '1925',
   genre: 'Blasmusik',
-  logoPath: '/favicon.svg',
+  logoPath: '/assets/logo-horizontal.png',
   defaultOgImage: '/og-default.png',
 } as const;
 
