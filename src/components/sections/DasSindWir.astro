@@ -25,7 +25,7 @@ const { block } = Astro.props;
 const headline = block.headline?.trim() || 'Das sind wir';
 const fallbackBodyHtml = `
   <p>Seit 1925 spielt der Musikverein Gamshurst aus dem Acherner Stadtteil heraus. Vom Jugendorchester bis zum Hauptorchester treten wir das ganze Jahr über bei Konzerten, kirchlichen Festen und in der Region auf.</p>
-  <p>Wir proben jeden Dienstag und freuen uns über jeden, der mitmachen, zuhören oder einfach vorbeischauen will.</p>
+  <p>Wir proben jeden Dienstag und freuen uns über jeden, der mitmachen will.</p>
 `;
 function hasRealRichtext(doc: VereinBlock['body']): doc is NonNullable<VereinBlock['body']> {
   if (!doc || !Array.isArray(doc.content)) return false;
@@ -77,13 +77,11 @@ const hasImage = !!block.image?.filename;
     <div class={`verein-image ${!hasImage ? 'verein-image--placeholder' : ''}`}>
       {hasImage && block.image ? (
         <img
-          src={imgUrl(block.image, { width: 720, height: 900, format: 'webp' })}
-          srcset={`${imgUrl(block.image, { width: 480, height: 600, format: 'webp' })} 480w, ${imgUrl(block.image, { width: 720, height: 900, format: 'webp' })} 720w`}
+          src={imgUrl(block.image, { width: 720, format: 'webp' })}
+          srcset={`${imgUrl(block.image, { width: 480, format: 'webp' })} 480w, ${imgUrl(block.image, { width: 720, format: 'webp' })} 720w, ${imgUrl(block.image, { width: 1080, format: 'webp' })} 1080w`}
           sizes="(min-width: 860px) 38vw, 90vw"
           alt={block.image.alt || 'Foto vom Musikverein Gamshurst'}
           loading="lazy"
-          width="720"
-          height="900"
         />
       ) : null}
     </div>
@@ -172,19 +170,22 @@ const hasImage = !!block.image?.filename;
   }
 
   .verein-image {
-    aspect-ratio: 4 / 5;
     border-radius: var(--radius-card-lg);
     overflow: hidden;
     box-shadow: var(--shadow-card-lg);
   }
 
+  /* Bild gibt seine eigene Höhe vor — keine Crops. Wenn ein Redakteur
+     ein extremes Format hochlädt, wächst/schrumpft der Slot mit. */
   .verein-image img {
+    display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
   }
 
+  /* Placeholder hat kein Bild → braucht eine sichtbare Form. */
   .verein-image--placeholder {
+    aspect-ratio: 4 / 5;
     width: 100%;
     background: linear-gradient(135deg, var(--color-petrol-gradient-1), var(--color-cyan));
   }
