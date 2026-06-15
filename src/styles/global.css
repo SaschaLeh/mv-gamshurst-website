@@ -59,6 +59,7 @@ p {
 /* Anker: nur Farbe-Inherit. Unterstreichung ist Komponenten-Sache. */
 a {
   color: inherit;
+  text-decoration: none;
 }
 
 img,
