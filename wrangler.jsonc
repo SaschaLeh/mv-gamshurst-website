@@ -16,9 +16,14 @@
   "kv_namespaces": [
     {
       "binding": "RATE_LIMIT",
-      "id": "REPLACE_WITH_KV_ID_AFTER_CREATE",
-      "preview_id": "REPLACE_WITH_KV_PREVIEW_ID_AFTER_CREATE"
-    }
+      "id": "816c31bf644f401a84dc3996f4cac1ef",
+      "preview_id": "42e793d683ec443c9b5b515f788dbe74",
+    },
+    {
+      "binding": "mv_gamshurst_website_RATE_LIMIT",
+      "id": "3683e5a1a95e46c2ba1eb6cd1baae827",
+      "preview_id": "7d75103ef9ae48109aa090841e2201ba",
+    },
   ],
   // Nicht-secret-Vars (öffentlich). Secrets via `wrangler secret put NAME`:
   //   - RESEND_API_KEY
@@ -32,3 +37,4 @@
     "enabled": true,
   },
 }
+
