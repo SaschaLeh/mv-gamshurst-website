@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "mv-gamshurst",
+  "name": "mv-gamshurst-website",
   // Pin auf bewährtes Datum (nicht heute), damit neue CF-Compat-Flags nicht ungetestet aktiv werden.
   "compatibility_date": "2025-10-01",
   "compatibility_flags": ["nodejs_compat"],
@@ -8,7 +8,7 @@
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
   },
   // KV-Namespace für Rate-Limit am /api/contact-Endpoint.
   // Lokale ID setzen mit:  wrangler kv namespace create RATE_LIMIT
@@ -26,9 +26,9 @@
   //   - STORYBLOK_DELIVERY_TOKEN  (für Build-Hook, falls Workers Builds nicht direkt env-vars liest)
   "vars": {
     "CONTACT_TO": "info@mv-gamshurst.de",
-    "CONTACT_FROM": "onboarding@resend.dev"
+    "CONTACT_FROM": "onboarding@resend.dev",
   },
   "observability": {
-    "enabled": true
-  }
+    "enabled": true,
+  },
 }
