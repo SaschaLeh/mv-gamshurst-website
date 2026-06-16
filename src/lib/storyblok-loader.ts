@@ -17,6 +17,22 @@ interface MakeOptions {
   startsWith?: string;
 }
 
+// Modul-scoped Client → alle Loader teilen sich eine Instanz und damit die SDK-interne
+// Drosselung. Sonst feuert jeder Content-Type parallel mit eigenem Throttle → Rate-Limit.
+let sharedClient: StoryblokClient | null = null;
+function getClient(token: string): StoryblokClient {
+  if (!sharedClient) {
+    sharedClient = new StoryblokClient({
+      accessToken: token,
+      region: 'eu',
+      // Storyblok Free-CDN: 6 req/s. Wir bleiben mit 3 req/s deutlich darunter, damit
+      // mehrere parallel laufende Loader zusammen unterhalb des Limits bleiben.
+      rateLimit: 3,
+    });
+  }
+  return sharedClient;
+}
+
 interface StoryblokStory {
   uuid: string;
   id: number;
@@ -73,7 +89,7 @@ export function makeStoryblokLoader({ contentType, startsWith }: MakeOptions): L
         return;
       }
 
-      const client = new StoryblokClient({ accessToken: token, region: 'eu' });
+      const client = getClient(token);
 
       store.clear();
 
