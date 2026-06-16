@@ -18,6 +18,13 @@ const instagram = linkHref(settings?.data.instagramUrl);
 const facebook = linkHref(settings?.data.facebookUrl);
 const youtube = linkHref(settings?.data.youtubeUrl);
 
+const probelokal = {
+  street: 'Lange Straße 118',
+  city: '77855 Achern-Gamshurst',
+  lat: 48.6626017,
+  lon: 8.0191027,
+};
+
 // Turnstile-Site-Key: PUBLIC_* wird in den Bundle eingebrannt.
 // Dev-Fallback: Cloudflare offizieller Test-Site-Key (immer pass).
 const turnstileSiteKey =
@@ -106,21 +113,28 @@ const breadcrumbJsonLd = serializeJsonLd(
           )}
         </section>
 
-        <div
-          id="kontakt-map"
-          class="kontakt-map"
-          role="region"
-          aria-label="Karte: Lange Straße 118, 77855 Achern-Gamshurst"
-          data-lat="48.6626017"
-          data-lon="8.0191027"
-        ></div>
-        <p class="kontakt-map-route">
-          <a
-            href="https://www.openstreetmap.org/?mlat=48.6626017&mlon=8.0191027#map=18/48.6626017/8.0191027"
-            rel="noopener noreferrer"
-            target="_blank"
-          >Route auf OpenStreetMap öffnen →</a>
-        </p>
+        <section class="kontakt-probe-card" aria-labelledby="kontakt-probe-h">
+          <header class="kontakt-probe-head">
+            <h2 id="kontakt-probe-h" class="kontakt-probe-heading">Hier proben wir</h2>
+            <address class="kontakt-probe-address">
+              <p>{probelokal.street}</p>
+              <p>{probelokal.city}</p>
+            </address>
+          </header>
+          <div
+            id="kontakt-map"
+            class="kontakt-map"
+            data-lat={probelokal.lat}
+            data-lon={probelokal.lon}
+          ></div>
+          <p class="kontakt-map-route">
+            <a
+              href={`https://www.openstreetmap.org/?mlat=${probelokal.lat}&mlon=${probelokal.lon}#map=18/${probelokal.lat}/${probelokal.lon}`}
+              rel="noopener noreferrer"
+              target="_blank"
+            >Route auf OpenStreetMap öffnen →</a>
+          </p>
+        </section>
       </aside>
     </div>
   </div>
@@ -156,10 +170,13 @@ const breadcrumbJsonLd = serializeJsonLd(
     display: grid;
     grid-template-columns: 1.25fr 0.9fr;
     gap: clamp(24px, 4vw, 48px);
-    align-items: start;
+    align-items: stretch;
   }
   @media (max-width: 859.98px) {
-    .kontakt-grid { grid-template-columns: 1fr; }
+    .kontakt-grid {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
   }
 
   .kontakt-form-wrap {
@@ -171,6 +188,7 @@ const breadcrumbJsonLd = serializeJsonLd(
 
   .kontakt-info {
     display: grid;
+    grid-template-rows: auto 1fr;
     gap: 1.25rem;
   }
 
@@ -221,12 +239,43 @@ const breadcrumbJsonLd = serializeJsonLd(
   }
   .kontakt-card-social a:hover { background: rgba(255,255,255,0.16); }
 
-  .kontakt-map {
-    aspect-ratio: 16/10;
-    background: var(--color-card-alt-2);
+  .kontakt-probe-card {
+    background: var(--color-card);
+    padding: clamp(20px, 3vw, 28px);
     border-radius: var(--radius-card-lg);
-    overflow: hidden;
     box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+  }
+  .kontakt-probe-head {
+    margin-bottom: 0.875rem;
+  }
+  .kontakt-probe-heading {
+    font-family: var(--font-display);
+    font-weight: var(--fw-bold);
+    font-size: 1.15rem;
+    margin: 0 0 0.25rem;
+  }
+  .kontakt-probe-address {
+    font-style: normal;
+    font-size: var(--fs-body-sm);
+    color: var(--color-text-body);
+  }
+  .kontakt-probe-address p { margin: 0; line-height: 1.5; }
+
+  .kontakt-map {
+    flex: 1;
+    min-height: 280px;
+    background: var(--color-card-alt-2);
+    border-radius: calc(var(--radius-card-lg) - 8px);
+    overflow: hidden;
+  }
+  @media (max-width: 859.98px) {
+    .kontakt-map {
+      aspect-ratio: 16/10;
+      flex: 0 0 auto;
+      min-height: 0;
+    }
   }
   /* Leaflet erbt die Höhe vom Container — sonst rendert es 0x0. */
   .kontakt-map :global(.leaflet-container) {
@@ -244,7 +293,7 @@ const breadcrumbJsonLd = serializeJsonLd(
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
   }
   .kontakt-map-route {
-    margin-top: 0.75rem;
+    margin: 0.75rem 0 0;
     font-size: var(--fs-body-sm);
     text-align: right;
   }
