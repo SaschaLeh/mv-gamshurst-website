@@ -183,6 +183,7 @@ export default function ContactForm({ turnstileSiteKey, endpoint = '/api/contact
         <button type="button" className="cf-btn cf-btn--primary" onClick={reset}>
           Neue Nachricht
         </button>
+        <style>{CSS}</style>
       </div>
     );
   }
@@ -309,7 +310,14 @@ export default function ContactForm({ turnstileSiteKey, endpoint = '/api/contact
         </p>
       </div>
 
-      <style>{`
+      <style>{CSS}</style>
+    </form>
+  );
+}
+
+// Als Modul-Konstante, damit Formular- UND Success-Zweig dieselben Styles rendern —
+// der Success-Zweig unmountet das <form> und würde einen dort inlinierten <style> verlieren.
+const CSS = `
         .cf-form {
           display: grid;
           gap: 1.25rem;
@@ -434,7 +442,4 @@ export default function ContactForm({ turnstileSiteKey, endpoint = '/api/contact
           font-weight: 700;
         }
         .cf-success h2 { color: var(--color-success-text); }
-      `}</style>
-    </form>
-  );
-}
+      `;
