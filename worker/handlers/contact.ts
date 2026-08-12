@@ -79,7 +79,7 @@ export async function handleContact(
   }
 
   // 5. Mail via Resend (Production) ODER Console-Log (Dev ohne API-Key)
-  const to = env.CONTACT_TO || 'info@mv-gamshurst.de';
+  const to = env.CONTACT_TO || 'kontakt@mv-gamshurst.de';
   const from = env.CONTACT_FROM || 'onboarding@resend.dev';
   const safeSubject = subject || 'Nachricht von der Website';
   const textBody = [

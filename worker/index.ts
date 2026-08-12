@@ -11,7 +11,7 @@ export interface Env {
   RESEND_API_KEY?: string;
   /** Cloudflare Turnstile Server-Secret (per `wrangler secret put TURNSTILE_SECRET`). */
   TURNSTILE_SECRET?: string;
-  /** Ziel-Adresse für eingehende Mails. Default: info@mv-gamshurst.de */
+  /** Ziel-Adresse für eingehende Mails. Default: kontakt@mv-gamshurst.de */
   CONTACT_TO?: string;
   /** Absender-Adresse (muss in Resend verifiziert sein). Default: onboarding@resend.dev (Resend-Sandbox). */
   CONTACT_FROM?: string;

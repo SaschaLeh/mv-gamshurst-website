@@ -30,8 +30,8 @@
   //   - TURNSTILE_SECRET
   //   - STORYBLOK_DELIVERY_TOKEN  (für Build-Hook, falls Workers Builds nicht direkt env-vars liest)
   "vars": {
-    "CONTACT_TO": "info@mv-gamshurst.de",
-    "CONTACT_FROM": "onboarding@resend.dev",
+    "CONTACT_TO": "kontakt@mv-gamshurst.de",
+    "CONTACT_FROM": "kontakt@mv-gamshurst.de",
   },
   "observability": {
     "enabled": true,
