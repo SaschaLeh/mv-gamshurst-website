@@ -20,6 +20,9 @@ jobs:
       # leere Collections und prüft alles Nicht-Storyblok (TS, Astro-Pipeline).
       # Volle Content-Validierung läuft erst im Cloudflare-Workers-Build.
       STORYBLOK_VERSION: draft
+      # Site-Key ist öffentlich (landet eh im Bundle). Ohne ihn bricht der Build
+      # absichtlich ab — siehe kontakt.astro.
+      PUBLIC_TURNSTILE_SITE_KEY: 0x4AAAAAADkl4KcaRYdD8yJD
     steps:
       - uses: actions/checkout@v4
 

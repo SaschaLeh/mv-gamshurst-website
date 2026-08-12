@@ -92,29 +92,31 @@ export async function handleContact(
     message,
   ].join('\n');
 
-  if (env.RESEND_API_KEY) {
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${env.RESEND_API_KEY}`,
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        from,
-        to: [to],
-        reply_to: email,
-        subject: `[Kontakt] ${safeSubject}`,
-        text: textBody,
-      }),
-    });
-    if (!res.ok) {
-      // Nur Status loggen, NICHT response.text() — Resend echo'd Request-Body inkl. PII.
-      console.error('[contact] Resend HTTP', res.status);
-      return jsonResponse({ error: 'mail_send_failed' }, 502);
-    }
-  } else {
-    // Dev: keine PII (Name, E-Mail, Body) loggen — Workers Observability speichert logs.
-    console.warn('[contact] RESEND_API_KEY fehlt — Mail würde an', to, 'gehen');
+  // Fail-loud: Ohne Key gäbe es sonst ein stilles ok:true ohne Mailversand —
+  // genau so blieb der kaputte Formularversand wochenlang unbemerkt.
+  if (!env.RESEND_API_KEY) {
+    console.error('[contact] RESEND_API_KEY fehlt — Mailversand nicht möglich.');
+    return jsonResponse({ error: 'mail_send_failed' }, 500);
+  }
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      from,
+      to: [to],
+      reply_to: email,
+      subject: `[Kontakt] ${safeSubject}`,
+      text: textBody,
+    }),
+  });
+  if (!res.ok) {
+    // Nur Status loggen, NICHT response.text() — Resend echo'd Request-Body inkl. PII.
+    console.error('[contact] Resend HTTP', res.status);
+    return jsonResponse({ error: 'mail_send_failed' }, 502);
   }
 
   // 6. DSGVO Art. 7(1): Einwilligung nachweisbar speichern (90 Tage TTL).

@@ -25,10 +25,16 @@ const probelokal = {
   lon: 8.0191027,
 };
 
-// Turnstile-Site-Key: PUBLIC_* wird in den Bundle eingebrannt.
-// Dev-Fallback: Cloudflare offizieller Test-Site-Key (immer pass).
-const turnstileSiteKey =
-  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
+// Turnstile-Site-Key: PUBLIC_* wird in den Bundle eingebrannt. Kein Fallback:
+// Ein stiller Test-Key-Fallback hat schon einmal Production gebrochen (Tokens
+// scheitern am echten TURNSTILE_SECRET). Lokal via .env, CI via ci.yml,
+// Workers Builds via Dashboard-Build-Variable.
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+if (!turnstileSiteKey) {
+  throw new Error(
+    'PUBLIC_TURNSTILE_SITE_KEY fehlt — Build abgebrochen, damit kein Test-Key in Production landet.',
+  );
+}
 
 const breadcrumbJsonLd = serializeJsonLd(
   breadcrumbListSchema(
